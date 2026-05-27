@@ -7,10 +7,10 @@ import { Toaster } from "sonner";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Sonix" },
-      { name: "description", content: "Start a project with Sonix — sound design, mixing, scoring and audio post." },
-      { property: "og:title", content: "Contact — Sonix" },
-      { property: "og:description", content: "Start a project with Sonix." },
+      { title: "Mouje Studio — Contact" },
+      { name: "description", content: "Get in touch with Mouje Studio for film scoring, recording, mixing, sound design and audio post." },
+      { property: "og:title", content: "Mouje Studio — Contact" },
+      { property: "og:description", content: "Get in touch with Mouje Studio." },
     ],
   }),
   component: ContactPage,
@@ -40,10 +40,10 @@ function ContactPage() {
       <div className="text-center mb-16 fade-up">
         <p className="uppercase tracking-[0.4em] text-secondary text-xs mb-4">Contact</p>
         <h1 className="font-display text-5xl md:text-7xl font-bold">
-          Let&apos;s make it <span className="text-gradient">sound right.</span>
+          Get In <span className="text-gradient">Touch</span>
         </h1>
         <p className="text-muted-foreground max-w-xl mx-auto mt-5 text-lg">
-          Drop a line about your project — film, game, EP, podcast, or anything that breathes through a speaker.
+          Tell us about your project and we&apos;ll bring it to life.
         </p>
       </div>
 
@@ -54,9 +54,9 @@ function ContactPage() {
           <div className="relative space-y-8">
             <h2 className="font-display text-3xl font-bold">Get in touch</h2>
             {[
-              { Icon: MapPin, label: "Studio", value: "Amman, Jordan — remote sessions worldwide" },
-              { Icon: Mail, label: "Email", value: "hello@sonix.studio" },
-              { Icon: Phone, label: "Phone", value: "+962 7 96 568 891" },
+              { Icon: MapPin, label: "Address", value: "Amir Ben Malek St., Khalda 11953" },
+              { Icon: Mail, label: "Email", value: "moujemusic@gmail.com" },
+              { Icon: Phone, label: "Phone", value: "+962 796 568 891" },
             ].map(({ Icon, label, value }) => (
               <div key={label} className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">

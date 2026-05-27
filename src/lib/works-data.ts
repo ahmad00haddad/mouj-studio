@@ -7,21 +7,23 @@ import podcast from "@/assets/work-podcast.jpg";
 
 export type Category =
   | "all"
-  | "film"
-  | "mixing"
-  | "recording"
-  | "sound-design"
-  | "foley"
-  | "podcast";
+  | "featured"
+  | "advertising"
+  | "supervision"
+  | "sound-mix"
+  | "film-tv"
+  | "radio-podcasts"
+  | "game-trailers";
 
 export const categories: { id: Category; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "film", label: "Film Scoring" },
-  { id: "mixing", label: "Mixing & Mastering" },
-  { id: "recording", label: "Recording" },
-  { id: "sound-design", label: "Sound Design" },
-  { id: "foley", label: "Foley" },
-  { id: "podcast", label: "Podcast" },
+  { id: "all", label: "Show All" },
+  { id: "featured", label: "Featured" },
+  { id: "advertising", label: "Music For Advertising" },
+  { id: "supervision", label: "Music Supervision" },
+  { id: "sound-mix", label: "Sound & Mix" },
+  { id: "film-tv", label: "Music For Film & TV" },
+  { id: "radio-podcasts", label: "Radio & Podcasts" },
+  { id: "game-trailers", label: "Game Trailers" },
 ];
 
 export interface Work {
@@ -34,13 +36,13 @@ export interface Work {
 }
 
 export const works: Work[] = [
-  { id: "1", title: "Echoes of the Dune", client: "Lumen Pictures", year: 2025, category: "film", image: film },
-  { id: "2", title: "Midnight Sessions Vol. III", client: "Indie Artist EP", year: 2024, category: "mixing", image: mixing },
-  { id: "3", title: "The Vocal Booth", client: "Anya Rose Album", year: 2024, category: "recording", image: recording },
-  { id: "4", title: "Neon Drift — Game OST", client: "Hollowpoint Studios", year: 2025, category: "sound-design", image: soundDesign },
-  { id: "5", title: "Footsteps in Rain", client: "Short Film Foley", year: 2023, category: "foley", image: foley },
-  { id: "6", title: "Frequencies Podcast", client: "Weekly Show — Season 2", year: 2024, category: "podcast", image: podcast },
-  { id: "7", title: "Aurora Trailer Score", client: "Brand Campaign", year: 2025, category: "film", image: film },
-  { id: "8", title: "Analog Warmth Mix", client: "Vinyl Release", year: 2024, category: "mixing", image: mixing },
-  { id: "9", title: "Lo-fi Booth Sessions", client: "EP Recording", year: 2023, category: "recording", image: recording },
+  { id: "1", title: "Featured Ad Campaign", client: "Brand Spot", year: 2025, category: "advertising", image: film },
+  { id: "2", title: "Echoes of the Dune", client: "Feature Film", year: 2025, category: "film-tv", image: film },
+  { id: "3", title: "Midnight Sessions Vol. III", client: "Indie EP", year: 2024, category: "sound-mix", image: mixing },
+  { id: "4", title: "Music Supervision — Series", client: "Streaming Show", year: 2024, category: "supervision", image: recording },
+  { id: "5", title: "Neon Drift — Game Trailer", client: "Hollowpoint Studios", year: 2025, category: "game-trailers", image: soundDesign },
+  { id: "6", title: "Foley & Mix", client: "Short Film", year: 2023, category: "sound-mix", image: foley },
+  { id: "7", title: "Frequencies Podcast", client: "Weekly Show", year: 2024, category: "radio-podcasts", image: podcast },
+  { id: "8", title: "Aurora Trailer Score", client: "Brand Campaign", year: 2025, category: "featured", image: film },
+  { id: "9", title: "Analog Warmth Mix", client: "Vinyl Release", year: 2024, category: "sound-mix", image: mixing },
 ];

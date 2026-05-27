@@ -1,16 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Linkedin, Twitter, Youtube, Mail } from "lucide-react";
+import { Instagram, Linkedin, Facebook, Twitter, Mail } from "lucide-react";
+import waveLogo from "@/assets/wave.webp";
 
 export function Footer() {
   return (
     <footer className="border-t border-border/60 mt-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid md:grid-cols-3 gap-10">
         <div>
-          <h3 className="font-display text-3xl font-bold">
-            Son<span className="text-gradient">ix</span>
-          </h3>
+          <div className="flex items-center gap-2">
+            <img src={waveLogo} alt="" className="w-9 h-9 object-contain" />
+            <h3 className="font-display text-3xl font-bold">
+              Mouje <span className="text-gradient">Studio</span>
+            </h3>
+          </div>
           <p className="text-muted-foreground mt-3 max-w-xs">
-            Sound designer, mixing engineer and composer crafting cinematic audio for film, games and brands.
+            A leading studio delivering world-class audio solutions with expert engineers and state-of-the-art facilities.
           </p>
         </div>
         <div>
@@ -25,10 +29,18 @@ export function Footer() {
         <div>
           <h4 className="uppercase text-sm tracking-widest text-muted-foreground mb-4">Connect</h4>
           <div className="flex gap-3">
-            {[Instagram, Linkedin, Twitter, Youtube, Mail].map((Icon, i) => (
+            {[
+              { Icon: Facebook, href: "#" },
+              { Icon: Instagram, href: "https://www.instagram.com/moujestudio/" },
+              { Icon: Twitter, href: "#" },
+              { Icon: Linkedin, href: "https://www.linkedin.com/company/moujestudio/" },
+              { Icon: Mail, href: "mailto:moujemusic@gmail.com" },
+            ].map(({ Icon, href }, i) => (
               <a
                 key={i}
-                href="#"
+                href={href}
+                target="_blank"
+                rel="noreferrer"
                 className="w-11 h-11 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:glow-primary transition-all"
                 aria-label="social link"
               >
@@ -37,7 +49,7 @@ export function Footer() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-6">
-            © {new Date().getFullYear()} Sonix. All rights reserved.
+            © {new Date().getFullYear()} Mouje Studio. All rights reserved.
           </p>
         </div>
       </div>

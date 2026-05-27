@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Disc3, Film, Mic, Music2, Radio, Waves } from "lucide-react";
-import heroImg from "@/assets/hero-producer.jpg";
+import { ArrowRight, Disc3, Film, Mic, Music2, Radio, Waves, Headphones, Volume2, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import heroImg from "@/assets/home-img.webp";
 import { Equalizer } from "@/components/Equalizer";
 import { works } from "@/lib/works-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sonix — Sound Designer & Music Producer" },
-      { name: "description", content: "Cinematic sound design, mixing and original scores for film, games and brands." },
-      { property: "og:title", content: "Sonix — Sound Designer & Music Producer" },
-      { property: "og:description", content: "Cinematic sound design, mixing and original scores." },
+      { title: "Mouje Studio" },
+      { name: "description", content: "A leading studio delivering world-class audio solutions with a team of expert engineers and state-of-the-art facilities." },
+      { property: "og:title", content: "Mouje Studio" },
+      { property: "og:description", content: "World-class audio solutions for every project." },
     ],
   }),
   component: Index,
@@ -19,11 +19,13 @@ export const Route = createFileRoute("/")({
 
 const services = [
   { icon: Film, title: "Film Scoring", desc: "Original orchestral and hybrid scores tailored to picture." },
-  { icon: Disc3, title: "Mixing & Mastering", desc: "Translation-ready masters with depth, clarity and punch." },
-  { icon: Mic, title: "Recording", desc: "Vocal, instrument and ADR sessions in a tuned booth." },
+  { icon: Mic, title: "Recording", desc: "Vocal, instrument and live tracking in a tuned booth." },
+  { icon: Volume2, title: "Audio Post Production", desc: "End-to-end audio finishing for film and TV." },
+  { icon: Headphones, title: "ADR and Dubbing", desc: "Clean dialogue replacement and multi-language dubbing." },
+  { icon: Disc3, title: "Mixing and Mastering", desc: "Translation-ready masters with depth, clarity and punch." },
+  { icon: Radio, title: "Foley Recording", desc: "Layered, frame-accurate foley that brings scenes to life." },
   { icon: Waves, title: "Sound Design", desc: "Bespoke sonic textures for games, trailers and ads." },
   { icon: Music2, title: "Audio Branding", desc: "Sonic logos and brand sound identities that stick." },
-  { icon: Radio, title: "Podcast Post", desc: "Editing, leveling and polish for spoken-word shows." },
 ];
 
 function Index() {
@@ -37,65 +39,66 @@ function Index() {
           <div className="fade-up">
             <p className="uppercase tracking-[0.4em] text-secondary text-xs mb-6 flex items-center gap-3">
               <span className="inline-block w-10 h-px bg-secondary" />
-              Sound Designer · Producer
+              Welcome to
             </p>
             <h1 className="font-display font-bold text-5xl md:text-7xl leading-[0.95]">
-              Crafting sound that <span className="text-gradient">moves</span> the picture.
+              Hi, It&apos;s <span className="text-gradient">Mouje</span> Studio
             </h1>
             <div className="mt-8 text-2xl md:text-3xl font-display text-muted-foreground">
-              I&apos;m&nbsp;
+              We Are&nbsp;
               <span className="text-rotator">
                 <ul>
-                  <li className="text-foreground">a sound designer.</li>
-                  <li className="text-foreground">a mixing engineer.</li>
-                  <li className="text-foreground">a film composer.</li>
-                  <li className="text-foreground">a music producer.</li>
+                  <li className="text-foreground">The Place For You</li>
+                  <li className="text-foreground">Household For Audio Works</li>
+                  <li className="text-foreground">Your Favorite Recording Studio</li>
+                  <li className="text-foreground">Your Perfect Sound</li>
                 </ul>
               </span>
             </div>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              A decade of cinematic audio for feature films, games and global brands.
-              Every project is engineered to feel as good as it sounds.
+              We are a leading studio delivering world-class audio solutions with a team of expert engineers
+              and state-of-the-art facilities, ensuring exceptional sound quality for every project.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                to="/works"
+                to="/about"
                 className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold uppercase tracking-wider text-sm hover:glow-primary transition-all"
               >
-                View Works
+                About
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/contact"
                 className="px-7 py-3.5 rounded-full border-2 border-border text-foreground font-semibold uppercase tracking-wider text-sm hover:border-secondary hover:text-secondary transition-all"
               >
-                Start a Project
+                Contact
               </Link>
             </div>
 
-            <div className="mt-12 flex items-center gap-8">
+            <div className="mt-10 flex items-center gap-3">
               {[
-                { n: "120+", l: "Projects" },
-                { n: "10y", l: "Experience" },
-                { n: "45", l: "Clients" },
-              ].map((s) => (
-                <div key={s.l}>
-                  <div className="font-display text-3xl font-bold text-gradient">{s.n}</div>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{s.l}</div>
-                </div>
+                { Icon: Facebook, href: "#" },
+                { Icon: Instagram, href: "https://www.instagram.com/moujestudio/" },
+                { Icon: Twitter, href: "#" },
+                { Icon: Linkedin, href: "https://www.linkedin.com/company/moujestudio/" },
+              ].map(({ Icon, href }, i) => (
+                <a key={i} href={href} target="_blank" rel="noreferrer"
+                   className="w-11 h-11 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:glow-primary transition-all">
+                  <Icon className="w-5 h-5" />
+                </a>
               ))}
             </div>
           </div>
 
           <div className="relative fade-up" style={{ animationDelay: "0.2s" }}>
-            <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-primary/30 via-transparent to-secondary/30 blur-2xl pulse-glow" />
-            <div className="relative rounded-3xl overflow-hidden border border-border glow-primary aspect-[4/5]">
+            <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-primary/40 via-transparent to-secondary/30 blur-2xl pulse-glow" />
+            <div className="relative rounded-3xl overflow-hidden border border-border glow-primary aspect-square">
               <img
                 src={heroImg}
-                alt="Sound producer at mixing console"
+                alt="Mouje Studio"
                 className="w-full h-full object-cover"
-                width={1024}
-                height={1280}
+                width={1080}
+                height={1080}
               />
               <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-background via-background/70 to-transparent">
                 <Equalizer bars={40} className="h-16 opacity-80" />

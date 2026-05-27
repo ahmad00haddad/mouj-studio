@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, AudioWaveform } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import waveLogo from "@/assets/wave.webp";
 
 const links = [
   { to: "/", label: "Home" },
@@ -9,8 +10,20 @@ const links = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
+const services = [
+  "Film Scoring",
+  "Recording",
+  "Audio Post Production",
+  "ADR and Dubbing",
+  "Mixing and Mastering",
+  "Foley Recording",
+  "Sound Design",
+  "Audio Branding",
+];
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [services Open, setServicesOpen] = useState(false);
   return (
     <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-background/70 border-b border-border/60">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-12 py-5">

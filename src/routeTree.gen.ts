@@ -13,6 +13,7 @@ import { Route as WorksRouteImport } from './routes/works'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicSendEmailRouteImport } from './routes/api/public/send-email'
 
 const WorksRoute = WorksRouteImport.update({
   id: '/works',
@@ -34,18 +35,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSendEmailRoute = ApiPublicSendEmailRouteImport.update({
+  id: '/api/public/send-email',
+  path: '/api/public/send-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/works': typeof WorksRoute
+  '/api/public/send-email': typeof ApiPublicSendEmailRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/works': typeof WorksRoute
+  '/api/public/send-email': typeof ApiPublicSendEmailRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/works': typeof WorksRoute
+  '/api/public/send-email': typeof ApiPublicSendEmailRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/works'
+  fullPaths: '/' | '/about' | '/contact' | '/works' | '/api/public/send-email'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/works'
-  id: '__root__' | '/' | '/about' | '/contact' | '/works'
+  to: '/' | '/about' | '/contact' | '/works' | '/api/public/send-email'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/works'
+    | '/api/public/send-email'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +82,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   WorksRoute: typeof WorksRoute
+  ApiPublicSendEmailRoute: typeof ApiPublicSendEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/send-email': {
+      id: '/api/public/send-email'
+      path: '/api/public/send-email'
+      fullPath: '/api/public/send-email'
+      preLoaderRoute: typeof ApiPublicSendEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   WorksRoute: WorksRoute,
+  ApiPublicSendEmailRoute: ApiPublicSendEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

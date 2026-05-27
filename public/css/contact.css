@@ -1,0 +1,97 @@
+.ftco-section {
+  padding: 7em 0;
+}
+
+.heading-section {
+  font-size: 3.5rem;
+  color: red;
+}
+.wrapper {
+  width: 100%;
+  -webkit-box-shadow: 0px 21px 41px -13px rgba(0, 0, 0, 0.18);
+  -moz-box-shadow: 0px 21px 41px -13px rgba(0, 0, 0, 0.18);
+  box-shadow: 0px 21px 41px -13px rgba(0, 0, 0, 0.18);
+}
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.contact-wrap {
+  box-shadow: 0 0 25px var(--color-primary);
+  cursor: pointer;
+  background-color: var(--color-primary) !important;
+  border-radius: 1rem;
+  transition: var(--transition-duration) ease-in-out;
+}
+.contact-wrap:hover {
+  box-shadow: 0 0 25px var(--color-primary), 0 0 50px var(--color-primary),
+    0 0 100px var(--color-primary);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+#contactForm .form-control {
+  font-size: 2rem;
+}
+.info-wrap h3 {
+  color: #fff;
+}
+.info-wrap .dbox {
+  width: 100%;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 25px;
+}
+.info-wrap .dbox .icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.info-wrap .dbox .icon span {
+  font-size: 20px;
+  color: #fff;
+}
+.info-wrap .dbox p span {
+  font-weight: 600;
+  color: #fff;
+}
+.bg-primary {
+  background-color: var(--color-secondary) !important;
+}
+
+.home-content p span {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.home-content {
+  width: 50%;
+}
+
+@media (max-width: 767px) {
+  .home {
+    flex-direction: column !important;
+    gap: 5rem;
+    margin-top: 2rem;
+  }
+  .contact-wrap.home-content h1 {
+    font-size: 3rem;
+  }
+  textarea#message {
+    height: 10rem;
+  }
+}
+.btn {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+.btn:hover {
+  border: 2px solid var(--color-background);
+  color: var(--color-background);
+}
+
+.contact-wrap .message {
+  font-size: 1.5rem;
+}

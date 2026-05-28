@@ -61,6 +61,11 @@ function WorksPage() {
       <section className="works" id="works">
         <h1>Our <span>Works</span></h1>
         <p className="works-sub">A selection of recent projects across film, advertising, games and podcasts.</p>
+        <div className="works-stats">
+          {stats.map((s) => (
+            <div className="works-stat" key={s.l}><h3>{s.n}</h3><p>{s.l}</p></div>
+          ))}
+        </div>
       </section>
       <section className="work-filters">
         <div className="wrap">
@@ -83,11 +88,37 @@ function WorksPage() {
               <div key={i} className={`content-item ${it.cls}`}>
                 <img src={it.img} alt={it.title} loading="lazy" />
                 <div className="content-item__overlay">
-                  <h3>{it.title}</h3>
+                  <div>
+                    <h3>{it.title}</h3>
+                    <p className="content-item__meta">{it.client} · {it.role}</p>
+                  </div>
                   <span>{it.year}</span>
                 </div>
               </div>
             ))}
+        </div>
+      </section>
+
+      <section className="clients-strip">
+        <h2>Trusted by teams across the region</h2>
+        <div className="clients-row">
+          {clients.map((c) => (<div className="client-pill" key={c}>{c}</div>))}
+        </div>
+      </section>
+
+      <section className="testimonials">
+        <div className="services-header">
+          <h2>What clients <span>say</span></h2>
+          <p>A few words from teams we've shipped sound for.</p>
+        </div>
+        <div className="testimonials-grid">
+          {testimonials.map((t) => (
+            <figure className="testimonial-card" key={t.name}>
+              <i className="bx bxs-quote-alt-left"></i>
+              <blockquote>{t.quote}</blockquote>
+              <figcaption><strong>{t.name}</strong><span>{t.role}</span></figcaption>
+            </figure>
+          ))}
         </div>
       </section>
     </>

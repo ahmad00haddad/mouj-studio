@@ -25,15 +25,33 @@ const filters = [
 ];
 
 const items = [
-  { cls: "filter-featured filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem — Featured Ad", year: "2024" },
-  { cls: "filter-music-supervision filter-featured", img: "/assets/img/works/work-recording.jpg", title: "Indie Film Music Supervision", year: "2024" },
-  { cls: "filter-sound-and-mix", img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Sound & Mix", year: "2023" },
-  { cls: "filter-music-for-film-and-tv filter-featured", img: "/assets/img/works/work-film.jpg", title: "Original Score — Short Film", year: "2024" },
-  { cls: "filter-radio-and-podcasts", img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", year: "2024" },
-  { cls: "filter-game-trailers", img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", year: "2023" },
-  { cls: "filter-sound-and-mix filter-music-for-film-and-tv", img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording Mix", year: "2024" },
-  { cls: "filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial — Beverage Brand", year: "2023" },
-  { cls: "filter-radio-and-podcasts filter-music-for-advertising", img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", year: "2024" },
+  { cls: "filter-featured filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem — Featured Ad", client: "Aurora Beverages", role: "Composition · Mix", year: "2024" },
+  { cls: "filter-music-supervision filter-featured", img: "/assets/img/works/work-recording.jpg", title: "Indie Film Music Supervision", client: "Nahla Pictures", role: "Music Supervision", year: "2024" },
+  { cls: "filter-sound-and-mix", img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Sound & Mix", client: "Al-Madār Docs", role: "Sound Design · Mix", year: "2023" },
+  { cls: "filter-music-for-film-and-tv filter-featured", img: "/assets/img/works/work-film.jpg", title: "Original Score — Short Film", client: "Sunbird Studios", role: "Original Score", year: "2024" },
+  { cls: "filter-radio-and-podcasts", img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", client: "Sawt Network", role: "Edit · Mix · Mastering", year: "2024" },
+  { cls: "filter-game-trailers filter-featured", img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", client: "Northwind Games", role: "Trailer Score · SFX", year: "2023" },
+  { cls: "filter-sound-and-mix filter-music-for-film-and-tv", img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording Mix", client: "Cedar Films", role: "Foley · Re-recording", year: "2024" },
+  { cls: "filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial — Beverage Brand", client: "Qura Co.", role: "Score · Mix", year: "2023" },
+  { cls: "filter-radio-and-podcasts filter-music-for-advertising", img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", client: "Wave FM", role: "Imaging · Sonic ID", year: "2024" },
+  { cls: "filter-music-supervision filter-music-for-film-and-tv", img: "/assets/img/works/work-recording.jpg", title: "TV Series — Season 2 Score", client: "Levant TV", role: "Composition · Edit", year: "2024" },
+  { cls: "filter-sound-and-mix filter-game-trailers", img: "/assets/img/works/work-sounddesign.jpg", title: "Mobile Game — Audio Pack", client: "Pixel Forge", role: "Sound Design · UI SFX", year: "2023" },
+  { cls: "filter-music-for-advertising filter-featured", img: "/assets/img/works/work-film.jpg", title: "Telecom Brand Campaign", client: "Orbit Telecom", role: "Audio Branding · Mix", year: "2024" },
+];
+
+const stats = [
+  { n: "250+", l: "Projects Delivered" },
+  { n: "12", l: "Featured Categories" },
+  { n: "60+", l: "Active Clients" },
+  { n: "10+", l: "Years On Air" },
+];
+
+const clients = ["Aurora", "Nahla Pictures", "Al-Madār", "Sunbird", "Sawt", "Northwind", "Cedar", "Qura", "Wave FM", "Levant TV", "Pixel Forge", "Orbit"];
+
+const testimonials = [
+  { quote: "Mouje Studio elevated our film to a whole new sonic level. The score still gives me chills.", name: "Layla H.", role: "Director, Nahla Pictures" },
+  { quote: "Fast, precise, and genuinely creative. Our podcast finally sounds like the show I always heard in my head.", name: "Omar K.", role: "Showrunner, Sawt Network" },
+  { quote: "The trailer score they delivered helped us close a publishing deal. That's how good it was.", name: "Rami D.", role: "Producer, Northwind Games" },
 ];
 
 function WorksPage() {

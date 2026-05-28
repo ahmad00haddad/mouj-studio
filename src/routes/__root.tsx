@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 
 function NotFoundComponent() {
@@ -124,6 +125,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Navbar />
       <Outlet />
+      <Footer />
     </QueryClientProvider>
   );
 }

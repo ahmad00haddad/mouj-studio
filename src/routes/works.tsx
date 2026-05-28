@@ -25,12 +25,15 @@ const filters = [
 ];
 
 const items = [
-  { cls: "filter-featured filter-music-for-advertising", img: "https://via.placeholder.com/300x200.png?text=Featured+Ad+1", alt: "Featured Ad 1" },
-  { cls: "filter-music-supervision", img: "https://via.placeholder.com/300x200.png?text=Music+Supervision+1", alt: "Music Supervision 1" },
-  { cls: "filter-sound-and-mix", img: "https://via.placeholder.com/300x200.png?text=Sound+Mix+1", alt: "Sound Mix 1" },
-  { cls: "filter-music-for-film-and-tv", img: "https://via.placeholder.com/300x200.png?text=Film+TV+1", alt: "Film TV 1" },
-  { cls: "filter-radio-and-podcasts", img: "https://via.placeholder.com/300x200.png?text=Radio+Podcast+1", alt: "Radio Podcast 1" },
-  { cls: "filter-game-trailers", img: "https://via.placeholder.com/300x200.png?text=Game+Trailer+1", alt: "Game Trailer 1" },
+  { cls: "filter-featured filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem — Featured Ad", year: "2024" },
+  { cls: "filter-music-supervision filter-featured", img: "/assets/img/works/work-recording.jpg", title: "Indie Film Music Supervision", year: "2024" },
+  { cls: "filter-sound-and-mix", img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Sound & Mix", year: "2023" },
+  { cls: "filter-music-for-film-and-tv filter-featured", img: "/assets/img/works/work-film.jpg", title: "Original Score — Short Film", year: "2024" },
+  { cls: "filter-radio-and-podcasts", img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", year: "2024" },
+  { cls: "filter-game-trailers", img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", year: "2023" },
+  { cls: "filter-sound-and-mix filter-music-for-film-and-tv", img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording Mix", year: "2024" },
+  { cls: "filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial — Beverage Brand", year: "2023" },
+  { cls: "filter-radio-and-podcasts filter-music-for-advertising", img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", year: "2024" },
 ];
 
 function WorksPage() {
@@ -38,7 +41,8 @@ function WorksPage() {
   return (
     <>
       <section className="works" id="works">
-        <h1>Works Lezgo</h1>
+        <h1>Our <span>Works</span></h1>
+        <p className="works-sub">A selection of recent projects across film, advertising, games and podcasts.</p>
       </section>
       <section className="work-filters">
         <div className="wrap">
@@ -59,7 +63,11 @@ function WorksPage() {
             .filter((it) => active === "*" || it.cls.includes(active))
             .map((it, i) => (
               <div key={i} className={`content-item ${it.cls}`}>
-                <img src={it.img} alt={it.alt} />
+                <img src={it.img} alt={it.title} loading="lazy" />
+                <div className="content-item__overlay">
+                  <h3>{it.title}</h3>
+                  <span>{it.year}</span>
+                </div>
               </div>
             ))}
         </div>

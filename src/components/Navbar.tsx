@@ -1,4 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 
 const links = [
   { to: "/", label: "Home" },
@@ -8,18 +9,21 @@ const links = [
 ] as const;
 
 const services = [
-  "Film Scoring",
-  "Recording",
-  "Audio Post Production",
-  "ADR and Dubbing",
-  "Mixing and Mastering",
-  "Foley Recording",
-  "Sound Design",
-  "Audio Branding",
+  { slug: "film-scoring", label: "Film Scoring" },
+  { slug: "recording", label: "Recording" },
+  { slug: "audio-post-production", label: "Audio Post Production" },
+  { slug: "adr-and-dubbing", label: "ADR and Dubbing" },
+  { slug: "mixing-and-mastering", label: "Mixing and Mastering" },
+  { slug: "foley-recording", label: "Foley Recording" },
+  { slug: "sound-design", label: "Sound Design" },
+  { slug: "audio-branding", label: "Audio Branding" },
 ];
 
 export function Navbar() {
   const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+  const [drop, setDrop] = useState(false);
+  useEffect(() => { setOpen(false); setDrop(false); }, [pathname]);
   return (
     <header className="header">
       <Link className="navbar-brand logo" to="/">
@@ -32,17 +36,15 @@ export function Navbar() {
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03"
-            aria-expanded="false"
+            aria-expanded={open}
             aria-label="Toggle navigation"
+            onClick={() => setOpen((o) => !o)}
           >
             <span className="navbar-toggler-icon">
               <i className="bx bx-menu"></i>
             </span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <div className={`${open ? "" : "collapse"} navbar-collapse`} id="navbarTogglerDemo03">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               {links.map((l) => (
                 <li className="nav-item" key={l.to}>
@@ -54,22 +56,25 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
-              <li className="nav-item dropdown">
+              <li
+                className={`nav-item dropdown ${drop ? "show" : ""}`}
+                onMouseEnter={() => setDrop(true)}
+                onMouseLeave={() => setDrop(false)}
+              >
                 <a
-                  className="navlink dropdown-toggle"
-                  data-toggle="dropdown"
+                  className={`navlink dropdown-toggle ${pathname.startsWith("/services") ? "active-nav" : ""}`}
                   href="#"
                   role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+                  aria-expanded={drop}
+                  onClick={(e) => { e.preventDefault(); setDrop((d) => !d); }}
                 >
                   What We Do
                 </a>
-                <div className="dropdown-menu">
+                <div className="dropdown-menu" style={drop ? { display: "block", opacity: 1, visibility: "visible", maxHeight: 999, transform: "translate3d(0,0,0)", marginTop: 5, backgroundColor: "var(--color-background)", borderRadius: 20 } : undefined}>
                   {services.map((s) => (
-                    <a key={s} className="dropdown-item" href="#">
-                      {s}
-                    </a>
+                    <Link key={s.slug} className="dropdown-item" to="/services" hash={s.slug}>
+                      {s.label}
+                    </Link>
                   ))}
                 </div>
               </li>

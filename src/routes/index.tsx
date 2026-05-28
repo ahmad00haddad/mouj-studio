@@ -15,6 +15,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
+    <>
     <section className="home" id="home">
       <div className="home-content">
         <h1>Hi, It's <span>Mouje</span>Studio</h1>
@@ -51,5 +52,46 @@ function Index() {
         <img src="/assets/img/home-img.webp" alt="home-img" />
       </div>
     </section>
+
+    <section className="stats-section">
+      <div className="stat"><h2>10+</h2><p>Years of Experience</p></div>
+      <div className="stat"><h2>250+</h2><p>Projects Delivered</p></div>
+      <div className="stat"><h2>80+</h2><p>Happy Clients</p></div>
+      <div className="stat"><h2>15</h2><p>Awards & Nominations</p></div>
+    </section>
+
+    <section className="home-services">
+      <div className="home-services__header">
+        <h2>What <span>We Do</span></h2>
+        <p>A complete sonic toolkit — from the first note to the final master.</p>
+      </div>
+      <div className="home-services__grid">
+        {[
+          { icon: "bx-movie-play", title: "Film Scoring" },
+          { icon: "bx-microphone", title: "Recording" },
+          { icon: "bx-film", title: "Audio Post Production" },
+          { icon: "bx-conversation", title: "ADR & Dubbing" },
+          { icon: "bx-equalizer", title: "Mixing & Mastering" },
+          { icon: "bx-walking", title: "Foley Recording" },
+          { icon: "bx-pulse", title: "Sound Design" },
+          { icon: "bx-broadcast", title: "Audio Branding" },
+        ].map((s) => (
+          <Link key={s.title} to="/services" className="home-service-card">
+            <i className={`bx ${s.icon}`}></i>
+            <h3>{s.title}</h3>
+          </Link>
+        ))}
+      </div>
+      <div className="home-services__cta">
+        <Link to="/services" className="btn">Explore All Services</Link>
+      </div>
+    </section>
+
+    <section className="home-cta">
+      <h2>Have a project in mind?</h2>
+      <p>Let's craft sound that moves people. Get in touch and let's make it happen.</p>
+      <Link to="/contact" className="btn">Start a Project</Link>
+    </section>
+    </>
   );
 }

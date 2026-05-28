@@ -48,11 +48,13 @@ const faqs = [
 ];
 
 function ServicesPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   useEffect(() => {
     const h = window.location.hash.slice(1);
     if (h) document.getElementById(h)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
   return (
+    <>
     <section className="services-section">
       <div className="services-header">
         <h1>What <span>We Do</span></h1>
@@ -64,9 +66,68 @@ function ServicesPage() {
             <div className="service-icon"><i className={`bx ${s.icon}`}></i></div>
             <h3>{s.title}</h3>
             <p>{s.text}</p>
+            <ul className="service-features">
+              {s.features.map((f) => (<li key={f}><i className="bx bx-check"></i>{f}</li>))}
+            </ul>
           </article>
         ))}
       </div>
     </section>
+
+    <section className="process-section">
+      <div className="services-header">
+        <h2>Our <span>Process</span></h2>
+        <p>A clear, collaborative path from idea to final master.</p>
+      </div>
+      <div className="process-grid">
+        {process.map((p) => (
+          <div className="process-step" key={p.n}>
+            <div className="process-step__n">{p.n}</div>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="gear-section">
+      <div className="services-header">
+        <h2>Studio <span>Gear</span></h2>
+        <p>A carefully curated locker of analog warmth and digital precision.</p>
+      </div>
+      <div className="gear-grid">
+        {gear.map((g) => (
+          <div className="gear-card" key={g.group}>
+            <h4>{g.group}</h4>
+            <ul>{g.items.map((i) => (<li key={i}>{i}</li>))}</ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="faq-section">
+      <div className="services-header">
+        <h2>Frequently asked <span>questions</span></h2>
+        <p>Everything you need to know before starting a project with us.</p>
+      </div>
+      <div className="faq-list">
+        {faqs.map((f, i) => (
+          <div className={`faq-item ${openFaq === i ? "open" : ""}`} key={f.q}>
+            <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i}>
+              <span>{f.q}</span>
+              <i className={`bx ${openFaq === i ? "bx-minus" : "bx-plus"}`}></i>
+            </button>
+            {openFaq === i && <div className="faq-a">{f.a}</div>}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="home-cta">
+      <h2>Ready to make some <span>noise</span>?</h2>
+      <p>Tell us about your project — we'll come back within 24 hours with a creative plan.</p>
+      <Link to="/contact" className="btn">Start a Project</Link>
+    </section>
+    </>
   );
 }

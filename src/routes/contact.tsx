@@ -4,11 +4,11 @@ import { useState } from "react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Mouje Studio - contact" },
-      { name: "description", content: "Get in touch with Mouje Studio." },
-      { property: "og:title", content: "Mouje Studio - contact" },
+      { title: "Contact — Mouje Studio" },
+      { name: "description", content: "Get in touch with Mouje Studio to start your audio project." },
+      { property: "og:title", content: "Contact — Mouje Studio" },
+      { property: "og:description", content: "Tell us about your project — we'll reply within 24 hours." },
     ],
-    links: [{ rel: "stylesheet", href: "/css/contact.css" }],
   }),
   component: ContactPage,
 });
@@ -16,64 +16,95 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [warn, setWarn] = useState("");
   const [success, setSuccess] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
-  async function handleSend() {
-    const name = (document.getElementById("name") as HTMLInputElement).value.trim();
-    const email = (document.getElementById("email") as HTMLInputElement).value.trim();
-    const message = (document.getElementById("message") as HTMLTextAreaElement).value.trim();
-    if (!name || !email || !message) { setWarn("All fields are required."); setSuccess(false); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setWarn("Please enter a valid email address."); setSuccess(false); return; }
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setWarn(""); setSuccess(false);
+    const { name, email, message } = form;
+    if (!name.trim() || !email.trim() || !message.trim()) { setWarn("Please fill in name, email and message."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setWarn("Please enter a valid email address."); return; }
+    setSending(true);
     try {
       const fd = new FormData();
-      fd.append("name", name); fd.append("email", email); fd.append("message", message);
+      fd.append("name", name); fd.append("email", email); fd.append("message", `${form.subject ? "[" + form.subject + "] " : ""}${message}`);
       const res = await fetch("/api/public/send-email", { method: "POST", body: fd });
       const txt = (await res.text()).trim();
-      if (txt === "success") {
-        setSuccess(true); setWarn("");
-        (document.getElementById("contactForm") as HTMLFormElement).reset();
-      } else {
-        setWarn("There was a problem with your form. Please try again later."); setSuccess(false);
-      }
-    } catch {
-      setWarn("There was a problem with your form. Please try again later."); setSuccess(false);
-    }
+      if (txt === "success") { setSuccess(true); setForm({ name: "", email: "", subject: "", message: "" }); }
+      else setWarn("There was a problem sending your message. Please try again later.");
+    } catch { setWarn("There was a problem sending your message. Please try again later."); }
+    finally { setSending(false); }
   }
 
   return (
-    <section className="home" id="home">
-      <div className="home-content">
-        <h1>Get In <span>Touch</span></h1>
-        <p><span>Address:</span> Amir Ben Malek St., Khalda 11953</p>
-        <p><span>Email:</span> moujemusic@gmail.com</p>
-        <p><span>Phone:</span> 0962796568891</p>
-      </div>
-      <div className="contact-wrap home-content w-100 p-md-5 p-4">
-        <h1 className="mb-4">Contact us</h1>
-        {warn && <div className="mb-4 message" style={{ color: "var(--color-text)" }}>{warn}</div>}
-        {success && <div className="mb-4 message" style={{ color: "white" }}>Your message was sent, thank you!</div>}
-        <form id="contactForm" noValidate onSubmit={(e) => e.preventDefault()}>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group">
-                <input type="text" className="form-control" name="name" id="name" placeholder="Name" required />
+    <main>
+      <section>
+        <div className="page-head">
+          <span className="eyebrow">Contact</span>
+          <h1>Let's <span className="accent">talk</span> sound.</h1>
+          <p>Tell us about your project — we'll come back within 24 hours.</p>
+        </div>
+
+        <div className="contact-wrap">
+          <aside className="contact-info">
+            <div>
+              <h2 style={{ fontSize: "1.5rem", marginBottom: ".5rem" }}>Reach out</h2>
+              <p>We work with clients worldwide — remote sessions, attended mixes and in-person tracking.</p>
+            </div>
+            <div className="contact-row">
+              <i className="bx bx-map"></i>
+              <div><strong>Studio</strong><span>Amir Ben Malek St., Khalda 11953, Amman</span></div>
+            </div>
+            <div className="contact-row">
+              <i className="bx bx-envelope"></i>
+              <div><strong>Email</strong><span><a href="mailto:moujemusic@gmail.com">moujemusic@gmail.com</a></span></div>
+            </div>
+            <div className="contact-row">
+              <i className="bx bx-phone"></i>
+              <div><strong>Phone</strong><span><a href="tel:+962796568891">+962 7 9656 8891</a></span></div>
+            </div>
+            <div className="contact-row">
+              <i className="bx bx-time"></i>
+              <div><strong>Hours</strong><span>Sun–Thu · 10:00 – 19:00 (GMT+3)</span></div>
+            </div>
+            <div className="footer-social" style={{ marginTop: "auto" }}>
+              <a href="https://www.instagram.com/moujestudio/" aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
+              <a href="https://www.linkedin.com/company/moujestudio/" aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
+              <a href="#" aria-label="Facebook"><i className="bx bxl-facebook"></i></a>
+              <a href="#" aria-label="Twitter"><i className="bx bxl-twitter"></i></a>
+            </div>
+          </aside>
+
+          <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            <h2>Send a message</h2>
+            {warn && <div className="alert alert-error">{warn}</div>}
+            {success && <div className="alert alert-success">Your message was sent — thank you! We'll be in touch within 24 hours.</div>}
+
+            <div className="field-row">
+              <div className="field">
+                <label htmlFor="name">Your name</label>
+                <input id="name" type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Jane Doe" required />
+              </div>
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="jane@studio.com" required />
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="form-group">
-                <input type="email" className="form-control" name="email" id="email" placeholder="Email" required />
-              </div>
+            <div className="field">
+              <label htmlFor="subject">Subject</label>
+              <input id="subject" type="text" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder="Film score · 5 min · December delivery" />
             </div>
-            <div className="col-md-12">
-              <div className="form-group">
-                <textarea name="message" className="form-control" id="message" cols={30} rows={7} placeholder="Message" required></textarea>
-              </div>
+            <div className="field">
+              <label htmlFor="message">Message</label>
+              <textarea id="message" rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Tell us about your project, scope and timeline…" required />
             </div>
-          </div>
-          <div className="form-group mt-4">
-            <input type="button" value="Send Message" className="btn" onClick={handleSend} />
-          </div>
-        </form>
-      </div>
-    </section>
+            <button type="submit" className="btn" disabled={sending}>
+              {sending ? "Sending…" : "Send message"} <i className="bx bx-right-arrow-alt"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
   );
 }

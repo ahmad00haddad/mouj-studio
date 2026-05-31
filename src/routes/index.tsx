@@ -1,97 +1,116 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mouje Studio" },
-      { name: "description", content: "A leading studio delivering world-class audio solutions with a team of expert engineers and state-of-the-art facilities, ensuring exceptional sound quality for every project." },
-      { property: "og:title", content: "Mouje Studio" },
-      { property: "og:description", content: "A leading studio delivering world-class audio solutions with a team of expert engineers and state-of-the-art facilities, ensuring exceptional sound quality for every project." },
+      { title: "Mouje Studio — World-class audio production" },
+      { name: "description", content: "Mouje Studio is a creative audio house delivering scoring, recording, mixing, sound design and audio branding for film, brands and games." },
+      { property: "og:title", content: "Mouje Studio — World-class audio production" },
+      { property: "og:description", content: "Creative audio house delivering scoring, recording, mixing, sound design and audio branding." },
     ],
   }),
   component: Index,
 });
 
+const services = [
+  { slug: "film-scoring", icon: "bx-movie-play", title: "Film Scoring", text: "Original orchestral and hybrid scores written to picture." },
+  { slug: "recording", icon: "bx-microphone", title: "Recording", text: "Multitrack tracking in a treated live room with a world-class mic locker." },
+  { slug: "mixing-and-mastering", icon: "bx-equalizer", title: "Mixing & Mastering", text: "Hybrid analog/digital mixes that translate on every speaker." },
+  { slug: "sound-design", icon: "bx-pulse", title: "Sound Design", text: "Cinematic SFX, trailers, game audio and bespoke sonic textures." },
+  { slug: "adr-and-dubbing", icon: "bx-conversation", title: "ADR & Dubbing", text: "Multilingual ADR direction with lip-sync precision." },
+  { slug: "audio-branding", icon: "bx-broadcast", title: "Audio Branding", text: "Sonic logos and brand themes that audiences instantly recognize." },
+];
+
+const stats = [
+  { n: "10+", l: "Years on air" },
+  { n: "250+", l: "Projects delivered" },
+  { n: "80+", l: "Happy clients" },
+  { n: "15", l: "Awards & nominations" },
+];
+
 function Index() {
   return (
-    <>
-    <section className="home" id="home">
-      <div className="home-content">
-        <h1>Hi, It's <span>Mouje</span>Studio</h1>
+    <main>
+      <section className="hero">
+        <div className="hero-grid">
+          <div className="bento hero-main">
+            <span className="eyebrow">Mouje Studio · Est. 2014</span>
+            <h1>Sound that <span className="accent">moves</span> people.</h1>
+            <p>We craft music, mixes and sonic worlds for film, brands and games — from the first note to the final master, all under one roof.</p>
+            <div className="hero-actions">
+              <Link to="/contact" className="btn">Start a project <i className="bx bx-right-arrow-alt"></i></Link>
+              <Link to="/works" className="btn btn-ghost">View our works</Link>
+            </div>
+            <div className="hero-socials">
+              <a href="https://www.instagram.com/moujestudio/" aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
+              <a href="https://www.linkedin.com/company/moujestudio/" aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
+              <a href="#" aria-label="Facebook"><i className="bx bxl-facebook"></i></a>
+              <a href="#" aria-label="Twitter"><i className="bx bxl-twitter"></i></a>
+            </div>
+          </div>
 
-        <div className="content text-animation">
-          <div className="content__container">
-            <h3 className="content__container__text">We Are</h3>
-            <ul className="content__container__list">
-              <li className="content__container__list__item">The Place For You</li>
-              <li className="content__container__list__item">Household For Audio Works</li>
-              <li className="content__container__list__item">Your Favorite Recording Studio</li>
-              <li className="content__container__list__item">Your Perfect Sound</li>
-            </ul>
+          <div className="bento hero-portrait">
+            <img src="/assets/img/home-img.webp" alt="Mouje Studio control room" />
+          </div>
+
+          <div className="bento glow hero-pill">
+            <i className="bx bxs-award"></i>
+            <div>
+              <strong>15+ awards</strong>
+              <span>Regional & international</span>
+            </div>
+          </div>
+
+          <div className="bento hero-eq">
+            <span className="bar"></span><span className="bar"></span><span className="bar"></span>
+            <span className="bar"></span><span className="bar"></span><span className="bar"></span><span className="bar"></span>
+          </div>
+
+          <div className="bento dark hero-cta">
+            <div>
+              <strong style={{ fontFamily: "var(--font-display)", fontSize: "1.15rem" }}>Hybrid analog rig</strong>
+              <p style={{ fontSize: ".85rem", margin: 0 }}>Neve · API · Tube-Tech · Bricasti</p>
+            </div>
           </div>
         </div>
+      </section>
 
-        <p>
-          We are a leading studio delivering world-class audio solutions with a team of expert engineers and state-of-the-art facilities, ensuring exceptional sound quality for every project.
-        </p>
-
-        <div className="social-icons">
-          <a href="#"><i className="bx bxl-facebook"></i></a>
-          <a href="https://www.instagram.com/moujestudio/"><i className="bx bxl-instagram-alt"></i></a>
-          <a href="#"><i className="bx bxl-twitter"></i></a>
-          <a href="https://www.linkedin.com/company/moujestudio/"><i className="bx bxl-linkedin"></i></a>
+      <section className="stats">
+        <div className="stats-grid">
+          {stats.map(s => (
+            <div className="stat-card" key={s.l}>
+              <h3>{s.n}</h3>
+              <p>{s.l}</p>
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div className="btn-group">
-          <Link to="/about" className="btn">About</Link>
-          <Link to="/contact" className="btn">contact</Link>
+      <section>
+        <div className="section-head">
+          <span className="eyebrow">What we do</span>
+          <h2>A complete sonic toolkit, under <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>one roof</span></h2>
+          <p>From the first creative spark to a polished master ready for broadcast and streaming.</p>
         </div>
-      </div>
-      <div className="home-img blur-border">
-        <img src="/assets/img/home-img.webp" alt="home-img" />
-      </div>
-    </section>
+        <div className="services-bento">
+          {services.map((s, i) => (
+            <Link key={s.slug} to="/services" hash={s.slug} className={`svc ${i === 0 ? "wide feat" : ""}`}>
+              <div className="svc-ico"><i className={`bx ${s.icon}`}></i></div>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <span className="svc-link">Learn more <i className="bx bx-right-arrow-alt"></i></span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-    <section className="stats-section">
-      <div className="stat"><h2>10+</h2><p>Years of Experience</p></div>
-      <div className="stat"><h2>250+</h2><p>Projects Delivered</p></div>
-      <div className="stat"><h2>80+</h2><p>Happy Clients</p></div>
-      <div className="stat"><h2>15</h2><p>Awards & Nominations</p></div>
-    </section>
-
-    <section className="home-services">
-      <div className="home-services__header">
-        <h2>What <span>We Do</span></h2>
-        <p>A complete sonic toolkit — from the first note to the final master.</p>
-      </div>
-      <div className="home-services__grid">
-        {[
-          { icon: "bx-movie-play", title: "Film Scoring" },
-          { icon: "bx-microphone", title: "Recording" },
-          { icon: "bx-film", title: "Audio Post Production" },
-          { icon: "bx-conversation", title: "ADR & Dubbing" },
-          { icon: "bx-equalizer", title: "Mixing & Mastering" },
-          { icon: "bx-walking", title: "Foley Recording" },
-          { icon: "bx-pulse", title: "Sound Design" },
-          { icon: "bx-broadcast", title: "Audio Branding" },
-        ].map((s) => (
-          <Link key={s.title} to="/services" className="home-service-card">
-            <i className={`bx ${s.icon}`}></i>
-            <h3>{s.title}</h3>
-          </Link>
-        ))}
-      </div>
-      <div className="home-services__cta">
-        <Link to="/services" className="btn">Explore All Services</Link>
-      </div>
-    </section>
-
-    <section className="home-cta">
-      <h2>Have a project in mind?</h2>
-      <p>Let's craft sound that moves people. Get in touch and let's make it happen.</p>
-      <Link to="/contact" className="btn">Start a Project</Link>
-    </section>
-    </>
+      <section>
+        <div className="cta-block">
+          <h2>Have a project in <span className="accent">mind</span>?</h2>
+          <p>Tell us about your brief — we'll come back within 24 hours with a creative plan and a quote.</p>
+          <Link to="/contact" className="btn">Start a project <i className="bx bx-right-arrow-alt"></i></Link>
+        </div>
+      </section>
+    </main>
   );
 }

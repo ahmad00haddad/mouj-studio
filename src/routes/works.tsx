@@ -4,46 +4,45 @@ import { useState } from "react";
 export const Route = createFileRoute("/works")({
   head: () => ({
     meta: [
-      { title: "Mouje Studio - works" },
-      { name: "description", content: "Mouje Studio works portfolio." },
-      { property: "og:title", content: "Mouje Studio - works" },
+      { title: "Works — Mouje Studio" },
+      { name: "description", content: "Selected projects from Mouje Studio across film, advertising, games and podcasts." },
+      { property: "og:title", content: "Works — Mouje Studio" },
+      { property: "og:description", content: "Selected sonic works across film, ads, games and podcasts." },
     ],
-    links: [{ rel: "stylesheet", href: "/css/works.css" }],
   }),
   component: WorksPage,
 });
 
 const filters = [
-  { key: "*", label: "Show All", cls: "filters-list__item--active" },
-  { key: "filter-featured", label: "Featured", cls: "filters-list__item--featured" },
-  { key: "filter-music-for-advertising", label: "Music For Advertising", cls: "filters-list__item--music-for-advertising" },
-  { key: "filter-music-supervision", label: "Music Supervision", cls: "filters-list__item--music-supervision" },
-  { key: "filter-sound-and-mix", label: "Sound & Mix", cls: "filters-list__item--sound-and-mix" },
-  { key: "filter-music-for-film-and-tv", label: "Music For Film & TV", cls: "filters-list__item--music-for-tv-and-film" },
-  { key: "filter-radio-and-podcasts", label: "Radio & Podcasts", cls: "filters-list__item--radio-imaging" },
-  { key: "filter-game-trailers", label: "Game Trailers", cls: "filters-list__item--game-trailers" },
+  { key: "*", label: "All" },
+  { key: "featured", label: "Featured" },
+  { key: "ads", label: "Advertising" },
+  { key: "film", label: "Film & TV" },
+  { key: "games", label: "Games" },
+  { key: "podcast", label: "Podcasts" },
+  { key: "post", label: "Sound & Mix" },
 ];
 
 const items = [
-  { cls: "filter-featured filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem — Featured Ad", client: "Aurora Beverages", role: "Composition · Mix", year: "2024" },
-  { cls: "filter-music-supervision filter-featured", img: "/assets/img/works/work-recording.jpg", title: "Indie Film Music Supervision", client: "Nahla Pictures", role: "Music Supervision", year: "2024" },
-  { cls: "filter-sound-and-mix", img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Sound & Mix", client: "Al-Madār Docs", role: "Sound Design · Mix", year: "2023" },
-  { cls: "filter-music-for-film-and-tv filter-featured", img: "/assets/img/works/work-film.jpg", title: "Original Score — Short Film", client: "Sunbird Studios", role: "Original Score", year: "2024" },
-  { cls: "filter-radio-and-podcasts", img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", client: "Sawt Network", role: "Edit · Mix · Mastering", year: "2024" },
-  { cls: "filter-game-trailers filter-featured", img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", client: "Northwind Games", role: "Trailer Score · SFX", year: "2023" },
-  { cls: "filter-sound-and-mix filter-music-for-film-and-tv", img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording Mix", client: "Cedar Films", role: "Foley · Re-recording", year: "2024" },
-  { cls: "filter-music-for-advertising", img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial — Beverage Brand", client: "Qura Co.", role: "Score · Mix", year: "2023" },
-  { cls: "filter-radio-and-podcasts filter-music-for-advertising", img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", client: "Wave FM", role: "Imaging · Sonic ID", year: "2024" },
-  { cls: "filter-music-supervision filter-music-for-film-and-tv", img: "/assets/img/works/work-recording.jpg", title: "TV Series — Season 2 Score", client: "Levant TV", role: "Composition · Edit", year: "2024" },
-  { cls: "filter-sound-and-mix filter-game-trailers", img: "/assets/img/works/work-sounddesign.jpg", title: "Mobile Game — Audio Pack", client: "Pixel Forge", role: "Sound Design · UI SFX", year: "2023" },
-  { cls: "filter-music-for-advertising filter-featured", img: "/assets/img/works/work-film.jpg", title: "Telecom Brand Campaign", client: "Orbit Telecom", role: "Audio Branding · Mix", year: "2024" },
+  { tags: ["featured","ads"], img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem", client: "Aurora Beverages", role: "Composition · Mix", year: "2024" },
+  { tags: ["featured","film"], img: "/assets/img/works/work-recording.jpg", title: "Indie Film Score", client: "Nahla Pictures", role: "Music Supervision", year: "2024" },
+  { tags: ["post"], img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Mix", client: "Al-Madār Docs", role: "Sound Design · Mix", year: "2023" },
+  { tags: ["featured","film"], img: "/assets/img/works/work-film.jpg", title: "Original Short Film Score", client: "Sunbird Studios", role: "Original Score", year: "2024" },
+  { tags: ["podcast"], img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", client: "Sawt Network", role: "Edit · Mix · Mastering", year: "2024" },
+  { tags: ["featured","games"], img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", client: "Northwind Games", role: "Trailer Score · SFX", year: "2023" },
+  { tags: ["post","film"], img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording", client: "Cedar Films", role: "Foley · Re-recording", year: "2024" },
+  { tags: ["ads"], img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial", client: "Qura Co.", role: "Score · Mix", year: "2023" },
+  { tags: ["podcast","ads"], img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", client: "Wave FM", role: "Imaging · Sonic ID", year: "2024" },
+  { tags: ["film"], img: "/assets/img/works/work-recording.jpg", title: "TV Series — Season 2", client: "Levant TV", role: "Composition · Edit", year: "2024" },
+  { tags: ["games","post"], img: "/assets/img/works/work-sounddesign.jpg", title: "Mobile Game Audio Pack", client: "Pixel Forge", role: "Sound Design · UI SFX", year: "2023" },
+  { tags: ["featured","ads"], img: "/assets/img/works/work-film.jpg", title: "Telecom Brand Campaign", client: "Orbit Telecom", role: "Audio Branding · Mix", year: "2024" },
 ];
 
 const stats = [
-  { n: "250+", l: "Projects Delivered" },
-  { n: "12", l: "Featured Categories" },
-  { n: "60+", l: "Active Clients" },
-  { n: "10+", l: "Years On Air" },
+  { n: "250+", l: "Projects delivered" },
+  { n: "12", l: "Categories covered" },
+  { n: "60+", l: "Active clients" },
+  { n: "10+", l: "Years on air" },
 ];
 
 const clients = ["Aurora", "Nahla Pictures", "Al-Madār", "Sunbird", "Sawt", "Northwind", "Cedar", "Qura", "Wave FM", "Levant TV", "Pixel Forge", "Orbit"];
@@ -51,76 +50,73 @@ const clients = ["Aurora", "Nahla Pictures", "Al-Madār", "Sunbird", "Sawt", "No
 const testimonials = [
   { quote: "Mouje Studio elevated our film to a whole new sonic level. The score still gives me chills.", name: "Layla H.", role: "Director, Nahla Pictures" },
   { quote: "Fast, precise, and genuinely creative. Our podcast finally sounds like the show I always heard in my head.", name: "Omar K.", role: "Showrunner, Sawt Network" },
-  { quote: "The trailer score they delivered helped us close a publishing deal. That's how good it was.", name: "Rami D.", role: "Producer, Northwind Games" },
+  { quote: "The trailer score helped us close a publishing deal. That's how good it was.", name: "Rami D.", role: "Producer, Northwind Games" },
 ];
 
 function WorksPage() {
   const [active, setActive] = useState("*");
+  const filtered = items.filter(it => active === "*" || it.tags.includes(active));
+
   return (
-    <>
-      <section className="works" id="works">
-        <h1>Our <span>Works</span></h1>
-        <p className="works-sub">A selection of recent projects across film, advertising, games and podcasts.</p>
-        <div className="works-stats">
-          {stats.map((s) => (
-            <div className="works-stat" key={s.l}><h3>{s.n}</h3><p>{s.l}</p></div>
+    <main>
+      <section>
+        <div className="page-head">
+          <span className="eyebrow">Portfolio</span>
+          <h1>Our <span className="accent">works</span></h1>
+          <p>A selection of recent projects across film, advertising, games and podcasts.</p>
+        </div>
+
+        <div className="stats-grid" style={{ marginBottom: "3rem", maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
+          {stats.map(s => (
+            <div className="stat-card" key={s.l}><h3>{s.n}</h3><p>{s.l}</p></div>
+          ))}
+        </div>
+
+        <div className="works-filters">
+          {filters.map(f => (
+            <button key={f.key} className={active === f.key ? "on" : ""} onClick={() => setActive(f.key)}>{f.label}</button>
+          ))}
+        </div>
+
+        <div className="works-grid">
+          {filtered.map((it, i) => (
+            <div className="work" key={i}>
+              <img src={it.img} alt={it.title} loading="lazy" />
+              <span className="year" style={{ position: "absolute", top: "1rem", right: "1rem", padding: ".25rem .65rem", borderRadius: 999, background: "rgba(255,255,255,.1)", backdropFilter: "blur(10px)", fontSize: ".75rem", fontWeight: 600, zIndex: 2 }}>{it.year}</span>
+              <div className="work-overlay">
+                <h3>{it.title}</h3>
+                <p>{it.client} · {it.role}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
-      <section className="work-filters">
-        <div className="wrap">
-          <ul className="filters-list">
-            {filters.map((f) => (
-              <li
-                key={f.key}
-                className={`filters-list__item ${f.cls} ${active === f.key ? "filters-list__item--active" : ""}`}
-                onClick={() => setActive(f.key)}
-              >
-                {f.label}
-              </li>
-            ))}
-          </ul>
+
+      <section>
+        <div className="section-head">
+          <span className="eyebrow">Trusted by</span>
+          <h2>Teams across the <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>region</span></h2>
         </div>
-        <div className="content-grid">
-          {items
-            .filter((it) => active === "*" || it.cls.includes(active))
-            .map((it, i) => (
-              <div key={i} className={`content-item ${it.cls}`}>
-                <img src={it.img} alt={it.title} loading="lazy" />
-                <div className="content-item__overlay">
-                  <div>
-                    <h3>{it.title}</h3>
-                    <p className="content-item__meta">{it.client} · {it.role}</p>
-                  </div>
-                  <span>{it.year}</span>
-                </div>
-              </div>
-            ))}
+        <div className="clients">
+          {clients.map(c => <div className="client-pill" key={c}>{c}</div>)}
         </div>
       </section>
 
-      <section className="clients-strip">
-        <h2>Trusted by teams across the region</h2>
-        <div className="clients-row">
-          {clients.map((c) => (<div className="client-pill" key={c}>{c}</div>))}
+      <section>
+        <div className="section-head">
+          <span className="eyebrow">Testimonials</span>
+          <h2>What clients <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>say</span></h2>
         </div>
-      </section>
-
-      <section className="testimonials">
-        <div className="services-header">
-          <h2>What clients <span>say</span></h2>
-          <p>A few words from teams we've shipped sound for.</p>
-        </div>
-        <div className="testimonials-grid">
-          {testimonials.map((t) => (
-            <figure className="testimonial-card" key={t.name}>
-              <i className="bx bxs-quote-alt-left"></i>
+        <div className="testis">
+          {testimonials.map(t => (
+            <figure className="testi" key={t.name}>
+              <span className="quote-mark"><i className="bx bxs-quote-alt-left"></i></span>
               <blockquote>{t.quote}</blockquote>
               <figcaption><strong>{t.name}</strong><span>{t.role}</span></figcaption>
             </figure>
           ))}
         </div>
       </section>
-    </>
+    </main>
   );
 }

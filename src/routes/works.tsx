@@ -24,33 +24,33 @@ const filters = [
 ];
 
 const items = [
-  { tags: ["featured","ads"], img: "/assets/img/works/work-mixing.jpg", title: "Brand Anthem", client: "Aurora Beverages", role: "Composition · Mix", year: "2024" },
-  { tags: ["featured","film"], img: "/assets/img/works/work-recording.jpg", title: "Indie Film Score", client: "Nahla Pictures", role: "Music Supervision", year: "2024" },
-  { tags: ["post"], img: "/assets/img/works/work-sounddesign.jpg", title: "Documentary Mix", client: "Al-Madār Docs", role: "Sound Design · Mix", year: "2023" },
-  { tags: ["featured","film"], img: "/assets/img/works/work-film.jpg", title: "Original Short Film Score", client: "Sunbird Studios", role: "Original Score", year: "2024" },
-  { tags: ["podcast"], img: "/assets/img/works/work-podcast.jpg", title: "Weekly Podcast Production", client: "Sawt Network", role: "Edit · Mix · Mastering", year: "2024" },
-  { tags: ["featured","games"], img: "/assets/img/works/hero-producer.jpg", title: "AAA Game Trailer", client: "Northwind Games", role: "Trailer Score · SFX", year: "2023" },
-  { tags: ["post","film"], img: "/assets/img/works/work-foley.jpg", title: "Foley & Re-recording", client: "Cedar Films", role: "Foley · Re-recording", year: "2024" },
-  { tags: ["ads"], img: "/assets/img/works/work-mixing.jpg", title: "TV Commercial", client: "Qura Co.", role: "Score · Mix", year: "2023" },
-  { tags: ["podcast","ads"], img: "/assets/img/works/work-podcast.jpg", title: "Radio Imaging Package", client: "Wave FM", role: "Imaging · Sonic ID", year: "2024" },
-  { tags: ["film"], img: "/assets/img/works/work-recording.jpg", title: "TV Series — Season 2", client: "Levant TV", role: "Composition · Edit", year: "2024" },
-  { tags: ["games","post"], img: "/assets/img/works/work-sounddesign.jpg", title: "Mobile Game Audio Pack", client: "Pixel Forge", role: "Sound Design · UI SFX", year: "2023" },
-  { tags: ["featured","ads"], img: "/assets/img/works/work-film.jpg", title: "Telecom Brand Campaign", client: "Orbit Telecom", role: "Audio Branding · Mix", year: "2024" },
+  { tags: ["featured","games"], img: "/assets/img/works/hero-producer.jpg", title: "Jawaker's World Cup Radio", client: "Jawaker", role: "Live Broadcast · Audio Direction", year: "2023" },
+  { tags: ["featured","podcast"], img: "/assets/img/works/work-podcast.jpg", title: "Youm Jadeed (يوم جديد)", client: "Sowt × Mouje · Education Above All", role: "Voice Direction · Sound Design · Mix", year: "2025" },
+  { tags: ["featured","post"], img: "/assets/img/works/work-mixing.jpg", title: "Watar Group — Live Audio", client: "Watar El Sharq · Watar Pop", role: "Audio Director · Live Mix", year: "2025" },
+  { tags: ["featured","music"], img: "/assets/img/works/work-recording.jpg", title: "Xetopia (LP — in production)", client: "MOUJE", role: "Composition · Production · Mix", year: "2025" },
+  { tags: ["music"], img: "/assets/img/works/work-sounddesign.jpg", title: "Saken (ساكن)", client: "MOUJE", role: "Original · Electronic Synthpop", year: "2021" },
+  { tags: ["music","featured"], img: "/assets/img/works/work-film.jpg", title: "Rah Telhaqni (راح تلحقني)", client: "MOUJE feat. Desana", role: "First Arabic Electronic Original · 5.2k+ views", year: "2021" },
+  { tags: ["music"], img: "/assets/img/works/work-foley.jpg", title: "Madeon — Dream Dream Dream", client: "Acapella Cover", role: "Endorsed by Madeon", year: "2020" },
+  { tags: ["music","post"], img: "/assets/img/works/work-recording.jpg", title: "Ertidad — Debut Album", client: "Ertidad", role: "Production · Mix · Master · Keys", year: "2022" },
+  { tags: ["games"], img: "/assets/img/works/work-sounddesign.jpg", title: "Jawaker Card Game Audio", client: "Jawaker", role: "Audio Engine · SFX · Music · VO", year: "2024" },
+  { tags: ["games","post"], img: "/assets/img/works/hero-producer.jpg", title: "Jawaker LiveOps Audio", client: "Jawaker", role: "Localization (IQ · EG · KSA) · LiveOps", year: "2023" },
+  { tags: ["post"], img: "/assets/img/works/work-foley.jpg", title: "Mawdoo3 — Audio Sessions", client: "Mawdoo3.com", role: "Recording · Edit · Mix", year: "2024" },
+  { tags: ["ads","post"], img: "/assets/img/works/work-mixing.jpg", title: "Netflix · Rush Production Sessions", client: "Netflix / Rush Production House", role: "Recording · Audio Post", year: "2024" },
 ];
 
 const stats = [
-  { n: "250+", l: "Projects delivered" },
-  { n: "12", l: "Categories covered" },
-  { n: "60+", l: "Active clients" },
-  { n: "10+", l: "Years on air" },
+  { n: "13+", l: "Years in audio" },
+  { n: "10k", l: "Peak live listeners" },
+  { n: "150k+", l: "World Cup Radio reach" },
+  { n: "80", l: "Episodes — Youm Jadeed" },
 ];
 
-const clients = ["Aurora", "Nahla Pictures", "Al-Madār", "Sunbird", "Sawt", "Northwind", "Cedar", "Qura", "Wave FM", "Levant TV", "Pixel Forge", "Orbit"];
+const clients = ["Netflix", "Mawdoo3", "Rush Production", "Sowt", "Jawaker", "Education Above All", "LAPIS", "Watar Group", "Ertidad", "MOUJE"];
 
 const testimonials = [
-  { quote: "Mouje Studio elevated our film to a whole new sonic level. The score still gives me chills.", name: "Layla H.", role: "Director, Nahla Pictures" },
-  { quote: "Fast, precise, and genuinely creative. Our podcast finally sounds like the show I always heard in my head.", name: "Omar K.", role: "Showrunner, Sawt Network" },
-  { quote: "The trailer score helped us close a publishing deal. That's how good it was.", name: "Rami D.", role: "Producer, Northwind Games" },
+  { quote: "Damn crazy!!!!!! Wowww", name: "Madeon", role: "On Mouje's acapella cover of 'Dream Dream Dream'" },
+  { quote: "Motaz built our entire audio pipeline from scratch and led the World Cup Radio that drove our biggest LiveOps month ever.", name: "Jawaker Team", role: "Card Game · Middle East" },
+  { quote: "A true partner — voice direction, sound design and mix across all 80 episodes. The show sounds world-class.", name: "Sowt Podcasts", role: "Youm Jadeed · Education Above All" },
 ];
 
 function WorksPage() {

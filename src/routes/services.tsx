@@ -33,10 +33,11 @@ const processSteps = [
 ];
 
 const gear = [
-  { group: "DAWs", items: ["Pro Tools HDX", "Logic Pro", "Cubase 13", "Reaper"] },
-  { group: "Monitoring", items: ["Genelec 8351", "Yamaha NS-10M", "Avantone MixCubes"] },
-  { group: "Mics", items: ["Neumann U87", "Sony C-800G", "AKG C414", "Shure SM7B"] },
-  { group: "Outboard", items: ["Neve 1073", "API 2500", "Tube-Tech CL1B", "Bricasti M7"] },
+  { group: "DAWs", items: ["FL Studio", "Reaper", "Bitwig", "Ableton Live", "Pro Tools"] },
+  { group: "Middleware", items: ["Wwise (Certified)", "FMOD", "Unity Audio", "Unreal Audio"] },
+  { group: "Plugins", items: ["iZotope RX 11", "FabFilter", "Waves", "Universal Audio", "Kilohearts", "MeldaProduction", "Valhalla", "Analog Obsession"] },
+  { group: "Softsynths", items: ["Serum 2", "Vital", "Phaseplant", "Native Instruments", "Analog Lab", "Harmor"] },
+  { group: "Live & Routing", items: ["Ableton Live (launchpad)", "Voicemeeter Banana", "Mixx", "Azuracast", "Muse Sessions"] },
 ];
 
 const faqs = [

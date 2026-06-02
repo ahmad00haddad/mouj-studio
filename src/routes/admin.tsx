@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -71,10 +71,10 @@ function Login() {
   );
 }
 
-type Tab = "works" | "services" | "testimonials" | "content";
+type Tab = "pages" | "works" | "services" | "testimonials" | "content";
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
-  const [tab, setTab] = useState<Tab>("works");
+  const [tab, setTab] = useState<Tab>("pages");
 
   return (
     <div>
@@ -87,17 +87,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <nav style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", marginBottom: "2rem", borderBottom: "1px solid var(--border)", paddingBottom: ".75rem" }}>
-        {(["works","services","testimonials","content"] as Tab[]).map(t => (
+        {(["pages","works","services","testimonials","content"] as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
               padding: ".6rem 1.1rem", borderRadius: 999, fontWeight: 600, textTransform: "capitalize",
               background: tab === t ? "var(--gradient-primary)" : "var(--surface)",
               color: tab === t ? "white" : "var(--text-muted)",
               border: "1px solid var(--border)",
-            }}>{t === "content" ? "Site Texts" : t}</button>
+            }}>{t === "content" ? "Raw JSON" : t === "pages" ? "Pages & Sections" : t}</button>
         ))}
       </nav>
 
+      {tab === "pages" && <PagesAdmin />}
       {tab === "works" && <WorksAdmin />}
       {tab === "services" && <ServicesAdmin />}
       {tab === "testimonials" && <TestimonialsAdmin />}

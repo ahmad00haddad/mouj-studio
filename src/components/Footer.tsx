@@ -11,8 +11,7 @@ export function Footer() {
         <div className="footer-col footer-brand">
           <Link to="/" className="brand">
             <img src={t(content, "site_brand", "logo", "/assets/img/wave.webp")} alt="" />
-            {t(content, "site_brand", "name", "Mouje Studio").replace("Mouje Studio", "")}
-            <span>Mouje</span><span className="accent">Studio</span>
+            Mouje<span className="accent">Studio</span>
           </Link>
           <p>{t(content, "site_footer", "tagline", "A creative audio house crafting music, sound design and post-production for film, brands and games.")}</p>
           <div className="footer-social">

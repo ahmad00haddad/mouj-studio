@@ -1,5 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { useCms, s as t } from "@/lib/useCms";
 
 const links = [
   { to: "/", label: "Home" },
@@ -22,13 +23,14 @@ export function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
+  const { content } = useCms();
   useEffect(() => { setOpen(false); setDrop(false); }, [pathname]);
 
   return (
     <header className="nav">
       <div className="nav-inner">
         <Link className="brand" to="/">
-          <img src="/assets/img/wave.webp" alt="" />
+          <img src={t(content, "site_brand", "logo", "/assets/img/wave.webp")} alt="" />
           Mouje<span className="accent">Studio</span>
         </Link>
 
@@ -59,7 +61,7 @@ export function Navbar() {
               ))}
             </div>
           </div>
-          <Link to="/contact" className="nav-cta">Start Project</Link>
+          <Link to="/contact" className="nav-cta">{t(content, "home_hero", "ctaPrimaryLabel", "Start Project")}</Link>
         </nav>
       </div>
     </header>

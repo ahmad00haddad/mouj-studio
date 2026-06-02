@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useCms, s as t, list } from "@/lib/useCms";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -26,7 +27,7 @@ const values = [
   { icon: "bx-group", title: "True partnership", text: "Transparent communication, real revisions, no surprises." },
 ];
 
-const founderSkills = [
+const fallbackFounderSkills = [
   "Sound Design (Games & Film)",
   "Middleware Implementation (Wwise)",
   "Music Production & Arrangement",
@@ -37,7 +38,7 @@ const founderSkills = [
   "Onset Boom & Recording",
 ];
 
-const founderExperience = [
+const fallbackFounderExperience = [
   { role: "Founder / Audio Specialist", org: "Mouje Studio", period: "May 2021 — Present", text: "Managing production and post-production across in-house and commissioned projects, recording live sessions, live audio engineering, and providing consultation and Audio Production Workshops." },
   { role: "Full-time Sound Designer / Head of Audio", org: "Jawaker", period: "Jun 2021 — Jan 2024", text: "Built the audio engine and pipeline from the ground up for the leading card game in the Middle East. Led music production, VO recording and localization (IQ, EG, KSA) plus regular LiveOps content." },
   { role: "Keyboardist, Producer & Audio Engineer", org: "Ertidad", period: "2019 — 2022", text: "Arabic Rock with oriental scales and Arabic-identity lyrics. Fully produced, mixed and mastered the band's debut album and performed live as keyboardist." },
@@ -55,24 +56,32 @@ const tools = ["iZotope RX 11", "FabFilter", "Kilohearts", "Muse Sessions", "Val
 const clients = ["Netflix", "Mawdoo3", "Rush Production House", "Sowt", "Jawaker", "Education Above All", "LAPIS", "Watar Group", "Ertidad"];
 
 function AboutPage() {
+  const { content } = useCms();
+  const founderSkills = list<string>(content, "about_founder", "skills", fallbackFounderSkills);
+  const founderExperience = list<{ role: string; company: string; years: string; description: string }>(
+    content, "about_experience", "items",
+    fallbackFounderExperience.map(e => ({ role: e.role, company: e.org, years: e.period, description: e.text })),
+  );
+  const founderName = t(content, "about_founder", "name", "Motaz Dababseh");
+  const founderTitle = t(content, "about_founder", "title", "Senior Sound Designer & Audio Engineer · Founder of Mouje Studio");
+  const founderBio = t(content, "about_founder", "bio", "Passionately working with music and audio for 13+ years — including 3 years full-time in the gaming industry leading sound design, audio engineering and music composition. A solid team player and communicator, focused on advancing interactive audio implementation for games while running Mouje Studio.");
   return (
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">About us</span>
+          <span className="eyebrow">{t(content, "about_intro", "eyebrow", "About us")}</span>
         </div>
         <div className="about-hero">
           <div>
-            <h1>Crafting <span className="accent">sound</span> that tells your story.</h1>
-            <p>Mouje Studio is a creative audio house delivering scoring, recording, mixing, sound design and audio branding for film, brands and games — built on a decade of experience and a love for the craft.</p>
-            <p>We work as an extension of your team: listening, iterating and shipping audio that elevates the work.</p>
+            <h1>{t(content, "about_intro", "title", "Crafting sound that tells your story.")}</h1>
+            <p>{t(content, "about_intro", "description", "Mouje Studio is a creative audio house delivering scoring, recording, mixing, sound design and audio branding for film, brands and games — built on a decade of experience and a love for the craft.")}</p>
             <div className="hero-actions" style={{ marginTop: "1.75rem" }}>
               <Link to="/works" className="btn">See our works</Link>
               <Link to="/contact" className="btn btn-ghost">Get in touch</Link>
             </div>
           </div>
           <div className="about-img">
-            <img src="/assets/img/home-img.webp" alt="Mouje Studio" />
+            <img src={t(content, "about_intro", "image", "/assets/img/home-img.webp")} alt="Mouje Studio" />
           </div>
         </div>
       </section>
@@ -96,16 +105,14 @@ function AboutPage() {
       <section id="founder">
         <div className="section-head">
           <span className="eyebrow">Founder</span>
-          <h2>Meet <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Motaz Dababseh</span></h2>
-          <p>Senior Sound Designer & Audio Engineer · Founder of Mouje Studio</p>
+          <h2>Meet <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{founderName}</span></h2>
+          <p>{founderTitle}</p>
         </div>
         <div className="pillars">
           <div className="pillar" style={{ gridColumn: "span 2" }}>
             <div className="n">01</div>
             <h3>Bio</h3>
-            <p>Passionately working with music and audio for 13+ years — including 3 years full-time in the gaming industry leading sound design, audio engineering and music composition. A solid team player and communicator, focused on advancing interactive audio implementation for games while running Mouje Studio.</p>
-            <p style={{ marginTop: ".75rem" }}><strong style={{ color: "var(--text)" }}>Education:</strong> Telecommunication Engineering — Princess Sumaya University for Technology (2014 — 2020).</p>
-            <p style={{ marginTop: ".5rem" }}><strong style={{ color: "var(--text)" }}>Certifications:</strong> Wwise 101 Certified End-user.</p>
+            <p>{founderBio}</p>
           </div>
           <div className="pillar">
             <div className="n">02</div>
@@ -118,8 +125,8 @@ function AboutPage() {
             <div className="n">03</div>
             <h3>Connect</h3>
             <ul className="svc-features">
-              <li><i className="bx bx-envelope"></i><a href="mailto:moujemusic@gmail.com">moujemusic@gmail.com</a></li>
-              <li><i className="bx bx-phone"></i><a href="tel:+962796568891">+962 7 9656 8891</a></li>
+              <li><i className="bx bx-envelope"></i><a href={`mailto:${t(content, "contact_info", "email", "moujemusic@gmail.com")}`}>{t(content, "contact_info", "email", "moujemusic@gmail.com")}</a></li>
+              <li><i className="bx bx-phone"></i><a href={`tel:${t(content, "contact_info", "phone", "+962 7 9656 8891").replace(/\s+/g, "")}`}>{t(content, "contact_info", "phone", "+962 7 9656 8891")}</a></li>
               <li><i className="bx bxl-linkedin"></i><a href="https://linkedin.com/in/motazdababseh" target="_blank" rel="noreferrer">linkedin.com/in/motazdababseh</a></li>
               <li><i className="bx bxl-facebook"></i><a href="https://facebook.com/Motaz.D" target="_blank" rel="noreferrer">facebook.com/Motaz.D</a></li>
               <li><i className="bx bxl-soundcloud"></i><a href="https://soundcloud.com/motazdababseh" target="_blank" rel="noreferrer">soundcloud.com/motazdababseh</a></li>
@@ -136,12 +143,12 @@ function AboutPage() {
         </div>
         <div className="pillars">
           {founderExperience.map((e, i) => (
-            <div className="pillar" key={e.role}>
+            <div className="pillar" key={`${e.role}-${i}`}>
               <div className="n">{String(i + 1).padStart(2, "0")}</div>
               <h3>{e.role}</h3>
-              <p style={{ color: "var(--primary-glow)", fontWeight: 600, marginBottom: ".25rem" }}>{e.org}</p>
-              <p style={{ fontSize: ".85rem", marginBottom: ".75rem" }}>{e.period}</p>
-              <p>{e.text}</p>
+              <p style={{ color: "var(--primary-glow)", fontWeight: 600, marginBottom: ".25rem" }}>{e.company}</p>
+              <p style={{ fontSize: ".85rem", marginBottom: ".75rem" }}>{e.years}</p>
+              <p>{e.description}</p>
             </div>
           ))}
         </div>

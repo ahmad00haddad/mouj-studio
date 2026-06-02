@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useCms, s as t } from "@/lib/useCms";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const { content } = useCms();
   const [warn, setWarn] = useState("");
   const [success, setSuccess] = useState(false);
   const [sending, setSending] = useState(false);
@@ -41,9 +43,9 @@ function ContactPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">Contact</span>
-          <h1>Let's <span className="accent">talk</span> sound.</h1>
-          <p>Tell us about your project — we'll come back within 24 hours.</p>
+          <span className="eyebrow">{t(content, "contact_intro", "eyebrow", "Contact")}</span>
+          <h1>{t(content, "contact_intro", "title", "Let's talk sound.")}</h1>
+          <p>{t(content, "contact_intro", "description", "Tell us about your project — we'll come back within 24 hours.")}</p>
         </div>
 
         <div className="contact-wrap">
@@ -54,23 +56,23 @@ function ContactPage() {
             </div>
             <div className="contact-row">
               <i className="bx bx-map"></i>
-              <div><strong>Studio</strong><span>Amir Ben Malek St., Khalda 11953, Amman</span></div>
+              <div><strong>Studio</strong><span>{t(content, "contact_info", "address", "Amir Ben Malek St., Khalda 11953, Amman")}</span></div>
             </div>
             <div className="contact-row">
               <i className="bx bx-envelope"></i>
-              <div><strong>Email</strong><span><a href="mailto:moujemusic@gmail.com">moujemusic@gmail.com</a></span></div>
+              <div><strong>Email</strong><span><a href={`mailto:${t(content, "contact_info", "email", "moujemusic@gmail.com")}`}>{t(content, "contact_info", "email", "moujemusic@gmail.com")}</a></span></div>
             </div>
             <div className="contact-row">
               <i className="bx bx-phone"></i>
-              <div><strong>Phone</strong><span><a href="tel:+962796568891">+962 7 9656 8891</a></span></div>
+              <div><strong>Phone</strong><span><a href={`tel:${t(content, "contact_info", "phone", "+962 7 9656 8891").replace(/\s+/g, "")}`}>{t(content, "contact_info", "phone", "+962 7 9656 8891")}</a></span></div>
             </div>
             <div className="contact-row">
               <i className="bx bx-time"></i>
-              <div><strong>Hours</strong><span>Sun–Thu · 10:00 – 19:00 (GMT+3)</span></div>
+              <div><strong>Hours</strong><span>{t(content, "contact_info", "hours", "Sun–Thu · 10:00 – 19:00 (GMT+3)")}</span></div>
             </div>
             <div className="footer-social" style={{ marginTop: "auto" }}>
-              <a href="https://www.instagram.com/moujestudio/" aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
-              <a href="https://www.linkedin.com/company/moujestudio/" aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
+              <a href={t(content, "site_social", "instagram", "https://www.instagram.com/moujestudio/")} aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
+              <a href={t(content, "site_social", "linkedin", "https://www.linkedin.com/company/moujestudio/")} aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
               <a href="#" aria-label="Facebook"><i className="bx bxl-facebook"></i></a>
               <a href="#" aria-label="Twitter"><i className="bx bxl-twitter"></i></a>
             </div>

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useCms, s as t, list } from "@/lib/useCms";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -12,7 +13,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
+const fallbackServices = [
   { slug: "film-scoring", icon: "bx-movie-play", title: "Film Scoring", text: "Original orchestral and hybrid scores written to picture." },
   { slug: "recording", icon: "bx-microphone", title: "Recording", text: "Multitrack tracking in a treated live room with a world-class mic locker." },
   { slug: "mixing-and-mastering", icon: "bx-equalizer", title: "Mixing & Mastering", text: "Hybrid analog/digital mixes that translate on every speaker." },
@@ -21,7 +22,7 @@ const services = [
   { slug: "audio-branding", icon: "bx-broadcast", title: "Audio Branding", text: "Sonic logos and brand themes that audiences instantly recognize." },
 ];
 
-const stats = [
+const fallbackStats = [
   { n: "10+", l: "Years on air" },
   { n: "250+", l: "Projects delivered" },
   { n: "80+", l: "Happy clients" },
@@ -29,35 +30,49 @@ const stats = [
 ];
 
 function Index() {
+  const { content, services: dbServices } = useCms();
+  const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
+  const services = (dbServices.length ? dbServices.map((sv) => ({
+    slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "",
+  })) : fallbackServices).slice(0, 6);
+  const heroTitle = t(content, "home_hero", "title", "Sound that moves people.");
+  const heroAccent = t(content, "home_hero", "accent", "moves");
+  const hp = heroTitle.split(heroAccent);
+  const sTitle = t(content, "home_services_intro", "title", "A complete sonic toolkit, under one roof");
+  const sAccent = t(content, "home_services_intro", "accent", "one roof");
+  const sp = sTitle.split(sAccent);
+  const cTitle = t(content, "home_cta", "title", "Have a project in mind?");
+  const cAccent = t(content, "home_cta", "accent", "mind");
+  const cp = cTitle.split(cAccent);
   return (
     <main>
       <section className="hero">
         <div className="hero-grid">
           <div className="bento hero-main">
-            <span className="eyebrow">Mouje Studio · Est. 2014</span>
-            <h1>Sound that <span className="accent">moves</span> people.</h1>
-            <p>We craft music, mixes and sonic worlds for film, brands and games — from the first note to the final master, all under one roof.</p>
+            <span className="eyebrow">{t(content, "home_hero", "eyebrow", "Mouje Studio · Est. 2014")}</span>
+            <h1>{hp[0]}<span className="accent">{heroAccent}</span>{hp[1] ?? ""}</h1>
+            <p>{t(content, "home_hero", "subtitle", "We craft music, mixes and sonic worlds for film, brands and games — from the first note to the final master, all under one roof.")}</p>
             <div className="hero-actions">
-              <Link to="/contact" className="btn">Start a project <i className="bx bx-right-arrow-alt"></i></Link>
-              <Link to="/works" className="btn btn-ghost">View our works</Link>
+              <Link to="/contact" className="btn">{t(content, "home_hero", "ctaPrimaryLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
+              <Link to="/works" className="btn btn-ghost">{t(content, "home_hero", "ctaSecondaryLabel", "View our works")}</Link>
             </div>
             <div className="hero-socials">
-              <a href="https://www.instagram.com/moujestudio/" aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
-              <a href="https://www.linkedin.com/company/moujestudio/" aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
+              <a href={t(content, "site_social", "instagram", "https://www.instagram.com/moujestudio/")} aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
+              <a href={t(content, "site_social", "linkedin", "https://www.linkedin.com/company/moujestudio/")} aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
               <a href="#" aria-label="Facebook"><i className="bx bxl-facebook"></i></a>
               <a href="#" aria-label="Twitter"><i className="bx bxl-twitter"></i></a>
             </div>
           </div>
 
           <div className="bento hero-portrait">
-            <img src="/assets/img/home-img.webp" alt="Mouje Studio control room" />
+            <img src={t(content, "home_hero", "image", "/assets/img/home-img.webp")} alt="Mouje Studio control room" />
           </div>
 
           <div className="bento glow hero-pill">
             <i className="bx bxs-award"></i>
             <div>
-              <strong>15+ awards</strong>
-              <span>Regional & international</span>
+              <strong>{t(content, "home_hero", "pillTitle", "15+ awards")}</strong>
+              <span>{t(content, "home_hero", "pillSub", "Regional & international")}</span>
             </div>
           </div>
 
@@ -68,8 +83,8 @@ function Index() {
 
           <div className="bento dark hero-cta">
             <div>
-              <strong style={{ fontFamily: "var(--font-display)", fontSize: "1.15rem" }}>Hybrid analog rig</strong>
-              <p style={{ fontSize: ".85rem", margin: 0 }}>Neve · API · Tube-Tech · Bricasti</p>
+              <strong style={{ fontFamily: "var(--font-display)", fontSize: "1.15rem" }}>{t(content, "home_hero", "rigTitle", "Hybrid analog rig")}</strong>
+              <p style={{ fontSize: ".85rem", margin: 0 }}>{t(content, "home_hero", "rigDescription", "Neve · API · Tube-Tech · Bricasti")}</p>
             </div>
           </div>
         </div>
@@ -88,9 +103,9 @@ function Index() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">What we do</span>
-          <h2>A complete sonic toolkit, under <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>one roof</span></h2>
-          <p>From the first creative spark to a polished master ready for broadcast and streaming.</p>
+          <span className="eyebrow">{t(content, "home_services_intro", "eyebrow", "What we do")}</span>
+          <h2>{sp[0]}<span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{sAccent}</span>{sp[1] ?? ""}</h2>
+          <p>{t(content, "home_services_intro", "description", "From the first creative spark to a polished master ready for broadcast and streaming.")}</p>
         </div>
         <div className="services-bento">
           {services.map((s, i) => (
@@ -106,9 +121,9 @@ function Index() {
 
       <section>
         <div className="cta-block">
-          <h2>Have a project in <span className="accent">mind</span>?</h2>
-          <p>Tell us about your brief — we'll come back within 24 hours with a creative plan and a quote.</p>
-          <Link to="/contact" className="btn">Start a project <i className="bx bx-right-arrow-alt"></i></Link>
+          <h2>{cp[0]}<span className="accent">{cAccent}</span>{cp[1] ?? ""}</h2>
+          <p>{t(content, "home_cta", "description", "Tell us about your brief — we'll come back within 24 hours with a creative plan and a quote.")}</p>
+          <Link to="/contact" className="btn">{t(content, "home_cta", "buttonLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
         </div>
       </section>
     </main>

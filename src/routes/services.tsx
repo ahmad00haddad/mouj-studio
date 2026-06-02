@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useCms, s as t } from "@/lib/useCms";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = [
+const fallbackServices = [
   { slug: "film-scoring", icon: "bx-movie-play", title: "Film Scoring", text: "Original orchestral and hybrid scores tailored to picture, capturing the emotional core of every scene.", features: ["Orchestral & hybrid scoring", "Live string sessions", "Stems for re-recording", "Cue sheets included"], wide: true },
   { slug: "recording", icon: "bx-microphone", title: "Recording", text: "Pristine multitrack recording for bands, vocalists, voice talent and full ensembles.", features: ["Treated live room", "Vintage & modern mic locker", "Up to 32 tracks", "Pro Tools HDX"] },
   { slug: "audio-post-production", icon: "bx-film", title: "Audio Post Production", text: "End-to-end post for film, TV and online — dialogue editing, sound design, mix and final delivery.", features: ["Dialogue edit & clean-up", "5.1 / 7.1 mixing", "M&E stems", "Broadcast delivery"] },
@@ -49,6 +50,10 @@ const faqs = [
 
 function ServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const { content, services: dbServices } = useCms();
+  const services = dbServices.length
+    ? dbServices.map(sv => ({ slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "", features: sv.features ?? [], wide: sv.wide }))
+    : fallbackServices;
   useEffect(() => {
     const h = window.location.hash.slice(1);
     if (h) setTimeout(() => document.getElementById(h)?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
@@ -58,9 +63,9 @@ function ServicesPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">Services</span>
-          <h1>What <span className="accent">we do</span></h1>
-          <p>From the first note to the final master — a complete sonic toolkit under one roof.</p>
+          <span className="eyebrow">{t(content, "services_intro", "eyebrow", "Services")}</span>
+          <h1>{t(content, "services_intro", "title", "What we do")}</h1>
+          <p>{t(content, "services_intro", "description", "From the first note to the final master — a complete sonic toolkit under one roof.")}</p>
         </div>
         <div className="services-bento">
           {services.map(s => (
@@ -129,9 +134,9 @@ function ServicesPage() {
 
       <section>
         <div className="cta-block">
-          <h2>Ready to make some <span className="accent">noise</span>?</h2>
-          <p>Tell us about your project — we'll come back within 24 hours with a creative plan.</p>
-          <Link to="/contact" className="btn">Start a project <i className="bx bx-right-arrow-alt"></i></Link>
+          <h2>{t(content, "services_cta", "title", "Ready to make some noise?")}</h2>
+          <p>{t(content, "services_cta", "description", "Tell us about your project — we'll come back within 24 hours with a creative plan.")}</p>
+          <Link to="/contact" className="btn">{t(content, "services_cta", "buttonLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
         </div>
       </section>
     </main>

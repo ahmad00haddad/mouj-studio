@@ -162,7 +162,7 @@ function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Parti
         <div><label style={labelStyle}>Role</label><input style={inputStyle} value={w.role ?? ""} onChange={e => setW({ ...w, role: e.target.value })} /></div>
         <div><label style={labelStyle}>Year</label><input style={inputStyle} value={w.year ?? ""} onChange={e => setW({ ...w, year: e.target.value })} /></div>
       </div>
-      <div style={{ marginBottom: ".75rem" }}><label style={labelStyle}>Image URL</label><input style={inputStyle} value={w.image_url ?? ""} onChange={e => setW({ ...w, image_url: e.target.value })} placeholder="/assets/img/works/..." /></div>
+      <ImagePicker label="Image" value={w.image_url ?? ""} onChange={(url) => setW({ ...w, image_url: url })} />
       <div style={rowStyle}>
         <div><label style={labelStyle}>Tags (comma-separated)</label><input style={inputStyle} value={(w.tags ?? []).join(", ")} onChange={e => setW({ ...w, tags: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} placeholder="featured, ads, film, games, podcast, post, music" /></div>
         <div><label style={labelStyle}>Sort order</label><input type="number" style={inputStyle} value={w.sort_order ?? 0} onChange={e => setW({ ...w, sort_order: Number(e.target.value) })} /></div>

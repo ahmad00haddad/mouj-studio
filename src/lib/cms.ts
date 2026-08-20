@@ -72,3 +72,26 @@ export async function fetchSiteContent(): Promise<Record<string, Record<string, 
   for (const r of (data ?? []) as unknown as SiteContentRow[]) out[r.key] = r.value ?? {};
   return out;
 }
+export type Track = {
+  id: string;
+  title: string;
+  artist: string | null;
+  role: string | null;
+  cover_url: string | null;
+  audio_url: string | null;
+  external_url: string | null;
+  tags: string[];
+  sort_order: number;
+  published: boolean;
+};
+
+export async function fetchTracks(): Promise<Track[]> {
+  const { data, error } = await supabase.from("tracks" as never).select("*").eq("published", true).order("sort_order");
+  if (error) throw error;
+  return (data ?? []) as unknown as Track[];
+}
+export async function fetchAllTracks(): Promise<Track[]> {
+  const { data, error } = await supabase.from("tracks" as never).select("*").order("sort_order");
+  if (error) throw error;
+  return (data ?? []) as unknown as Track[];
+}

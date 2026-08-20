@@ -29,14 +29,18 @@ function ContactPage() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setWarn("Please enter a valid email address."); return; }
     setSending(true);
     try {
-      const fd = new FormData();
-      fd.append("name", name); fd.append("email", email); fd.append("message", `${form.subject ? "[" + form.subject + "] " : ""}${message}`);
-      const res = await fetch("/api/public/send-email", { method: "POST", body: fd });
-      const txt = (await res.text()).trim();
-      if (txt === "success") { setSuccess(true); setForm({ name: "", email: "", subject: "", message: "" }); }
-      else setWarn("There was a problem sending your message. Please try again later.");
+      const { error } = await supabase.from("contact_messages" as never).insert({
+        name: name.trim().slice(0, 200),
+        email: email.trim().slice(0, 255),
+        subject: form.subject.trim().slice(0, 200) || null,
+        message: message.trim().slice(0, 5000),
+      } as never);
+      if (error) throw error;
+      setSuccess(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
     } catch { setWarn("There was a problem sending your message. Please try again later."); }
     finally { setSending(false); }
+
   }
 
   return (

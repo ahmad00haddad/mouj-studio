@@ -8,7 +8,7 @@ const links = [
   { to: "/about", label: "About" },
 ] as const;
 
-const services = [
+const fallbackServices = [
   { slug: "film-scoring", label: "Film Scoring" },
   { slug: "recording", label: "Recording" },
   { slug: "audio-post-production", label: "Audio Post Production" },
@@ -23,8 +23,12 @@ export function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
-  const { content } = useCms();
+  const { content, services: dbServices } = useCms();
+  const services = dbServices.length
+    ? dbServices.map((sv) => ({ slug: sv.slug, label: sv.title }))
+    : fallbackServices;
   useEffect(() => { setOpen(false); setDrop(false); }, [pathname]);
+
 
   return (
     <header className="nav">

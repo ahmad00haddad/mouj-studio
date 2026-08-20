@@ -71,7 +71,7 @@ function Login() {
   );
 }
 
-type Tab = "pages" | "works" | "services" | "testimonials" | "content";
+type Tab = "pages" | "works" | "services" | "testimonials" | "messages" | "content";
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("pages");
@@ -87,14 +87,14 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <nav style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", marginBottom: "2rem", borderBottom: "1px solid var(--border)", paddingBottom: ".75rem" }}>
-        {(["pages","works","services","testimonials","content"] as Tab[]).map(t => (
+        {(["pages","works","services","testimonials","messages","content"] as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
               padding: ".6rem 1.1rem", borderRadius: 999, fontWeight: 600, textTransform: "capitalize",
               background: tab === t ? "var(--gradient-primary)" : "var(--surface)",
               color: tab === t ? "white" : "var(--text-muted)",
               border: "1px solid var(--border)",
-            }}>{t === "content" ? "Raw JSON" : t === "pages" ? "Pages & Sections" : t}</button>
+            }}>{t === "content" ? "Raw JSON" : t === "pages" ? "Pages & Sections" : t === "messages" ? "Inbox" : t}</button>
         ))}
       </nav>
 
@@ -102,10 +102,96 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       {tab === "works" && <WorksAdmin />}
       {tab === "services" && <ServicesAdmin />}
       {tab === "testimonials" && <TestimonialsAdmin />}
+      {tab === "messages" && <MessagesAdmin />}
       {tab === "content" && <ContentAdmin />}
     </div>
   );
 }
+
+type ContactMessage = {
+  id: string; name: string; email: string; subject: string | null;
+  message: string; handled: boolean; created_at: string;
+};
+
+function MessagesAdmin() {
+  const [items, setItems] = useState<ContactMessage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "new">("all");
+
+  const reload = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("contact_messages" as never)
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) toast.error(error.message);
+    setItems((data ?? []) as unknown as ContactMessage[]);
+    setLoading(false);
+  };
+  useEffect(() => { reload(); }, []);
+
+  async function setHandled(id: string, handled: boolean) {
+    const { error } = await supabase.from("contact_messages" as never).update({ handled } as never).eq("id", id);
+    if (error) return toast.error(error.message);
+    setItems(x => x.map(m => (m.id === id ? { ...m, handled } : m)));
+  }
+  async function remove(id: string) {
+    if (!confirm("Delete this message?")) return;
+    const { error } = await supabase.from("contact_messages" as never).delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    setItems(x => x.filter(m => m.id !== id));
+    toast.success("Deleted");
+  }
+
+  const shown = filter === "new" ? items.filter(m => !m.handled) : items;
+  const unread = items.filter(m => !m.handled).length;
+
+  if (loading) return <p>Loading…</p>;
+  return (
+    <div>
+      <div style={{ display: "flex", gap: ".5rem", alignItems: "center", marginBottom: "1rem", flexWrap: "wrap" }}>
+        <strong>{items.length} messages</strong>
+        <span style={{ color: "var(--text-muted)" }}>· {unread} unhandled</span>
+        <div style={{ marginLeft: "auto", display: "flex", gap: ".5rem" }}>
+          {(["all", "new"] as const).map(f => (
+            <button key={f} onClick={() => setFilter(f)} style={{
+              padding: ".4rem .9rem", borderRadius: 999, border: "1px solid var(--border)",
+              background: filter === f ? "var(--gradient-primary)" : "transparent",
+              color: filter === f ? "white" : "var(--text-muted)", fontWeight: 600,
+            }}>{f === "all" ? "All" : "Unhandled"}</button>
+          ))}
+          <button className="btn btn-ghost" onClick={reload}>Refresh</button>
+        </div>
+      </div>
+
+      {shown.length === 0 && <p style={{ color: "var(--text-muted)" }}>No messages yet.</p>}
+
+      {shown.map(m => (
+        <div key={m.id} style={{ ...cardStyle, opacity: m.handled ? 0.6 : 1 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", marginBottom: ".5rem" }}>
+            <div>
+              <strong>{m.name}</strong>{" "}
+              <a href={`mailto:${m.email}`} style={{ color: "var(--accent, #7dd3a0)" }}>{m.email}</a>
+              {m.subject && <div style={{ fontSize: ".85rem", color: "var(--text-muted)" }}>Subject: {m.subject}</div>}
+            </div>
+            <span style={{ fontSize: ".8rem", color: "var(--text-muted)" }}>
+              {new Date(m.created_at).toLocaleString()}
+            </span>
+          </div>
+          <p style={{ whiteSpace: "pre-wrap", margin: "0 0 .85rem" }}>{m.message}</p>
+          <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
+            <button className="btn btn-ghost" onClick={() => setHandled(m.id, !m.handled)}>
+              {m.handled ? "Mark unhandled" : "Mark handled"}
+            </button>
+            <a className="btn btn-ghost" href={`mailto:${m.email}?subject=${encodeURIComponent("Re: " + (m.subject || "Your message to Mouje Studio"))}`}>Reply</a>
+            <button className="btn btn-ghost" onClick={() => remove(m.id)}>Delete</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 // ===== shared styles =====
 const cardStyle: React.CSSProperties = { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "1.25rem", marginBottom: "1rem" };

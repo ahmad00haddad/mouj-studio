@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCms, s as t, list } from "@/lib/useCms";
+import TrackPlayer from "@/components/TrackPlayer";
+
 
 export const Route = createFileRoute("/works")({
   head: () => ({

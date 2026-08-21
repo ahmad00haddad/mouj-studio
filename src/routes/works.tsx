@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCms, s as t, list } from "@/lib/useCms";
+import TrackPlayer from "@/components/TrackPlayer";
+
 
 export const Route = createFileRoute("/works")({
   head: () => ({
@@ -56,7 +58,7 @@ const fallbackTestimonials = [
 
 function WorksPage() {
   const [active, setActive] = useState("*");
-  const { content, works, testimonials: dbT } = useCms();
+  const { content, works, testimonials: dbT, tracks } = useCms();
   const items = works.length
     ? works.map((w) => ({ tags: w.tags ?? [], img: w.image_url || "/assets/img/works/hero-producer.jpg", title: w.title, client: w.client ?? "", role: w.role ?? "", year: w.year ?? "" }))
     : fallbackItems;
@@ -99,6 +101,22 @@ function WorksPage() {
           ))}
         </div>
       </section>
+
+      {tracks.length > 0 && (
+        <section>
+          <div className="section-head">
+            <span className="eyebrow">{t(content, "works_tracks", "eyebrow", "Listen")}</span>
+            <h2>
+              {t(content, "works_tracks", "title", "Selected ")}
+              <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>tracks</span>
+            </h2>
+            <p>{t(content, "works_tracks", "description", "Original music, covers and scores — press play or open the release.")}</p>
+          </div>
+          <TrackPlayer tracks={tracks} />
+        </section>
+      )}
+
+
 
       <section>
         <div className="section-head">

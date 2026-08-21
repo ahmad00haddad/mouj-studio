@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  fetchAllWorks, fetchAllServices, fetchAllTestimonials, fetchSiteContent,
-  type Work, type Service, type Testimonial,
+  fetchAllWorks, fetchAllServices, fetchAllTestimonials, fetchSiteContent, fetchAllTracks,
+  type Work, type Service, type Testimonial, type Track,
 } from "@/lib/cms";
 
 export const Route = createFileRoute("/admin")({
@@ -71,7 +71,7 @@ function Login() {
   );
 }
 
-type Tab = "pages" | "works" | "services" | "testimonials" | "messages" | "content";
+type Tab = "pages" | "works" | "tracks" | "services" | "testimonials" | "messages" | "content";
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("pages");
@@ -87,7 +87,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <nav style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", marginBottom: "2rem", borderBottom: "1px solid var(--border)", paddingBottom: ".75rem" }}>
-        {(["pages","works","services","testimonials","messages","content"] as Tab[]).map(t => (
+        {(["pages","works","tracks","services","testimonials","messages","content"] as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
               padding: ".6rem 1.1rem", borderRadius: 999, fontWeight: 600, textTransform: "capitalize",
@@ -100,6 +100,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
       {tab === "pages" && <PagesAdmin />}
       {tab === "works" && <WorksAdmin />}
+      {tab === "tracks" && <TracksAdmin />}
       {tab === "services" && <ServicesAdmin />}
       {tab === "testimonials" && <TestimonialsAdmin />}
       {tab === "messages" && <MessagesAdmin />}
@@ -258,6 +259,74 @@ function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Parti
       </label>
       <div style={{ display: "flex", gap: ".5rem" }}>
         <button className="btn" onClick={() => onSubmit(w)}>{submitLabel}</button>
+        {onDelete && <button className="btn btn-ghost" onClick={onDelete} style={{ color: "#ff6b6b" }}>Delete</button>}
+      </div>
+    </div>
+  );
+}
+
+// ===== TRACKS =====
+function TracksAdmin() {
+  const [items, setItems] = useState<Track[]>([]);
+  const [loading, setLoading] = useState(true);
+  const reload = async () => { setLoading(true); try { setItems(await fetchAllTracks()); } finally { setLoading(false); } };
+  useEffect(() => { reload(); }, []);
+
+  const blank: Partial<Track> = { title: "", artist: "", role: "", cover_url: "", audio_url: "", external_url: "", tags: [], sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
+
+  async function save(tr: Partial<Track>) {
+    if (!tr.title?.trim()) return toast.error("Title is required");
+    const payload = { ...tr, tags: tr.tags ?? [] } as never;
+    const { error } = tr.id
+      ? await supabase.from("tracks" as never).update(payload).eq("id", tr.id)
+      : await supabase.from("tracks" as never).insert(payload);
+    if (error) return toast.error(error.message);
+    toast.success("Saved"); reload();
+  }
+  async function remove(id: string) {
+    if (!confirm("Delete this track?")) return;
+    const { error } = await supabase.from("tracks" as never).delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Deleted"); reload();
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: "1rem" }}>Add new track</h2>
+      <TrackForm key="new" initial={blank} onSubmit={save} submitLabel="Add track" />
+      <h2 style={{ margin: "2rem 0 1rem" }}>All tracks ({items.length})</h2>
+      {loading ? <p>Loading…</p> : items.map(tr => (
+        <TrackForm key={tr.id} initial={tr} onSubmit={save} onDelete={() => remove(tr.id)} submitLabel="Save" />
+      ))}
+    </div>
+  );
+}
+
+function TrackForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Track>; onSubmit: (t: Partial<Track>) => void; onDelete?: () => void; submitLabel: string }) {
+  const [tr, setTr] = useState<Partial<Track>>(initial);
+  return (
+    <div style={cardStyle}>
+      <div style={rowStyle}>
+        <div><label style={labelStyle}>Title</label><input style={inputStyle} value={tr.title ?? ""} onChange={e => setTr({ ...tr, title: e.target.value })} /></div>
+        <div><label style={labelStyle}>Artist</label><input style={inputStyle} value={tr.artist ?? ""} onChange={e => setTr({ ...tr, artist: e.target.value })} /></div>
+      </div>
+      <div style={rowStyle}>
+        <div><label style={labelStyle}>Role / credits</label><input style={inputStyle} value={tr.role ?? ""} onChange={e => setTr({ ...tr, role: e.target.value })} placeholder="Composition · Mix" /></div>
+        <div><label style={labelStyle}>External link (YouTube, Spotify…)</label><input style={inputStyle} value={tr.external_url ?? ""} onChange={e => setTr({ ...tr, external_url: e.target.value })} /></div>
+      </div>
+      <ImagePicker label="Cover art" value={tr.cover_url ?? ""} onChange={(url) => setTr({ ...tr, cover_url: url })} />
+      <div style={rowStyle}>
+        <div><label style={labelStyle}>Audio file URL (mp3/wav — enables the player)</label><input style={inputStyle} value={tr.audio_url ?? ""} onChange={e => setTr({ ...tr, audio_url: e.target.value })} /></div>
+        <div><label style={labelStyle}>Sort order</label><input type="number" style={inputStyle} value={tr.sort_order ?? 0} onChange={e => setTr({ ...tr, sort_order: Number(e.target.value) })} /></div>
+      </div>
+      <div style={rowStyle}>
+        <div><label style={labelStyle}>Tags (comma-separated)</label><input style={inputStyle} value={(tr.tags ?? []).join(", ")} onChange={e => setTr({ ...tr, tags: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} placeholder="original, cover, score" /></div>
+      </div>
+      <label style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".75rem" }}>
+        <input type="checkbox" checked={tr.published ?? true} onChange={e => setTr({ ...tr, published: e.target.checked })} /> Published
+      </label>
+      <div style={{ display: "flex", gap: ".5rem" }}>
+        <button className="btn" onClick={() => onSubmit(tr)}>{submitLabel}</button>
         {onDelete && <button className="btn btn-ghost" onClick={onDelete} style={{ color: "#ff6b6b" }}>Delete</button>}
       </div>
     </div>

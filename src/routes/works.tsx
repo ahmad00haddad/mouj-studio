@@ -102,6 +102,22 @@ function WorksPage() {
         </div>
       </section>
 
+      {tracks.length > 0 && (
+        <section>
+          <div className="section-head">
+            <span className="eyebrow">{t(content, "works_tracks", "eyebrow", "Listen")}</span>
+            <h2>
+              {t(content, "works_tracks", "title", "Selected ")}
+              <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>tracks</span>
+            </h2>
+            <p>{t(content, "works_tracks", "description", "Original music, covers and scores — press play or open the release.")}</p>
+          </div>
+          <TrackPlayer tracks={tracks} />
+        </section>
+      )}
+
+
+
       <section>
         <div className="section-head">
           <span className="eyebrow">Trusted by</span>

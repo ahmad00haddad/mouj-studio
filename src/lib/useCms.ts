@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import {
-  fetchSiteContent, fetchWorks, fetchServices, fetchTestimonials,
-  type Work, type Service, type Testimonial,
+  fetchSiteContent, fetchWorks, fetchServices, fetchTestimonials, fetchTracks,
+  type Work, type Service, type Testimonial, type Track,
 } from "./cms";
 
 type Content = Record<string, Record<string, unknown>>;
-type Cache = { content: Content; works: Work[]; services: Service[]; testimonials: Testimonial[] };
+type Cache = { content: Content; works: Work[]; services: Service[]; testimonials: Testimonial[]; tracks: Track[] };
 
-let cache: Cache = { content: {}, works: [], services: [], testimonials: [] };
+let cache: Cache = { content: {}, works: [], services: [], testimonials: [], tracks: [] };
 let loaded = false;
 let loading = false;
 const listeners = new Set<() => void>();
@@ -16,19 +16,21 @@ async function loadAll() {
   if (loading || loaded) return;
   loading = true;
   try {
-    const [content, works, services, testimonials] = await Promise.all([
+    const [content, works, services, testimonials, tracks] = await Promise.all([
       fetchSiteContent().catch(() => ({})),
       fetchWorks().catch(() => []),
       fetchServices().catch(() => []),
       fetchTestimonials().catch(() => []),
+      fetchTracks().catch(() => []),
     ]);
-    cache = { content: content as Content, works, services, testimonials };
+    cache = { content: content as Content, works, services, testimonials, tracks };
     loaded = true;
   } finally {
     loading = false;
     listeners.forEach((l) => l());
   }
 }
+
 
 export function useCms(): Cache & { loaded: boolean } {
   const [, force] = useState(0);

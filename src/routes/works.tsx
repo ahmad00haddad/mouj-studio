@@ -58,7 +58,7 @@ const fallbackTestimonials = [
 
 function WorksPage() {
   const [active, setActive] = useState("*");
-  const { content, works, testimonials: dbT } = useCms();
+  const { content, works, testimonials: dbT, tracks } = useCms();
   const items = works.length
     ? works.map((w) => ({ tags: w.tags ?? [], img: w.image_url || "/assets/img/works/hero-producer.jpg", title: w.title, client: w.client ?? "", role: w.role ?? "", year: w.year ?? "" }))
     : fallbackItems;

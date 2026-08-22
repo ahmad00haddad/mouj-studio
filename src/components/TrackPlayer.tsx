@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import type { Track } from "@/lib/cms";
+import { usePlayer, playQueue, toggleTrack, seek } from "@/lib/player";
+import WaveCanvas from "./WaveCanvas";
 
 function fmt(sec: number) {
   if (!isFinite(sec) || sec < 0) return "0:00";
@@ -9,43 +10,19 @@ function fmt(sec: number) {
 }
 
 export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentId, setCurrentId] = useState<string | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [time, setTime] = useState(0);
-  const [dur, setDur] = useState(0);
-
-  const current = tracks.find((t) => t.id === currentId) ?? null;
-
-  useEffect(() => {
-    const el = audioRef.current;
-    if (!el || !current?.audio_url) return;
-    el.src = current.audio_url;
-    el.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
-  }, [currentId]);
-
-  function toggle(t: Track) {
-    if (!t.audio_url) return;
-    if (t.id === currentId) {
-      const el = audioRef.current;
-      if (!el) return;
-      if (el.paused) { el.play().catch(() => {}); setPlaying(true); }
-      else { el.pause(); setPlaying(false); }
-      return;
-    }
-    setCurrentId(t.id);
-  }
-
+  const p = usePlayer();
   if (!tracks.length) return null;
+
+  const currentInList = p.queue.some((t) => tracks.find((x) => x.id === t.id));
 
   return (
     <div className="tracks">
       {tracks.map((t) => {
-        const isCurrent = t.id === currentId;
+        const isCurrent = t.id === p.currentId;
         const hasAudio = !!t.audio_url;
         return (
           <article className={`track${isCurrent ? " track-on" : ""}`} key={t.id}>
-            <div className="track-cover">
+            <div className={`track-cover${isCurrent && p.playing ? " spinning" : ""}`}>
               {t.cover_url ? (
                 <img src={t.cover_url} alt={`${t.title} cover art`} loading="lazy" />
               ) : (
@@ -62,8 +39,14 @@ export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
               )}
               {isCurrent && (
                 <div className="track-progress" aria-hidden="true">
-                  <div className="track-bar"><span style={{ width: dur ? `${(time / dur) * 100}%` : "0%" }} /></div>
-                  <small>{fmt(time)} / {fmt(dur)}</small>
+                  <WaveCanvas
+                    playing={p.playing}
+                    progress={p.dur ? p.time / p.dur : 0}
+                    onSeek={seek}
+                    className="track-wave"
+                    bars={64}
+                  />
+                  <small>{fmt(p.time)} / {fmt(p.dur)}</small>
                 </div>
               )}
             </div>
@@ -72,10 +55,12 @@ export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
                 <button
                   type="button"
                   className="track-play"
-                  aria-label={isCurrent && playing ? `Pause ${t.title}` : `Play ${t.title}`}
-                  onClick={() => toggle(t)}
+                  aria-label={isCurrent && p.playing ? `Pause ${t.title}` : `Play ${t.title}`}
+                  onClick={() =>
+                    currentInList ? toggleTrack(t) : playQueue(tracks, t.id)
+                  }
                 >
-                  <i className={`bx ${isCurrent && playing ? "bx-pause" : "bx-play"}`}></i>
+                  <i className={`bx ${isCurrent && p.playing ? "bx-pause" : "bx-play"}`}></i>
                 </button>
               ) : t.external_url ? (
                 <a className="btn btn-ghost" href={t.external_url} target="_blank" rel="noopener noreferrer">
@@ -88,13 +73,6 @@ export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
           </article>
         );
       })}
-      <audio
-        ref={audioRef}
-        preload="none"
-        onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
-        onEnded={() => setPlaying(false)}
-      />
     </div>
   );
 }

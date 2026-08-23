@@ -39,18 +39,13 @@ function setupReveals(root: ParentNode) {
   root.querySelectorAll<HTMLElement>(REVEAL_SEL).forEach((el) => {
     if (el.dataset.rev) return;
     el.dataset.rev = "1";
-    // stagger siblings
-    const sibs = el.parentElement
-      ? Array.from(el.parentElement.querySelectorAll(":scope > " + el.tagName.toLowerCase() + REVEAL_SEL.split(",").map(() => ""))
-      )
-      : [];
-    void sibs; // sibling math kept simple below
+    // stagger among revealable siblings
     const idx = el.parentElement
       ? Array.from(el.parentElement.children).filter((c) =>
-          (c as HTMLElement).dataset?.rev,
-        ).length
+          (c as HTMLElement).matches?.(REVEAL_SEL),
+        ).indexOf(el)
       : 0;
-    el.style.setProperty("--rd", `${Math.min(idx, 7) * 70}ms`);
+    el.style.setProperty("--rd", `${Math.min(Math.max(idx, 0), 7) * 70}ms`);
     el.classList.add("rev");
     io!.observe(el);
   });

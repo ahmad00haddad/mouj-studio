@@ -33,8 +33,8 @@ export default function WaveCanvas({
     if (!ctx) return;
 
     const styles = getComputedStyle(document.documentElement);
-    const c1 = styles.getPropertyValue("--primary").trim() || "#6c5ce7";
-    const c2 = styles.getPropertyValue("--accent").trim() || "#22c55e";
+    const c1 = styles.getPropertyValue("--primary").trim() || "#6366f1";
+    const c2 = styles.getPropertyValue("--primary-glow").trim() || "#818cf8";
     const dim = "rgba(255,255,255,0.14)";
 
     let raf = 0;

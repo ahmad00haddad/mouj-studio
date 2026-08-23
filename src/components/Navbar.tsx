@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useCms, s as t } from "@/lib/useCms";
+import { usePlayer, toggleMute } from "@/lib/player";
 
 const links = [
   { to: "/", label: "Home" },
@@ -24,6 +25,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
   const { content, services: dbServices } = useCms();
+  const player = usePlayer();
   const services = dbServices.length
     ? dbServices.map((sv) => ({ slug: sv.slug, label: sv.title }))
     : fallbackServices;
@@ -65,6 +67,15 @@ export function Navbar() {
               ))}
             </div>
           </div>
+          <button
+            type="button"
+            className={`nav-mute${player.muted ? " muted" : ""}`}
+            onClick={toggleMute}
+            aria-label={player.muted ? "Unmute site sounds" : "Mute site sounds"}
+            title={player.muted ? "Sound off" : "Sound on"}
+          >
+            <i className={`bx ${player.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
+          </button>
           <Link to="/contact" className="nav-cta">{t(content, "home_hero", "ctaPrimaryLabel", "Start Project")}</Link>
         </nav>
       </div>

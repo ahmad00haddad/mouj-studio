@@ -64,7 +64,7 @@ function Index() {
             </div>
           </div>
 
-          <div className="bento hero-portrait">
+          <div className="bento hero-portrait" data-parallax="-0.05">
             <img src={t(content, "home_hero", "image", "/assets/img/home-img.webp")} alt="Mouje Studio control room" />
           </div>
 
@@ -76,7 +76,7 @@ function Index() {
             </div>
           </div>
 
-          <div className="bento hero-eq">
+          <div className="bento hero-eq" data-parallax="0.1">
             <span className="bar"></span><span className="bar"></span><span className="bar"></span>
             <span className="bar"></span><span className="bar"></span><span className="bar"></span><span className="bar"></span>
           </div>

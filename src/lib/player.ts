@@ -49,7 +49,7 @@ let audio: HTMLAudioElement | null = null;
 let actx: AudioContext | null = null;
 let analyser: AnalyserNode | null = null;
 let masterGain: GainNode | null = null;
-let freqData: Uint8Array | null = null;
+let freqData: Uint8Array<ArrayBuffer> | null = null;
 
 function ensureEngine() {
   if (typeof window === "undefined") return false;
@@ -93,7 +93,7 @@ function ensureEngine() {
 }
 
 /** Analyser node for visualizers; null until first play (browser gesture rule). */
-export function getAnalyser(): { node: AnalyserNode; data: Uint8Array } | null {
+export function getAnalyser(): { node: AnalyserNode; data: Uint8Array<ArrayBuffer> } | null {
   if (!analyser || !freqData) return null;
   return { node: analyser, data: freqData };
 }

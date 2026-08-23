@@ -4,13 +4,18 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import PersistentPlayer from "@/components/PersistentPlayer";
+import { initCinematic } from "@/lib/motion";
+import { usePlayer } from "@/lib/player";
 
 
 function NotFoundComponent() {
@@ -121,14 +126,57 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Thin gradient bar under the navbar showing scroll progress. */
+function ScrollProgress() {
+  useEffect(() => {
+    const bar = document.getElementById("scroll-progress");
+    if (!bar) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+        bar.style.width = `${pct}%`;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return <div id="scroll-progress" aria-hidden="true" />;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { pathname } = useLocation();
+  usePlayer(); // subscribe root so body classes (has-player/is-playing) stay live
+
+  // cinematic layer: reveals, magnetic buttons, parallax, hover sounds
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    initCinematic(document);
+    // CMS content streams in after hydration — catch late nodes
+    const t1 = window.setTimeout(() => initCinematic(document), 500);
+    const t2 = window.setTimeout(() => initCinematic(document), 1600);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollProgress />
       <Navbar />
-      <Outlet />
+      <div key={pathname} className="page">
+        <Outlet />
+      </div>
       <Footer />
+      <PersistentPlayer />
     </QueryClientProvider>
   );
 }

@@ -534,7 +534,7 @@ function ContentRow({ row, onSave, onDelete }: { row: { key: string; value: stri
     </div>
   );
 }
-// ===== IMAGE PICKER (upload to "media" bucket, public URL) =====
+// ===== IMAGE PICKER (upload to "media" bucket, served via /api/public/media) =====
 function ImagePicker({ label, value, onChange }: { label: string; value: string; onChange: (url: string) => void }) {
   const [busy, setBusy] = useState(false);
   async function upload(file: File) {
@@ -544,8 +544,8 @@ function ImagePicker({ label, value, onChange }: { label: string; value: string;
       const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error } = await supabase.storage.from("media").upload(path, file, { contentType: file.type, upsert: false });
       if (error) throw error;
-      const { data } = supabase.storage.from("media").getPublicUrl(path);
-      onChange(data.publicUrl);
+      // The bucket is private, so assets are streamed through our public media route
+      onChange(`/api/public/media/${path}`);
       toast.success("Image uploaded");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Upload failed";

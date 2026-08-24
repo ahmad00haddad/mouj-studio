@@ -155,17 +155,16 @@ function RootComponent() {
   const { pathname } = useLocation();
   usePlayer(); // subscribe root so body classes (has-player/is-playing) stay live
 
-  // cinematic layer: reveals, magnetic buttons, parallax, hover sounds
+  // Cinematic layer: reveals, magnetic buttons, parallax, hover sounds.
+  // Deliberately deferred — mutating classes on nodes React has not hydrated
+  // yet produces hydration mismatches, so we wait for the paint to settle.
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-    initCinematic(document);
-    // CMS content streams in after hydration — catch late nodes
-    const t1 = window.setTimeout(() => initCinematic(document), 500);
-    const t2 = window.setTimeout(() => initCinematic(document), 1600);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
+    // CMS content streams in progressively, so run a few passes
+    const timers = [250, 800, 1800].map((ms) =>
+      window.setTimeout(() => initCinematic(document), ms),
+    );
+    return () => timers.forEach(window.clearTimeout);
   }, [pathname]);
 
   return (

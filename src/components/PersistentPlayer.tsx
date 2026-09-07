@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   usePlayer,
   togglePlay,
@@ -7,6 +8,8 @@ import {
   toggleMute,
   closePlayer,
   currentTrack,
+  cycleRate,
+  bindShortcuts,
 } from "@/lib/player";
 import WaveCanvas from "./WaveCanvas";
 
@@ -75,8 +78,26 @@ export default function PersistentPlayer() {
         <div className="pp-side">
           <button
             type="button"
+            className="pp-rate"
+            onClick={cycleRate}
+            aria-label="Playback speed"
+            title="Playback speed (S)"
+          >
+            {p.rate}x
+          </button>
+          <button
+            type="button"
+            onClick={share}
+            aria-label="Share this track"
+            title="Share"
+          >
+            <i className="bx bx-share-alt"></i>
+          </button>
+          <button
+            type="button"
             onClick={toggleMute}
             aria-label={p.muted ? "Unmute" : "Mute"}
+            title="Mute (M)"
           >
             <i className={`bx ${p.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
           </button>

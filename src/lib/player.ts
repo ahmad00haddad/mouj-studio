@@ -111,6 +111,7 @@ export function playQueue(tracks: Track[], startId?: string) {
   }
   set({ queue: list, currentId: start.id, time: 0, dur: 0 });
   audio.src = start.audio_url!;
+  audio.playbackRate = state.rate;
   audio.play().catch(() => set({ playing: false }));
 }
 

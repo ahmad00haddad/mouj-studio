@@ -211,3 +211,50 @@ export function tick(kind: "hover" | "tap") {
 export function unlockAudio() {
   ensureEngine();
 }
+
+// ---------------- Playback speed, nudging, keyboard shortcuts ----------------
+const RATES = [1, 1.25, 1.5, 0.75];
+
+export function cycleRate() {
+  const i = RATES.indexOf(state.rate);
+  const rate = RATES[(i + 1) % RATES.length];
+  if (audio) audio.playbackRate = rate;
+  set({ rate });
+}
+
+/** Move the playhead by +/- seconds. */
+export function nudge(sec: number) {
+  if (!audio || !isFinite(audio.duration)) return;
+  audio.currentTime = Math.min(
+    Math.max(audio.currentTime + sec, 0),
+    audio.duration,
+  );
+  set({ time: audio.currentTime });
+}
+
+let keysBound = false;
+/** Space play/pause, ←/→ seek 5s, ↑/↓ track, M mute, S speed. */
+export function bindShortcuts() {
+  if (keysBound || typeof window === "undefined") return () => {};
+  keysBound = true;
+  const onKey = (e: KeyboardEvent) => {
+    if (!state.currentId) return;
+    const el = e.target as HTMLElement | null;
+    if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)))
+      return;
+    switch (e.key) {
+      case " ": e.preventDefault(); togglePlay(); break;
+      case "ArrowRight": e.preventDefault(); nudge(5); break;
+      case "ArrowLeft": e.preventDefault(); nudge(-5); break;
+      case "ArrowUp": e.preventDefault(); prev(); break;
+      case "ArrowDown": e.preventDefault(); next(); break;
+      case "m": case "M": toggleMute(); break;
+      case "s": case "S": cycleRate(); break;
+    }
+  };
+  window.addEventListener("keydown", onKey);
+  return () => {
+    window.removeEventListener("keydown", onKey);
+    keysBound = false;
+  };
+}

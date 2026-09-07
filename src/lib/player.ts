@@ -15,6 +15,7 @@ export type PlayerState = {
   time: number;
   dur: number;
   muted: boolean;
+  rate: number;
 };
 
 const initial: PlayerState = {
@@ -26,6 +27,7 @@ const initial: PlayerState = {
   muted:
     typeof window !== "undefined" &&
     window.localStorage.getItem("mouje-muted") === "1",
+  rate: 1,
 };
 
 let state = initial;

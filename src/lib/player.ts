@@ -8,6 +8,8 @@
 import { useSyncExternalStore } from "react";
 import type { Track } from "./cms";
 
+export type LoopMode = "off" | "all" | "one";
+
 export type PlayerState = {
   queue: Track[];
   currentId: string | null;
@@ -16,6 +18,8 @@ export type PlayerState = {
   dur: number;
   muted: boolean;
   rate: number;
+  loop: LoopMode;
+  mini: boolean;
 };
 
 const initial: PlayerState = {
@@ -28,6 +32,8 @@ const initial: PlayerState = {
     typeof window !== "undefined" &&
     window.localStorage.getItem("mouje-muted") === "1",
   rate: 1,
+  loop: "off",
+  mini: false,
 };
 
 let state = initial;

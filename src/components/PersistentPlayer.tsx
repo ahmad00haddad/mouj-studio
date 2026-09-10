@@ -129,6 +129,24 @@ export default function PersistentPlayer() {
           </button>
           <button
             type="button"
+            className={p.loop !== "off" ? "on" : ""}
+            onClick={cycleLoop}
+            aria-label={`Repeat: ${p.loop}`}
+            title={`Repeat: ${p.loop}`}
+          >
+            <i className={`bx ${p.loop === "one" ? "bx-repost" : "bx-repeat"}`}></i>
+          </button>
+          <button
+            type="button"
+            className={queueOpen ? "on" : ""}
+            onClick={() => setQueueOpen((o) => !o)}
+            aria-label="Play queue"
+            title="Play queue"
+          >
+            <i className="bx bx-list-ul"></i>
+          </button>
+          <button
+            type="button"
             onClick={share}
             aria-label="Share this track"
             title="Share"
@@ -142,6 +160,14 @@ export default function PersistentPlayer() {
             title="Mute (M)"
           >
             <i className={`bx ${p.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
+          </button>
+          <button
+            type="button"
+            onClick={() => { setQueueOpen(false); toggleMini(); }}
+            aria-label={p.mini ? "Expand player" : "Minimize player"}
+            title={p.mini ? "Expand" : "Minimize"}
+          >
+            <i className={`bx ${p.mini ? "bx-chevron-up" : "bx-chevron-down"}`}></i>
           </button>
           <button type="button" onClick={closePlayer} aria-label="Close player">
             <i className="bx bx-x"></i>

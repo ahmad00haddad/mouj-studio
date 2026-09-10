@@ -27,6 +27,7 @@ function fmt(sec: number) {
 export default function PersistentPlayer() {
   const p = usePlayer();
   const track = currentTrack();
+  const [queueOpen, setQueueOpen] = useState(false);
   useEffect(() => bindShortcuts(), []);
   if (!track) return null;
 

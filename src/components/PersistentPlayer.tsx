@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   usePlayer,
   togglePlay,
@@ -9,6 +9,9 @@ import {
   closePlayer,
   currentTrack,
   cycleRate,
+  cycleLoop,
+  toggleMini,
+  playFromQueue,
   bindShortcuts,
 } from "@/lib/player";
 import WaveCanvas from "./WaveCanvas";

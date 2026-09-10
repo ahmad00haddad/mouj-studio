@@ -278,3 +278,21 @@ export function bindShortcuts() {
     keysBound = false;
   };
 }
+
+// ---------------- Loop mode, mini view, queue jumping ----------------
+const LOOPS: LoopMode[] = ["off", "all", "one"];
+
+export function cycleLoop() {
+  const i = LOOPS.indexOf(state.loop);
+  set({ loop: LOOPS[(i + 1) % LOOPS.length] });
+}
+
+export function toggleMini() {
+  set({ mini: !state.mini });
+}
+
+/** Jump to a specific track already sitting in the queue. */
+export function playFromQueue(id: string) {
+  if (!state.queue.length) return;
+  playQueue(state.queue, id);
+}

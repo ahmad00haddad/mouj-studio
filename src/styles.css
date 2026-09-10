@@ -594,3 +594,41 @@ body.has-player .sound-hint { bottom: 108px; }
 @keyframes shIn { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
 @media (max-width: 560px) { .sound-hint { left: 12px; right: 12px; justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { .sound-hint { animation: none; } }
+
+/* --- queue panel, repeat + minimized player --- */
+.pp-side button.on { color: var(--primary, #6366f1); }
+
+.pplayer.mini { padding-top: .3rem; padding-bottom: .3rem; }
+.pplayer.mini .pp-wavewrap,
+.pplayer.mini .pp-meta small { display: none; }
+.pplayer.mini .pp-inner { grid-template-columns: minmax(0,1fr) auto auto; }
+.pplayer.mini .pp-cover { width: 32px; height: 32px; }
+
+.pp-queue {
+  max-width: 1200px; margin: 0 auto .6rem;
+  max-height: 240px; overflow-y: auto;
+  border: 1px solid var(--border, rgba(255,255,255,.12));
+  border-radius: 14px;
+  background: var(--surface-2, rgba(20,20,28,.92));
+  animation: shIn .28s cubic-bezier(.2,.8,.2,1) both;
+}
+.pp-queue-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .6rem .9rem; border-bottom: 1px solid var(--border, rgba(255,255,255,.1));
+  font-size: .78rem; color: var(--text-muted);
+}
+.pp-queue-head strong { color: var(--text); font-size: .84rem; }
+.pp-queue ul { list-style: none; margin: 0; padding: .25rem; }
+.pp-queue li button {
+  width: 100%; display: grid; align-items: center; gap: .7rem;
+  grid-template-columns: 24px minmax(0,1fr) auto auto;
+  padding: .5rem .65rem; border: none; border-radius: 10px;
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  font-size: .85rem; text-align: start; transition: background .15s, color .15s;
+}
+.pp-queue li button:hover { background: color-mix(in oklab, var(--primary, #6366f1) 12%, transparent); color: var(--text); }
+.pp-queue li button.active { color: var(--primary, #6366f1); }
+.pp-queue .pp-q-n { font-variant-numeric: tabular-nums; font-size: .72rem; opacity: .7; }
+.pp-queue .pp-q-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pp-queue .pp-q-a { font-size: .74rem; opacity: .65; }
+@media (max-width: 640px) { .pp-queue .pp-q-a { display: none; } }

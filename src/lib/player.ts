@@ -8,6 +8,8 @@
 import { useSyncExternalStore } from "react";
 import type { Track } from "./cms";
 
+export type LoopMode = "off" | "all" | "one";
+
 export type PlayerState = {
   queue: Track[];
   currentId: string | null;
@@ -16,6 +18,8 @@ export type PlayerState = {
   dur: number;
   muted: boolean;
   rate: number;
+  loop: LoopMode;
+  mini: boolean;
 };
 
 const initial: PlayerState = {
@@ -28,6 +32,8 @@ const initial: PlayerState = {
     typeof window !== "undefined" &&
     window.localStorage.getItem("mouje-muted") === "1",
   rate: 1,
+  loop: "off",
+  mini: false,
 };
 
 let state = initial;
@@ -65,7 +71,20 @@ function ensureEngine() {
     audio.addEventListener("loadedmetadata", () =>
       set({ dur: isFinite(audio?.duration ?? 0) ? audio!.duration : 0 }),
     );
-    audio.addEventListener("ended", () => next());
+    audio.addEventListener("ended", () => {
+      if (state.loop === "one" && audio) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+        return;
+      }
+      const i = state.queue.findIndex((t) => t.id === state.currentId);
+      const isLast = i === state.queue.length - 1;
+      if (isLast && state.loop === "off") {
+        set({ playing: false });
+        return;
+      }
+      next();
+    });
     audio.addEventListener("play", () => set({ playing: true }));
     audio.addEventListener("pause", () => set({ playing: false }));
   }
@@ -258,4 +277,22 @@ export function bindShortcuts() {
     window.removeEventListener("keydown", onKey);
     keysBound = false;
   };
+}
+
+// ---------------- Loop mode, mini view, queue jumping ----------------
+const LOOPS: LoopMode[] = ["off", "all", "one"];
+
+export function cycleLoop() {
+  const i = LOOPS.indexOf(state.loop);
+  set({ loop: LOOPS[(i + 1) % LOOPS.length] });
+}
+
+export function toggleMini() {
+  set({ mini: !state.mini });
+}
+
+/** Jump to a specific track already sitting in the queue. */
+export function playFromQueue(id: string) {
+  if (!state.queue.length) return;
+  playQueue(state.queue, id);
 }

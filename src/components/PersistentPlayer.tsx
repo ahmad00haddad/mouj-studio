@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   usePlayer,
   togglePlay,
@@ -9,6 +9,9 @@ import {
   closePlayer,
   currentTrack,
   cycleRate,
+  cycleLoop,
+  toggleMini,
+  playFromQueue,
   bindShortcuts,
 } from "@/lib/player";
 import WaveCanvas from "./WaveCanvas";
@@ -24,6 +27,7 @@ function fmt(sec: number) {
 export default function PersistentPlayer() {
   const p = usePlayer();
   const track = currentTrack();
+  const [queueOpen, setQueueOpen] = useState(false);
   useEffect(() => bindShortcuts(), []);
   if (!track) return null;
 
@@ -41,7 +45,33 @@ export default function PersistentPlayer() {
   };
 
   return (
-    <div className="pplayer" role="region" aria-label="Audio player">
+    <div className={`pplayer${p.mini ? " mini" : ""}`} role="region" aria-label="Audio player">
+      {queueOpen && !p.mini && (
+        <div className="pp-queue" role="listbox" aria-label="Play queue">
+          <div className="pp-queue-head">
+            <strong>Up next</strong>
+            <span>{p.queue.length} tracks</span>
+          </div>
+          <ul>
+            {p.queue.map((q, i) => (
+              <li key={q.id}>
+                <button
+                  type="button"
+                  className={q.id === p.currentId ? "active" : ""}
+                  onClick={() => playFromQueue(q.id)}
+                >
+                  <span className="pp-q-n">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="pp-q-t">{q.title}</span>
+                  <span className="pp-q-a">{q.artist ?? ""}</span>
+                  {q.id === p.currentId && p.playing && (
+                    <i className="bx bx-pulse" aria-hidden="true"></i>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="pp-inner">
         <div className="pp-id">
           <div className="pp-cover">
@@ -99,6 +129,24 @@ export default function PersistentPlayer() {
           </button>
           <button
             type="button"
+            className={p.loop !== "off" ? "on" : ""}
+            onClick={cycleLoop}
+            aria-label={`Repeat: ${p.loop}`}
+            title={`Repeat: ${p.loop}`}
+          >
+            <i className={`bx ${p.loop === "one" ? "bx-repost" : "bx-repeat"}`}></i>
+          </button>
+          <button
+            type="button"
+            className={queueOpen ? "on" : ""}
+            onClick={() => setQueueOpen((o) => !o)}
+            aria-label="Play queue"
+            title="Play queue"
+          >
+            <i className="bx bx-list-ul"></i>
+          </button>
+          <button
+            type="button"
             onClick={share}
             aria-label="Share this track"
             title="Share"
@@ -112,6 +160,14 @@ export default function PersistentPlayer() {
             title="Mute (M)"
           >
             <i className={`bx ${p.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
+          </button>
+          <button
+            type="button"
+            onClick={() => { setQueueOpen(false); toggleMini(); }}
+            aria-label={p.mini ? "Expand player" : "Minimize player"}
+            title={p.mini ? "Expand" : "Minimize"}
+          >
+            <i className={`bx ${p.mini ? "bx-chevron-up" : "bx-chevron-down"}`}></i>
           </button>
           <button type="button" onClick={closePlayer} aria-label="Close player">
             <i className="bx bx-x"></i>

@@ -71,7 +71,20 @@ function ensureEngine() {
     audio.addEventListener("loadedmetadata", () =>
       set({ dur: isFinite(audio?.duration ?? 0) ? audio!.duration : 0 }),
     );
-    audio.addEventListener("ended", () => next());
+    audio.addEventListener("ended", () => {
+      if (state.loop === "one" && audio) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+        return;
+      }
+      const i = state.queue.findIndex((t) => t.id === state.currentId);
+      const isLast = i === state.queue.length - 1;
+      if (isLast && state.loop === "off") {
+        set({ playing: false });
+        return;
+      }
+      next();
+    });
     audio.addEventListener("play", () => set({ playing: true }));
     audio.addEventListener("pause", () => set({ playing: false }));
   }

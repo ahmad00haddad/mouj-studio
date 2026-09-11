@@ -15,6 +15,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import PersistentPlayer from "@/components/PersistentPlayer";
 import SoundHint from "@/components/SoundHint";
+import ShortcutsHelp from "@/components/ShortcutsHelp";
 import { initCinematic } from "@/lib/motion";
 import { usePlayer } from "@/lib/player";
 
@@ -178,6 +179,7 @@ function RootComponent() {
       <Footer />
       <PersistentPlayer />
       <SoundHint />
+      <ShortcutsHelp />
     </QueryClientProvider>
   );
 }

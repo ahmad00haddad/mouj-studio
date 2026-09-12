@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -71,10 +71,22 @@ function Login() {
   );
 }
 
-type Tab = "pages" | "works" | "tracks" | "services" | "testimonials" | "messages" | "content";
+type Tab = "overview" | "pages" | "works" | "tracks" | "services" | "testimonials" | "media" | "messages" | "content";
+
+const TAB_LABELS: Record<Tab, string> = {
+  overview: "Overview",
+  pages: "Pages & Sections",
+  works: "Works",
+  tracks: "Tracks",
+  services: "Services",
+  testimonials: "Testimonials",
+  media: "Media library",
+  messages: "Inbox",
+  content: "Raw JSON",
+};
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
-  const [tab, setTab] = useState<Tab>("pages");
+  const [tab, setTab] = useState<Tab>("overview");
 
   return (
     <div>
@@ -87,27 +99,275 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <nav style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", marginBottom: "2rem", borderBottom: "1px solid var(--border)", paddingBottom: ".75rem" }}>
-        {(["pages","works","tracks","services","testimonials","messages","content"] as Tab[]).map(t => (
+        {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
-              padding: ".6rem 1.1rem", borderRadius: 999, fontWeight: 600, textTransform: "capitalize",
+              padding: ".6rem 1.1rem", borderRadius: 999, fontWeight: 600,
               background: tab === t ? "var(--gradient-primary)" : "var(--surface)",
               color: tab === t ? "white" : "var(--text-muted)",
               border: "1px solid var(--border)",
-            }}>{t === "content" ? "Raw JSON" : t === "pages" ? "Pages & Sections" : t === "messages" ? "Inbox" : t}</button>
+            }}>{TAB_LABELS[t]}</button>
         ))}
       </nav>
 
+      {tab === "overview" && <OverviewAdmin onGo={setTab} />}
       {tab === "pages" && <PagesAdmin />}
       {tab === "works" && <WorksAdmin />}
       {tab === "tracks" && <TracksAdmin />}
       {tab === "services" && <ServicesAdmin />}
       {tab === "testimonials" && <TestimonialsAdmin />}
+      {tab === "media" && <MediaAdmin />}
       {tab === "messages" && <MessagesAdmin />}
       {tab === "content" && <ContentAdmin />}
     </div>
   );
 }
+
+// ===== OVERVIEW =====
+function OverviewAdmin({ onGo }: { onGo: (t: Tab) => void }) {
+  const [s, setS] = useState<null | {
+    works: Work[]; tracks: Track[]; services: Service[]; testimonials: Testimonial[];
+    messages: ContactMessage[]; media: number;
+  }>(null);
+
+  useEffect(() => {
+    (async () => {
+      const [works, tracks, services, testimonials] = await Promise.all([
+        fetchAllWorks().catch(() => []),
+        fetchAllTracks().catch(() => []),
+        fetchAllServices().catch(() => []),
+        fetchAllTestimonials().catch(() => []),
+      ]);
+      const { data: msgs } = await supabase.from("contact_messages" as never)
+        .select("*").order("created_at", { ascending: false });
+      const { data: files } = await supabase.storage.from("media").list("", { limit: 1000 });
+      setS({
+        works, tracks, services, testimonials,
+        messages: (msgs ?? []) as unknown as ContactMessage[],
+        media: files?.length ?? 0,
+      });
+    })();
+  }, []);
+
+  if (!s) return <p>Loading…</p>;
+
+  const unread = s.messages.filter(m => !m.handled).length;
+  const cards: { label: string; value: string | number; sub: string; tab: Tab }[] = [
+    { label: "Works", value: s.works.length, sub: `${s.works.filter(w => !w.published).length} hidden`, tab: "works" },
+    { label: "Tracks", value: s.tracks.length, sub: `${s.tracks.filter(t => t.audio_url).length} with audio`, tab: "tracks" },
+    { label: "Services", value: s.services.length, sub: `${s.services.filter(x => !x.published).length} hidden`, tab: "services" },
+    { label: "Testimonials", value: s.testimonials.length, sub: `${s.testimonials.filter(x => x.published).length} live`, tab: "testimonials" },
+    { label: "Media files", value: s.media, sub: "images & audio", tab: "media" },
+    { label: "Messages", value: s.messages.length, sub: `${unread} unhandled`, tab: "messages" },
+  ];
+
+  const missing: string[] = [];
+  if (s.works.some(w => !w.image_url)) missing.push("Some works have no cover image.");
+  if (s.tracks.some(t => !t.audio_url)) missing.push("Some tracks have no audio file — the player is disabled for them.");
+  if (s.services.some(x => !x.description)) missing.push("Some services have no description.");
+  if (unread > 0) missing.push(`${unread} contact message(s) waiting for a reply.`);
+
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+        {cards.map(c => (
+          <button key={c.label} onClick={() => onGo(c.tab)} style={{ ...cardStyle, marginBottom: 0, textAlign: "left", cursor: "pointer" }}>
+            <div style={{ fontSize: "2rem", fontWeight: 800, lineHeight: 1.1 }}>{c.value}</div>
+            <div style={{ fontWeight: 600, marginTop: ".25rem" }}>{c.label}</div>
+            <div style={{ fontSize: ".8rem", color: "var(--text-muted)" }}>{c.sub}</div>
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1rem" }}>
+        <div style={cardStyle}>
+          <h2 style={{ fontSize: "1.1rem", marginBottom: ".75rem" }}>Needs attention</h2>
+          {missing.length === 0 ? <p style={{ color: "var(--text-muted)" }}>Everything looks complete. </p> : (
+            <ul style={{ margin: 0, paddingInlineStart: "1.1rem", display: "grid", gap: ".4rem", color: "var(--text-muted)", fontSize: ".9rem" }}>
+              {missing.map(m => <li key={m}>{m}</li>)}
+            </ul>
+          )}
+        </div>
+        <div style={cardStyle}>
+          <h2 style={{ fontSize: "1.1rem", marginBottom: ".75rem" }}>Latest messages</h2>
+          {s.messages.slice(0, 5).map(m => (
+            <div key={m.id} style={{ padding: ".5rem 0", borderBottom: "1px solid var(--border)" }}>
+              <strong style={{ fontSize: ".9rem" }}>{m.name}</strong>
+              <span style={{ color: "var(--text-muted)", fontSize: ".8rem" }}> · {new Date(m.created_at).toLocaleDateString()}</span>
+              <div style={{ fontSize: ".85rem", color: "var(--text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.message}</div>
+            </div>
+          ))}
+          {s.messages.length === 0 && <p style={{ color: "var(--text-muted)" }}>No messages yet.</p>}
+        </div>
+        <div style={cardStyle}>
+          <h2 style={{ fontSize: "1.1rem", marginBottom: ".75rem" }}>Recently updated</h2>
+          {[...s.works.map(w => ({ t: w.title, k: "Work" })), ...s.tracks.map(t => ({ t: t.title, k: "Track" }))]
+            .slice(0, 6).map((r, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: ".35rem 0", fontSize: ".88rem" }}>
+                <span>{r.t}</span><span style={{ color: "var(--text-muted)" }}>{r.k}</span>
+              </div>
+            ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===== MEDIA LIBRARY =====
+type MediaFile = { name: string; size: number; type: string; url: string };
+
+function MediaAdmin() {
+  const [files, setFiles] = useState<MediaFile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const reload = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.storage.from("media").list("", { limit: 1000, sortBy: { column: "created_at", order: "desc" } });
+    if (error) toast.error(error.message);
+    setFiles((data ?? []).filter(f => f.name !== ".emptyFolderPlaceholder").map(f => ({
+      name: f.name,
+      size: (f.metadata as { size?: number } | null)?.size ?? 0,
+      type: (f.metadata as { mimetype?: string } | null)?.mimetype ?? "",
+      url: `/api/public/media/${f.name}`,
+    })));
+    setLoading(false);
+  };
+  useEffect(() => { reload(); }, []);
+
+  async function uploadMany(list: FileList) {
+    setBusy(true);
+    try {
+      for (const file of Array.from(list)) {
+        const ext = file.name.split(".").pop() || "bin";
+        const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error } = await supabase.storage.from("media").upload(path, file, { contentType: file.type });
+        if (error) throw error;
+      }
+      toast.success("Uploaded");
+      await reload();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally { setBusy(false); }
+  }
+
+  async function remove(name: string) {
+    if (!confirm(`Delete ${name}? Any page still using it will show a broken file.`)) return;
+    const { error } = await supabase.storage.from("media").remove([name]);
+    if (error) return toast.error(error.message);
+    setFiles(f => f.filter(x => x.name !== name));
+    toast.success("Deleted");
+  }
+
+  const shown = files.filter(f => f.name.toLowerCase().includes(q.toLowerCase()));
+  const isAudio = (f: MediaFile) => f.type.startsWith("audio") || /\.(mp3|wav|ogg|m4a)$/i.test(f.name);
+
+  return (
+    <div>
+      <div style={{ ...cardStyle, display: "flex", gap: ".75rem", alignItems: "center", flexWrap: "wrap" }}>
+        <label className="btn" style={{ cursor: "pointer" }}>
+          {busy ? "Uploading…" : "Upload files"}
+          <input type="file" multiple hidden onChange={e => e.target.files && uploadMany(e.target.files)} />
+        </label>
+        <input style={{ ...inputStyle, flex: 1, minWidth: 200 }} placeholder="Search files…" value={q} onChange={e => setQ(e.target.value)} />
+        <button className="btn btn-ghost" onClick={reload}>Refresh</button>
+      </div>
+
+      {loading ? <p>Loading…</p> : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
+          {shown.map(f => (
+            <div key={f.name} style={{ ...cardStyle, marginBottom: 0, padding: ".75rem" }}>
+              {isAudio(f)
+                ? <audio controls src={f.url} style={{ width: "100%" }} />
+                : <img src={f.url} alt={f.name} style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: "var(--radius-sm)" }} />}
+              <div style={{ fontSize: ".75rem", color: "var(--text-muted)", margin: ".5rem 0", wordBreak: "break-all" }}>
+                {f.name}{f.size ? ` · ${Math.round(f.size / 1024)} KB` : ""}
+              </div>
+              <div style={{ display: "flex", gap: ".4rem" }}>
+                <button className="btn btn-ghost" style={{ fontSize: ".78rem", padding: ".35rem .7rem" }}
+                  onClick={() => { navigator.clipboard.writeText(f.url); toast.success("Link copied"); }}>Copy link</button>
+                <button className="btn btn-ghost" style={{ fontSize: ".78rem", padding: ".35rem .7rem", color: "#ff6b6b" }}
+                  onClick={() => remove(f.name)}>Delete</button>
+              </div>
+            </div>
+          ))}
+          {shown.length === 0 && <p style={{ color: "var(--text-muted)" }}>No files found.</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ===== shared list helpers: search + drag-to-reorder + autosave =====
+function SearchBar({ q, setQ, count, placeholder }: { q: string; setQ: (v: string) => void; count: number; placeholder: string }) {
+  return (
+    <div style={{ display: "flex", gap: ".75rem", alignItems: "center", margin: "0 0 1rem", flexWrap: "wrap" }}>
+      <input style={{ ...inputStyle, flex: 1, minWidth: 220 }} placeholder={placeholder} value={q} onChange={e => setQ(e.target.value)} />
+      <span style={{ color: "var(--text-muted)", fontSize: ".85rem" }}>{count} shown · drag <i className="bx bx-menu" /> to reorder</span>
+    </div>
+  );
+}
+
+function useAutoSave<T>(value: T, enabled: boolean, save: (v: T) => void, delay = 1200) {
+  const skip = useRef(true);
+  useEffect(() => {
+    if (!enabled) return;
+    if (skip.current) { skip.current = false; return; }
+    const id = setTimeout(() => save(value), delay);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+}
+
+/** Wraps a card with a drag handle; reports reorder by index. */
+function DragRow({ index, onMove, children }: { index: number; onMove: (from: number, to: number) => void; children: React.ReactNode }) {
+  const [drag, setDrag] = useState(false);
+  const [over, setOver] = useState(false);
+  return (
+    <div
+      draggable={drag}
+      onDragStart={e => e.dataTransfer.setData("text/plain", String(index))}
+      onDragEnd={() => { setDrag(false); setOver(false); }}
+      onDragOver={e => { e.preventDefault(); setOver(true); }}
+      onDragLeave={() => setOver(false)}
+      onDrop={e => {
+        e.preventDefault(); setOver(false);
+        const from = Number(e.dataTransfer.getData("text/plain"));
+        if (!Number.isNaN(from) && from !== index) onMove(from, index);
+      }}
+      style={{ position: "relative", outline: over ? "2px dashed var(--primary-glow, #7dd3a0)" : "none", borderRadius: "var(--radius)" }}
+    >
+      <button
+        type="button"
+        title="Drag to reorder"
+        onMouseDown={() => setDrag(true)}
+        onMouseUp={() => setDrag(false)}
+        style={{ position: "absolute", insetInlineEnd: 12, top: 12, zIndex: 2, cursor: "grab", background: "var(--bg-2)", border: "1px solid var(--border)", borderRadius: 8, padding: ".2rem .5rem", color: "var(--text-muted)" }}
+      ><i className="bx bx-menu" /></button>
+      {children}
+    </div>
+  );
+}
+
+/** Persist a new order by rewriting sort_order for the whole list. */
+async function persistOrder(table: string, ordered: { id?: string }[]) {
+  const updates = ordered.map((row, i) =>
+    supabase.from(table as never).update({ sort_order: (i + 1) * 10 } as never).eq("id", row.id!)
+  );
+  const res = await Promise.all(updates);
+  const bad = res.find(r => r.error);
+  if (bad?.error) toast.error(bad.error.message);
+  else toast.success("Order saved");
+}
+
+function move<T>(arr: T[], from: number, to: number): T[] {
+  const next = arr.slice();
+  const [x] = next.splice(from, 1);
+  next.splice(to, 0, x);
+  return next;
+}
+
 
 type ContactMessage = {
   id: string; name: string; email: string; subject: string | null;
@@ -204,18 +464,20 @@ const rowStyle: React.CSSProperties = { display: "grid", gridTemplateColumns: "1
 function WorksAdmin() {
   const [items, setItems] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
 
   const reload = async () => { setLoading(true); try { setItems(await fetchAllWorks()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Work> = { title: "", client: "", role: "", year: "", image_url: "", tags: [], sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(w: Partial<Work>) {
+  async function save(w: Partial<Work>, silent = false) {
     const payload = { ...w, tags: w.tags ?? [] } as never;
     const { error } = w.id
       ? await supabase.from("works" as never).update(payload).eq("id", w.id)
       : await supabase.from("works" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -225,20 +487,31 @@ function WorksAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(w => `${w.title} ${w.client ?? ""} ${w.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("works", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new work</h2>
       <WorkForm key="new" initial={blank} onSubmit={save} submitLabel="Add work" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All works ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(w => (
-        <WorkForm key={w.id} initial={w} onSubmit={save} onDelete={() => remove(w.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search works by title, client, tag…" />
+      {loading ? <p>Loading…</p> : shown.map((w, i) => (
+        <DragRow key={w.id} index={i} onMove={q ? () => {} : onMove}>
+          <WorkForm initial={w} onSubmit={save} onDelete={() => remove(w.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Work>; onSubmit: (w: Partial<Work>) => void; onDelete?: () => void; submitLabel: string }) {
+function WorkForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Work>; onSubmit: (w: Partial<Work>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [w, setW] = useState<Partial<Work>>(initial);
+  useAutoSave(w, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -269,18 +542,20 @@ function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Parti
 function TracksAdmin() {
   const [items, setItems] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllTracks()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Track> = { title: "", artist: "", role: "", cover_url: "", audio_url: "", external_url: "", tags: [], sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(tr: Partial<Track>) {
+  async function save(tr: Partial<Track>, silent = false) {
     if (!tr.title?.trim()) return toast.error("Title is required");
     const payload = { ...tr, tags: tr.tags ?? [] } as never;
     const { error } = tr.id
       ? await supabase.from("tracks" as never).update(payload).eq("id", tr.id)
       : await supabase.from("tracks" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -290,20 +565,31 @@ function TracksAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(t => `${t.title} ${t.artist ?? ""} ${t.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("tracks", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new track</h2>
       <TrackForm key="new" initial={blank} onSubmit={save} submitLabel="Add track" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All tracks ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(tr => (
-        <TrackForm key={tr.id} initial={tr} onSubmit={save} onDelete={() => remove(tr.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search tracks by title, artist, tag…" />
+      {loading ? <p>Loading…</p> : shown.map((tr, i) => (
+        <DragRow key={tr.id} index={i} onMove={q ? () => {} : onMove}>
+          <TrackForm initial={tr} onSubmit={save} onDelete={() => remove(tr.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function TrackForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Track>; onSubmit: (t: Partial<Track>) => void; onDelete?: () => void; submitLabel: string }) {
+function TrackForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Track>; onSubmit: (t: Partial<Track>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [tr, setTr] = useState<Partial<Track>>(initial);
+  useAutoSave(tr, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -337,17 +623,19 @@ function TrackForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Part
 function ServicesAdmin() {
   const [items, setItems] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllServices()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Service> = { slug: "", title: "", icon: "bx-pulse", description: "", features: [], wide: false, sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(s: Partial<Service>) {
+  async function save(s: Partial<Service>, silent = false) {
     const payload = { ...s, features: s.features ?? [] } as never;
     const { error } = s.id
       ? await supabase.from("services" as never).update(payload).eq("id", s.id)
       : await supabase.from("services" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -357,20 +645,31 @@ function ServicesAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(s => `${s.title} ${s.slug} ${s.description ?? ""}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("services", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new service</h2>
       <ServiceForm key="new" initial={blank} onSubmit={save} submitLabel="Add service" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All services ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(s => (
-        <ServiceForm key={s.id} initial={s} onSubmit={save} onDelete={() => remove(s.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search services…" />
+      {loading ? <p>Loading…</p> : shown.map((s, i) => (
+        <DragRow key={s.id} index={i} onMove={q ? () => {} : onMove}>
+          <ServiceForm initial={s} onSubmit={save} onDelete={() => remove(s.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function ServiceForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Service>; onSubmit: (s: Partial<Service>) => void; onDelete?: () => void; submitLabel: string }) {
+function ServiceForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Service>; onSubmit: (s: Partial<Service>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [s, setS] = useState<Partial<Service>>(initial);
+  useAutoSave(s, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -409,17 +708,19 @@ function ServiceForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Pa
 function TestimonialsAdmin() {
   const [items, setItems] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllTestimonials()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Testimonial> = { quote: "", name: "", role: "", sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(t: Partial<Testimonial>) {
+  async function save(t: Partial<Testimonial>, silent = false) {
     const payload = { ...t } as never;
     const { error } = t.id
       ? await supabase.from("testimonials" as never).update(payload).eq("id", t.id)
       : await supabase.from("testimonials" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -429,20 +730,31 @@ function TestimonialsAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(t => `${t.name} ${t.role ?? ""} ${t.quote}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("testimonials", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add testimonial</h2>
       <TestimonialForm key="new" initial={blank} onSubmit={save} submitLabel="Add" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All testimonials ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(t => (
-        <TestimonialForm key={t.id} initial={t} onSubmit={save} onDelete={() => remove(t.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search by name or quote…" />
+      {loading ? <p>Loading…</p> : shown.map((t, i) => (
+        <DragRow key={t.id} index={i} onMove={q ? () => {} : onMove}>
+          <TestimonialForm initial={t} onSubmit={save} onDelete={() => remove(t.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function TestimonialForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Testimonial>; onSubmit: (t: Partial<Testimonial>) => void; onDelete?: () => void; submitLabel: string }) {
+function TestimonialForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Testimonial>; onSubmit: (t: Partial<Testimonial>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [t, setT] = useState<Partial<Testimonial>>(initial);
+  useAutoSave(t, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={{ marginBottom: ".75rem" }}>

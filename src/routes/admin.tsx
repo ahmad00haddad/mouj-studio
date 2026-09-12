@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -464,18 +464,20 @@ const rowStyle: React.CSSProperties = { display: "grid", gridTemplateColumns: "1
 function WorksAdmin() {
   const [items, setItems] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
 
   const reload = async () => { setLoading(true); try { setItems(await fetchAllWorks()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Work> = { title: "", client: "", role: "", year: "", image_url: "", tags: [], sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(w: Partial<Work>) {
+  async function save(w: Partial<Work>, silent = false) {
     const payload = { ...w, tags: w.tags ?? [] } as never;
     const { error } = w.id
       ? await supabase.from("works" as never).update(payload).eq("id", w.id)
       : await supabase.from("works" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -485,20 +487,31 @@ function WorksAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(w => `${w.title} ${w.client ?? ""} ${w.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("works", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new work</h2>
       <WorkForm key="new" initial={blank} onSubmit={save} submitLabel="Add work" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All works ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(w => (
-        <WorkForm key={w.id} initial={w} onSubmit={save} onDelete={() => remove(w.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search works by title, client, tag…" />
+      {loading ? <p>Loading…</p> : shown.map((w, i) => (
+        <DragRow key={w.id} index={i} onMove={q ? () => {} : onMove}>
+          <WorkForm initial={w} onSubmit={save} onDelete={() => remove(w.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Work>; onSubmit: (w: Partial<Work>) => void; onDelete?: () => void; submitLabel: string }) {
+function WorkForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Work>; onSubmit: (w: Partial<Work>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [w, setW] = useState<Partial<Work>>(initial);
+  useAutoSave(w, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -529,18 +542,20 @@ function WorkForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Parti
 function TracksAdmin() {
   const [items, setItems] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllTracks()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Track> = { title: "", artist: "", role: "", cover_url: "", audio_url: "", external_url: "", tags: [], sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(tr: Partial<Track>) {
+  async function save(tr: Partial<Track>, silent = false) {
     if (!tr.title?.trim()) return toast.error("Title is required");
     const payload = { ...tr, tags: tr.tags ?? [] } as never;
     const { error } = tr.id
       ? await supabase.from("tracks" as never).update(payload).eq("id", tr.id)
       : await supabase.from("tracks" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -550,20 +565,31 @@ function TracksAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(t => `${t.title} ${t.artist ?? ""} ${t.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("tracks", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new track</h2>
       <TrackForm key="new" initial={blank} onSubmit={save} submitLabel="Add track" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All tracks ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(tr => (
-        <TrackForm key={tr.id} initial={tr} onSubmit={save} onDelete={() => remove(tr.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search tracks by title, artist, tag…" />
+      {loading ? <p>Loading…</p> : shown.map((tr, i) => (
+        <DragRow key={tr.id} index={i} onMove={q ? () => {} : onMove}>
+          <TrackForm initial={tr} onSubmit={save} onDelete={() => remove(tr.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function TrackForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Track>; onSubmit: (t: Partial<Track>) => void; onDelete?: () => void; submitLabel: string }) {
+function TrackForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Track>; onSubmit: (t: Partial<Track>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [tr, setTr] = useState<Partial<Track>>(initial);
+  useAutoSave(tr, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -597,17 +623,19 @@ function TrackForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Part
 function ServicesAdmin() {
   const [items, setItems] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllServices()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Service> = { slug: "", title: "", icon: "bx-pulse", description: "", features: [], wide: false, sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(s: Partial<Service>) {
+  async function save(s: Partial<Service>, silent = false) {
     const payload = { ...s, features: s.features ?? [] } as never;
     const { error } = s.id
       ? await supabase.from("services" as never).update(payload).eq("id", s.id)
       : await supabase.from("services" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -617,20 +645,31 @@ function ServicesAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(s => `${s.title} ${s.slug} ${s.description ?? ""}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("services", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add new service</h2>
       <ServiceForm key="new" initial={blank} onSubmit={save} submitLabel="Add service" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All services ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(s => (
-        <ServiceForm key={s.id} initial={s} onSubmit={save} onDelete={() => remove(s.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search services…" />
+      {loading ? <p>Loading…</p> : shown.map((s, i) => (
+        <DragRow key={s.id} index={i} onMove={q ? () => {} : onMove}>
+          <ServiceForm initial={s} onSubmit={save} onDelete={() => remove(s.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function ServiceForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Service>; onSubmit: (s: Partial<Service>) => void; onDelete?: () => void; submitLabel: string }) {
+function ServiceForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Service>; onSubmit: (s: Partial<Service>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [s, setS] = useState<Partial<Service>>(initial);
+  useAutoSave(s, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={rowStyle}>
@@ -669,17 +708,19 @@ function ServiceForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Pa
 function TestimonialsAdmin() {
   const [items, setItems] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
   const reload = async () => { setLoading(true); try { setItems(await fetchAllTestimonials()); } finally { setLoading(false); } };
   useEffect(() => { reload(); }, []);
 
   const blank: Partial<Testimonial> = { quote: "", name: "", role: "", sort_order: (items.at(-1)?.sort_order ?? 0) + 10, published: true };
 
-  async function save(t: Partial<Testimonial>) {
+  async function save(t: Partial<Testimonial>, silent = false) {
     const payload = { ...t } as never;
     const { error } = t.id
       ? await supabase.from("testimonials" as never).update(payload).eq("id", t.id)
       : await supabase.from("testimonials" as never).insert(payload);
     if (error) return toast.error(error.message);
+    if (silent) return void toast.success("Auto-saved", { duration: 900 });
     toast.success("Saved"); reload();
   }
   async function remove(id: string) {
@@ -689,20 +730,31 @@ function TestimonialsAdmin() {
     toast.success("Deleted"); reload();
   }
 
+  const shown = items.filter(t => `${t.name} ${t.role ?? ""} ${t.quote}`.toLowerCase().includes(q.toLowerCase()));
+  async function onMove(from: number, to: number) {
+    const next = move(items, from, to);
+    setItems(next);
+    await persistOrder("testimonials", next);
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: "1rem" }}>Add testimonial</h2>
       <TestimonialForm key="new" initial={blank} onSubmit={save} submitLabel="Add" />
       <h2 style={{ margin: "2rem 0 1rem" }}>All testimonials ({items.length})</h2>
-      {loading ? <p>Loading…</p> : items.map(t => (
-        <TestimonialForm key={t.id} initial={t} onSubmit={save} onDelete={() => remove(t.id)} submitLabel="Save" />
+      <SearchBar q={q} setQ={setQ} count={shown.length} placeholder="Search by name or quote…" />
+      {loading ? <p>Loading…</p> : shown.map((t, i) => (
+        <DragRow key={t.id} index={i} onMove={q ? () => {} : onMove}>
+          <TestimonialForm initial={t} onSubmit={save} onDelete={() => remove(t.id)} submitLabel="Save" autoSave />
+        </DragRow>
       ))}
     </div>
   );
 }
 
-function TestimonialForm({ initial, onSubmit, onDelete, submitLabel }: { initial: Partial<Testimonial>; onSubmit: (t: Partial<Testimonial>) => void; onDelete?: () => void; submitLabel: string }) {
+function TestimonialForm({ initial, onSubmit, onDelete, submitLabel, autoSave }: { initial: Partial<Testimonial>; onSubmit: (t: Partial<Testimonial>, silent?: boolean) => void; onDelete?: () => void; submitLabel: string; autoSave?: boolean }) {
   const [t, setT] = useState<Partial<Testimonial>>(initial);
+  useAutoSave(t, !!autoSave, v => onSubmit(v, true));
   return (
     <div style={cardStyle}>
       <div style={{ marginBottom: ".75rem" }}>

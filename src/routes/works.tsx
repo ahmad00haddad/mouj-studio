@@ -64,12 +64,20 @@ const fallbackTestimonials = [
   { quote: "A true partner — voice direction, sound design and mix across all 80 episodes. The show sounds world-class.", name: "Sowt Podcasts", role: "Youm Jadeed · Education Above All" },
 ];
 
+function getThumbnail(link?: string, fallback?: string) {
+  if (link && link.includes("youtube.com/watch?v=")) {
+    const v = new URL(link).searchParams.get("v");
+    if (v) return `https://img.youtube.com/vi/${v}/hqdefault.jpg`;
+  }
+  return fallback || "/assets/img/works/hero-producer.jpg";
+}
+
 function WorksPage() {
   const [active, setActive] = useState("*");
   const { content, works, testimonials: dbT, tracks } = useCms();
   const items = works.length
-    ? works.map((w: any) => ({ tags: w.tags ?? [], img: w.image_url || "/assets/img/works/hero-producer.jpg", title: w.title, client: w.client ?? "", role: w.role ?? "", year: w.year ?? "", link: w.link ?? undefined }))
-    : fallbackItems;
+    ? works.map((w: any) => ({ tags: w.tags ?? [], img: getThumbnail(w.link, w.image_url), title: w.title, client: w.client ?? "", role: w.role ?? "", year: w.year ?? "", link: w.link ?? undefined }))
+    : fallbackItems.map(it => ({ ...it, img: getThumbnail(it.link, it.img) }));
   const filtered = items.filter(it => active === "*" || it.tags.includes(active));
   const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
   const clientItems = list<{ name: string; logo?: string }>(content, "works_clients", "items", fallbackClients.map(n => ({ name: n })));

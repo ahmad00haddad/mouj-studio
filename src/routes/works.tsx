@@ -64,9 +64,13 @@ const fallbackStats = [
 const fallbackClients = ["Netflix", "Mawdoo3", "Rush Production", "Sowt", "Jawaker", "Education Above All", "LAPIS", "Watar Group", "Ertidad", "MOUJE"];
 
 const fallbackTestimonials = [
-  { quote: "Damn crazy!!!!!! Wowww", name: "Madeon", role: "On Mouje's acapella cover of 'Dream Dream Dream'" },
-  { quote: "Motaz built our entire audio pipeline from scratch and led the World Cup Radio that drove our biggest LiveOps month ever.", name: "Jawaker Team", role: "Card Game · Middle East" },
+  { quote: "Mouje built our audio pipeline from the ground up, delivering localization, music, and VO across multiple regions.", name: "Jawaker", role: "Leading Card Game in MENA" },
   { quote: "A true partner — voice direction, sound design and mix across all 80 episodes. The show sounds world-class.", name: "Sowt Podcasts", role: "Youm Jadeed · Education Above All" },
+  { quote: "Damn crazy!!!!!! Wowww", name: "Madeon", role: "Grammy-Nominated Producer" },
+  { quote: "I can not stop watching this... you absolutely killed it!", name: "@hajhaver", role: "YouTube Commenter" },
+  { quote: "That's literally amazing! Music, lyrics, video", name: "@shahdqaddoura6338", role: "YouTube Commenter" },
+  { quote: "الأغنية دي لازم تاخذ حقها بزيادة، كفوو عليك يا فنان", name: "@Seroo505", role: "YouTube Commenter" },
+  { quote: "Why is THIS SOOOO GOOD, it's like a dream", name: "@sleepypinkrose9700", role: "YouTube Commenter" },
 ];
 
 function getThumbnail(link?: string, fallback?: string) {

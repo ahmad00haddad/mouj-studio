@@ -83,6 +83,7 @@ function getThumbnail(link?: string, fallback?: string) {
 
 function WorksPage() {
   const [active, setActive] = useState("*");
+  const [showAllTestis, setShowAllTestis] = useState(false);
   const { content, works, testimonials: dbT, tracks } = useCms();
   
   // Create a merged list: start with fallback items
@@ -123,7 +124,16 @@ function WorksPage() {
   const filtered = items.filter(it => active === "*" || it.tags.includes(active));
   const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
   const clientItems = list<{ name: string; logo?: string }>(content, "works_clients", "items", fallbackClients.map(n => ({ name: n })));
-  const testimonials = dbT.length ? dbT.map(x => ({ quote: x.quote, name: x.name, role: x.role ?? "" })) : fallbackTestimonials;
+  
+  // Smart merge for testimonials as well: prefer DB if populated
+  // Wait, if DB has items, we should just append the fallback ones so they don't lose the youtube comments!
+  // Or just show fallback + DB together?
+  // Let's just use fallback if DB is empty or just dummy data, but if DB has real ones we show DB + fallback.
+  // Actually, fallbackTestimonials is so good, let's always show it and prepend any new DB ones.
+  const dbTestimonials = dbT.filter(t => !t.name.includes("Director")).map(x => ({ quote: x.quote, name: x.name, role: x.role ?? "" }));
+  const combinedTestimonials = [...dbTestimonials, ...fallbackTestimonials.filter(f => !dbTestimonials.some(d => d.name === f.name))];
+
+  const visibleTestis = showAllTestis ? combinedTestimonials : combinedTestimonials.slice(0, 3);
 
   return (
     <main>
@@ -198,7 +208,7 @@ function WorksPage() {
           <h2>What clients <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>say</span></h2>
         </div>
         <div className="testis">
-          {testimonials.map(t => (
+          {visibleTestis.map(t => (
             <figure className="testi" key={t.name}>
               <span className="quote-mark"><i className="bx bxs-quote-alt-left"></i></span>
               <blockquote>{t.quote}</blockquote>
@@ -206,6 +216,17 @@ function WorksPage() {
             </figure>
           ))}
         </div>
+
+        {combinedTestimonials.length > 3 && (
+          <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <button 
+              className="btn btn-ghost" 
+              onClick={() => setShowAllTestis(!showAllTestis)}
+            >
+              {showAllTestis ? "Show Less" : "Load More Testimonials"}
+            </button>
+          </div>
+        )}
       </section>
     </main>
   );

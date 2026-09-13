@@ -46,7 +46,7 @@ const fallbackFounderExperience = [
 ];
 
 const founderProjects = [
-  { title: "Jawaker's World Cup Radio", meta: "Live Broadcast in a Game · 2023", text: "Built the live broadcast system for the Qatar World Cup tournament — server configuration, live control setup, mic setup for commentators and real-time crowd effects. Peaked at 10k concurrent listeners, 150k+ total listenership and 100k+ USD in-app revenue across the campaign." },
+  { title: "Jawaker's World Cup Radio", meta: "Live Broadcast in a Game · 2023", text: "Built the live broadcast system for the Qatar World Cup tournament — server configuration, live control setup, mic setup for commentators and real-time crowd effects. Peaked at 10k concurrent listeners, 150k+ total listenership and 100k+ USD in-app revenue across the campaign. Powered by Ableton Live for real-time crowd reactions, Voicemeeter Banana for routing, Mixxx for broadcast control, and AzuraCast for stream hosting." },
   { title: "Youm Jadeed", meta: "Kids Interactive Show · Sowt × Mouje · 2025", text: "An 80-episode show improving learning outcomes for the children of Palestine, executed by Sowt Podcasts in partnership with Mouje Studio, facilitated by LAPIS and funded by Education Above All. Voice direction, editing, sound design, mixing and mastering." },
   { title: "Watar Group (Watar El Sharq · Watar Pop)", meta: "Audio Director · 2025 — Present", text: "Audio direction for a Jordanian music band founded in 2021 — live sound from mic choice to mixing, technical planning per venue, and multitrack recording/mixing for digital releases." },
   { title: "Radio 6 — Live Sessions", meta: "Lead Recording & Mix Engineer · 2025", text: "Official recording and mixing engineer for Radio 6, tracking and mixing live performances for prominent Jordanian artists including Atef Malhas and Mieralle, as well as performing original solo sessions." },
@@ -135,6 +135,9 @@ function AboutPage() {
               <li><i className="bx bxl-apple"></i><a href="https://tinyurl.com/25cjab2s" target="_blank" rel="noreferrer">Apple Music</a></li>
               <li><i className="bx bx-music"></i><a href="https://play.anghami.com/artist/4178162" target="_blank" rel="noreferrer">Anghami</a></li>
               <li><i className="bx bxl-tiktok"></i><a href="https://tiktok.com/@moujemusic" target="_blank" rel="noreferrer">tiktok.com/@moujemusic</a></li>
+              <li><i className="bx bx-envelope"></i><a href="mailto:moujemusic@gmail.com">moujemusic@gmail.com</a></li>
+              <li><i className="bx bx-phone"></i><a href="tel:+962796568891">+962 79 656 8891</a></li>
+              <li><i className="bx bxl-behance"></i><a href="https://behance.net/motazdababseh" target="_blank" rel="noreferrer">Behance</a></li>
               <li><i className="bx bxl-twitch"></i><a href="https://www.twitch.tv/moujestream" target="_blank" rel="noreferrer">twitch.tv/moujestream</a></li>
               <li><i className="bx bx-map"></i><a href="https://maps.app.goo.gl/26VcJefWEGD3Uu9KA" target="_blank" rel="noreferrer">Mouje Studio on Maps</a></li>
               <li><i className="bx bx-coffee"></i><a href="https://www.buymeacoffee.com/mouje" target="_blank" rel="noreferrer">Buy me a Coffee</a></li>

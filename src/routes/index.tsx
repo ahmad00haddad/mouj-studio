@@ -23,10 +23,10 @@ const fallbackServices = [
 ];
 
 const fallbackStats = [
-  { n: "10+", l: "Years on air" },
-  { n: "250+", l: "Projects delivered" },
-  { n: "80+", l: "Happy clients" },
-  { n: "15", l: "Awards & nominations" },
+  { n: "13+", l: "Years in audio" },
+  { n: "10k", l: "Peak live listeners" },
+  { n: "150k+", l: "World Cup Radio reach" },
+  { n: "80", l: "Episodes — Youm Jadeed" },
 ];
 
 function Index() {

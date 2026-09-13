@@ -80,9 +80,42 @@ function getThumbnail(link?: string, fallback?: string) {
 function WorksPage() {
   const [active, setActive] = useState("*");
   const { content, works, testimonials: dbT, tracks } = useCms();
-  const items = works.length
-    ? works.map((w: any) => ({ tags: w.tags ?? [], img: getThumbnail(w.link, w.image_url), title: w.title, client: w.client ?? "", role: w.role ?? "", year: w.year ?? "", link: w.link ?? undefined }))
-    : fallbackItems.map(it => ({ ...it, img: getThumbnail(it.link, it.img) }));
+  
+  // Create a merged list: start with fallback items
+  const mergedItems = fallbackItems.map(fallback => {
+    // If there is a matching project in the Admin DB, use its image and data!
+    const dbMatch = works.find(w => w.title.toLowerCase().trim() === fallback.title.toLowerCase().trim());
+    if (dbMatch) {
+      return { 
+        tags: dbMatch.tags ?? fallback.tags, 
+        img: getThumbnail(dbMatch.link || fallback.link, dbMatch.image_url || fallback.img), 
+        title: dbMatch.title, 
+        client: dbMatch.client || fallback.client, 
+        role: dbMatch.role || fallback.role, 
+        year: dbMatch.year || fallback.year, 
+        link: dbMatch.link || fallback.link 
+      };
+    }
+    return { ...fallback, img: getThumbnail(fallback.link, fallback.img) };
+  });
+
+  // Add any EXTRA projects the user created in Admin DB that are not in fallback
+  const extraWorks = works
+    .filter(w => !fallbackItems.some(f => f.title.toLowerCase().trim() === w.title.toLowerCase().trim()))
+    // Ignore lovable demo dummy items (they usually have generic titles if they haven't been deleted yet)
+    .filter(w => !w.title.includes("Foley Session") && !w.title.includes("Sound Design for"))
+    .map((w: any) => ({ 
+      tags: w.tags ?? [], 
+      img: getThumbnail(w.link, w.image_url), 
+      title: w.title, 
+      client: w.client ?? "", 
+      role: w.role ?? "", 
+      year: w.year ?? "", 
+      link: w.link ?? undefined 
+    }));
+
+  const items = [...mergedItems, ...extraWorks];
+
   const filtered = items.filter(it => active === "*" || it.tags.includes(active));
   const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
   const clientItems = list<{ name: string; logo?: string }>(content, "works_clients", "items", fallbackClients.map(n => ({ name: n })));

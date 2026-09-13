@@ -36,24 +36,56 @@ export type Testimonial = {
 export type SiteContentRow = { key: string; value: Record<string, unknown> };
 
 export async function fetchWorks(): Promise<Work[]> {
+  try {
+    const { data, error } = await supabase.from("works" as never).select("*").eq("published", true).order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Work[];
+  } catch (e) {}
   return [];
 }
 export async function fetchAllWorks(): Promise<Work[]> {
+  try {
+    const { data, error } = await supabase.from("works" as never).select("*").order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Work[];
+  } catch (e) {}
   return [];
 }
 export async function fetchServices(): Promise<Service[]> {
+  try {
+    const { data, error } = await supabase.from("services" as never).select("*").eq("published", true).order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Service[];
+  } catch (e) {}
   return [];
 }
 export async function fetchAllServices(): Promise<Service[]> {
+  try {
+    const { data, error } = await supabase.from("services" as never).select("*").order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Service[];
+  } catch (e) {}
   return [];
 }
 export async function fetchTestimonials(): Promise<Testimonial[]> {
+  try {
+    const { data, error } = await supabase.from("testimonials" as never).select("*").eq("published", true).order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Testimonial[];
+  } catch (e) {}
   return [];
 }
 export async function fetchAllTestimonials(): Promise<Testimonial[]> {
+  try {
+    const { data, error } = await supabase.from("testimonials" as never).select("*").order("sort_order");
+    if (!error && data && data.length > 0) return data as unknown as Testimonial[];
+  } catch (e) {}
   return [];
 }
 export async function fetchSiteContent(): Promise<Record<string, Record<string, unknown>>> {
+  try {
+    const { data, error } = await supabase.from("site_content" as never).select("*");
+    if (!error && data) {
+      const out: Record<string, Record<string, unknown>> = {};
+      for (const r of data as unknown as SiteContentRow[]) out[r.key] = r.value ?? {};
+      return out;
+    }
+  } catch (e) {}
   return {};
 }
 export type Track = {

@@ -151,6 +151,28 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
+          <span className="eyebrow">Insights</span>
+          <h2>Creative <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Philosophy</span></h2>
+          <p>Thoughts and insights extracted from recent interviews and podcasts.</p>
+        </div>
+        <div className="pillars">
+          <div className="pillar">
+            <div className="n"><i className="bx bxs-quote-right" style={{ fontSize: "1.5rem" }}></i></div>
+            <h3 style={{ color: "var(--primary-glow)" }}>On Interactive Audio</h3>
+            <p style={{ fontSize: ".85rem", marginBottom: ".5rem" }}>Road to Animatex Podcast (2025)</p>
+            <p>"Sound design in games isn't just about making things sound good; it's about building a dynamic audio engine that reacts to the player. At Jawaker, we had to build the pipeline from the ground up, utilizing middleware to ensure that localization, voice-overs, and sound effects trigger naturally across different regions and gameplay states. Sound is 50% of the player's immersion."</p>
+          </div>
+          <div className="pillar">
+            <div className="n"><i className="bx bxs-quote-right" style={{ fontSize: "1.5rem" }}></i></div>
+            <h3 style={{ color: "var(--primary-glow)" }}>On Musical Identity</h3>
+            <p style={{ fontSize: ".85rem", marginBottom: ".5rem" }}>Radio 6 Live Session (2025)</p>
+            <p>"My solo project 'Mouje' is about bridging the gap between Western electronic synthpop and authentic Arabic expression. It's a space where I can take my technical background in mixing and mastering, and apply it to my own storytelling. Tracks like 'Saken' and 'Rah Telhaqni' are reflections of this journey—experimenting with synths while keeping the emotional core grounded in our language."</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="section-head">
           <span className="eyebrow">Experience</span>
           <h2>A decade of <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>sound work</span></h2>
         </div>

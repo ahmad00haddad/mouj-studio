@@ -135,6 +135,9 @@ function AboutPage() {
               <li><i className="bx bxl-apple"></i><a href="https://tinyurl.com/25cjab2s" target="_blank" rel="noreferrer">Apple Music</a></li>
               <li><i className="bx bx-music"></i><a href="https://play.anghami.com/artist/4178162" target="_blank" rel="noreferrer">Anghami</a></li>
               <li><i className="bx bxl-tiktok"></i><a href="https://tiktok.com/@moujemusic" target="_blank" rel="noreferrer">tiktok.com/@moujemusic</a></li>
+              <li><i className="bx bxl-twitch"></i><a href="https://www.twitch.tv/moujestream" target="_blank" rel="noreferrer">twitch.tv/moujestream</a></li>
+              <li><i className="bx bx-map"></i><a href="https://maps.app.goo.gl/26VcJefWEGD3Uu9KA" target="_blank" rel="noreferrer">Mouje Studio on Maps</a></li>
+              <li><i className="bx bx-coffee"></i><a href="https://www.buymeacoffee.com/mouje" target="_blank" rel="noreferrer">Buy me a Coffee</a></li>
               <li><i className="bx bxl-linkedin"></i><a href="https://linkedin.com/in/motazdababseh" target="_blank" rel="noreferrer">linkedin.com/in/motazdababseh</a></li>
               <li><i className="bx bxl-facebook"></i><a href="https://facebook.com/moujemusic" target="_blank" rel="noreferrer">facebook.com/moujemusic</a></li>
               <li><i className="bx bxl-soundcloud"></i><a href="https://soundcloud.com/moujemusic" target="_blank" rel="noreferrer">soundcloud.com/moujemusic</a></li>

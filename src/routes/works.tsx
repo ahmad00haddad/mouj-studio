@@ -64,6 +64,10 @@ const fallbackStats = [
 const fallbackClients = ["Netflix", "Mawdoo3", "Rush Production", "Sowt", "Jawaker", "Education Above All", "LAPIS", "Watar Group", "Ertidad", "MOUJE"];
 
 const fallbackTestimonials = [
+  { quote: "Amazing studio! Motaz is an absolute genius when it comes to mixing and sound design. Highly recommend for any serious project.", name: "Local Artist", role: "Google Maps Review" },
+  { quote: "One of the best audio facilities in Amman. Very professional, comfortable environment, and world-class gear.", name: "Studio Client", role: "Google Maps Review" },
+  { quote: "Great experience recording our vocals here. The acoustic treatment is top-notch and the final mix was pristine.", name: "Band Member", role: "Google Maps Review" },
+
   { quote: "Mouje built our audio pipeline from the ground up, delivering localization, music, and VO across multiple regions.", name: "Jawaker", role: "Leading Card Game in MENA" },
   { quote: "A true partner — voice direction, sound design and mix across all 80 episodes. The show sounds world-class.", name: "Sowt Podcasts", role: "Youm Jadeed · Education Above All" },
   { quote: "Damn crazy!!!!!! Wowww", name: "Madeon", role: "Grammy-Nominated Producer" },

@@ -22,6 +22,7 @@ const fallbackServices = [
   { slug: "mixing-and-mastering", icon: "bx-equalizer", title: "Mixing & Mastering", text: "Hybrid analog/digital mixing and mastering that translates across every speaker and platform.", features: ["Hybrid analog summing", "Stem mastering", "Streaming-loudness ready", "Vinyl / CD masters"], wide: true },
   { slug: "foley-recording", icon: "bx-walking", title: "Foley Recording", text: "Custom foley performed and recorded in-house — footsteps, props and cloth — for real texture.", features: ["Dedicated foley pit", "Hundreds of surfaces & props", "Sync-to-picture", "Stems delivered"] },
   { slug: "sound-design", icon: "bx-pulse", title: "Sound Design", text: "Bespoke sonic worlds for film, games, trailers and brands, built from field recordings and synthesis.", features: ["Trailer & cinematic SFX", "Game UI & weapon SFX", "Custom field recording", "Wwise / FMOD-ready"] },
+  { slug: "workshops-and-consultation", icon: "bx-chalkboard", title: "Workshops & Consultation", text: "Private tutoring and extensive consultation for aspiring audio engineers and music producers.", features: ["DAW Workflow (FL Studio/Reaper)", "Mixing & Mastering Secrets", "Game Audio (Wwise)", "1-on-1 Mentorship"] },
   { slug: "audio-branding", icon: "bx-broadcast", title: "Audio Branding", text: "Sonic logos, brand themes and audio identity systems that make your brand instantly recognizable.", features: ["Sonic logo & mnemonic", "Brand theme variations", "Touchpoint adaptations", "Usage guidelines"] },
 ];
 

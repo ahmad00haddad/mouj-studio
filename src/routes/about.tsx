@@ -115,6 +115,9 @@ function AboutPage() {
             <div className="n">01</div>
             <h3>Bio</h3>
             <p>{founderBio}</p>
+            <a href="/assets/mouje_cv.pdf" download="Motaz_Dababseh_CV.pdf" className="btn btn-ghost" style={{marginTop: "1.5rem", display: "inline-flex", alignItems: "center", gap: ".5rem"}}>
+              <i className="bx bx-download"></i> Download Full Resume
+            </a>
           </div>
           <div className="pillar">
             <div className="n">02</div>

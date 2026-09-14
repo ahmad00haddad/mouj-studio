@@ -223,6 +223,42 @@ function WorksPage() {
         </div>
       </section>
 
+      
+      <section>
+        <div className="section-head">
+          <span className="eyebrow">From The Vault</span>
+          <h2>Hidden <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Gems</span></h2>
+          <p>A journey back in time. Early experiments, raw sessions, and the milestones that shaped Mouje's sound.</p>
+        </div>
+        <div className="works-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+          
+          <div className="work">
+            <img src="/assets/img/works/hero-producer.jpg" alt="Early Days" loading="lazy" style={{ filter: "grayscale(80%) sepia(20%)" }} />
+            <div className="work-overlay">
+              <h3>2016 Dubstep Era</h3>
+              <p>The very beginnings. Heavy bass drops, aggressive synths, and the release of 'Terror' that started the electronic journey.</p>
+            </div>
+          </div>
+
+          <div className="work">
+            <img src="/assets/img/works/work-foley.jpg" alt="First Studio" loading="lazy" style={{ filter: "grayscale(50%)" }} />
+            <div className="work-overlay">
+              <h3>The First Setup</h3>
+              <p>Before the HDX rigs and pristine acoustics. A testament to the fact that gear doesn't make the engineer; the ear does.</p>
+            </div>
+          </div>
+          
+          <div className="work">
+            <img src="/assets/img/works/work-mixing.jpg" alt="Local Gigs" loading="lazy" style={{ filter: "grayscale(30%)" }} />
+            <div className="work-overlay">
+              <h3>Underground Sessions</h3>
+              <p>Mixing and recording local bands in Amman. The raw, unfiltered energy of the Jordanian music scene.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <section>
         <div className="section-head">
           <span className="eyebrow">Testimonials</span>

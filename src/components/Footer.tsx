@@ -50,7 +50,12 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="footer-bottom">{copyright}</div>
+            <div className="footer-bottom" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
+        <div>{copyright}</div>
+        <div style={{ fontSize: "0.85rem", opacity: 0.7 }}>
+          Developed by <a href="https://haddad-dev.lovable.app/" target="_blank" rel="noreferrer" style={{ color: "var(--primary-glow)", textDecoration: "none", fontWeight: "bold" }}>Ahmad Haddad</a>
+        </div>
+      </div>
     </footer>
   );
 }

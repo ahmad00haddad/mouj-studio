@@ -1,10 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export type Work = {
+  link?: string;
   id: string;
   title: string;
   client: string | null;
-  role: string | null;
+  role?: string | null;
   year: string | null;
   image_url: string | null;
   tags: string[];
@@ -28,7 +29,7 @@ export type Testimonial = {
   id: string;
   quote: string;
   name: string;
-  role: string | null;
+  role?: string | null;
   sort_order: number;
   published: boolean;
 };
@@ -89,13 +90,15 @@ export async function fetchSiteContent(): Promise<Record<string, Record<string, 
   return {};
 }
 export type Track = {
+  link_url?: string;
+  duration?: number;
   id: string;
   title: string;
   artist: string | null;
-  role: string | null;
+  role?: string | null;
   cover_url: string | null;
   audio_url: string | null;
-  external_url: string | null;
+  external_url?: string | null;
   tags: string[];
   sort_order: number;
   published: boolean;
@@ -112,7 +115,8 @@ export async function fetchTracks(): Promise<Track[]> {
       link_url: "https://www.youtube.com/watch?v=qGzOumAFimA",
       duration: 180,
       sort_order: 1,
-      published: true
+      published: true,
+      tags: []
     },
     {
       id: "saken",
@@ -123,7 +127,8 @@ export async function fetchTracks(): Promise<Track[]> {
       link_url: "https://www.youtube.com/watch?v=uzZFOYXfDnA",
       duration: 161,
       sort_order: 2,
-      published: true
+      published: true,
+      tags: []
     },
     {
       id: "dream",
@@ -134,7 +139,8 @@ export async function fetchTracks(): Promise<Track[]> {
       link_url: "https://www.youtube.com/watch?v=ivWObD7kW_c",
       duration: 130,
       sort_order: 3,
-      published: true
+      published: true,
+      tags: []
     },
     {
       id: "amal",
@@ -145,7 +151,8 @@ export async function fetchTracks(): Promise<Track[]> {
       link_url: "https://www.youtube.com/watch?v=FvUKmQ-7yYA",
       duration: 215,
       sort_order: 4,
-      published: true
+      published: true,
+      tags: []
     }
   ];
 }

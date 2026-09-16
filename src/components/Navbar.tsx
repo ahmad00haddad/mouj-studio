@@ -70,6 +70,9 @@ export function Navbar() {
               ))}
             </div>
           </div>
+          <button onClick={toggle} style={{ padding: "0.35rem 0.85rem", borderRadius: "999px", border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.05)", color: "#fff", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.05em", margin: "0 0.5rem" }}>
+            {lang === "en" ? "عربي" : "EN"}
+          </button>
           <button
             type="button"
             className={`nav-mute${player.muted ? " muted" : ""}`}

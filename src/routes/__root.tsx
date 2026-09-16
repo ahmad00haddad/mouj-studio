@@ -18,6 +18,7 @@ import SoundHint from "@/components/SoundHint";
 import ShortcutsHelp from "@/components/ShortcutsHelp";
 import { initCinematic } from "@/lib/motion";
 import { usePlayer } from "@/lib/player";
+import { I18nProvider } from "@/lib/i18n";
 
 
 function NotFoundComponent() {
@@ -100,6 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" },
       { rel: "stylesheet", href: "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" },
       { rel: "icon", href: "/assets/img/wave.webp", type: "image/x-icon" },
 
       {
@@ -170,7 +172,8 @@ function RootComponent() {
   }, [pathname]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <I18nProvider>
+      <QueryClientProvider client={queryClient}>
       <ScrollProgress />
       <Navbar />
       <div key={pathname} className="page">
@@ -180,6 +183,7 @@ function RootComponent() {
       <PersistentPlayer />
       <SoundHint />
       <ShortcutsHelp />
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </I18nProvider>
   );
 }

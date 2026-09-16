@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCms, s as t, list } from "@/lib/useCms";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,6 +33,7 @@ const fallbackStats = [
 
 function Index() {
   const { content, services: dbServices } = useCms();
+  const { lang } = useI18n();
   const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
   const services = (dbServices.length ? dbServices.map((sv) => ({
     slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "",
@@ -50,11 +53,11 @@ function Index() {
         <div className="hero-grid">
           <div className="bento hero-main">
             <span className="eyebrow">{t(content, "home_hero", "eyebrow", "Mouje Studio · Est. 2014")}</span>
-            <h1>{hp[0]}<span className="accent">{heroAccent}</span>{hp[1] ?? ""}</h1>
-            <p>{t(content, "home_hero", "subtitle", "We craft music, mixes and sonic worlds for film, brands and games — from the first note to the final master, all under one roof.")}</p>
+            <h1>{T[lang].hero_title}</h1>
+            <p>{T[lang].hero_desc}</p>
             <div className="hero-actions">
-              <Link to="/contact" className="btn">{t(content, "home_hero", "ctaPrimaryLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
-              <Link to="/works" className="btn btn-ghost">{t(content, "home_hero", "ctaSecondaryLabel", "View our works")}</Link>
+              <Link to="/contact" className="btn">{T[lang].hero_btn_contact} <i className="bx bx-right-arrow-alt"></i></Link>
+              <Link to="/works" className="btn btn-ghost">{T[lang].hero_btn_works}</Link>
             </div>
             <div className="hero-socials">
               <a href={t(content, "site_social", "instagram", "https://www.instagram.com/moujestudio/")} aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>

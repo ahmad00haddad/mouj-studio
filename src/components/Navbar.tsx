@@ -2,6 +2,8 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useCms, s as t } from "@/lib/useCms";
 import { usePlayer, toggleMute } from "@/lib/player";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 const links = [
   { to: "/", label: "Home" },
@@ -26,6 +28,7 @@ export function Navbar() {
   const [drop, setDrop] = useState(false);
   const { content, services: dbServices } = useCms();
   const player = usePlayer();
+  const { lang, toggle } = useI18n();
   const services = dbServices.length
     ? dbServices.map((sv) => ({ slug: sv.slug, label: sv.title }))
     : fallbackServices;
@@ -47,7 +50,7 @@ export function Navbar() {
         <nav className={`nav-links ${open ? "open" : ""}`}>
           {links.map(l => (
             <Link key={l.to} to={l.to} className={`nav-link ${pathname === l.to ? "active" : ""}`}>
-              {l.label}
+              {l.to === "/" ? T[lang].nav_home : l.to === "/works" ? T[lang].nav_works : T[lang].nav_about}
             </Link>
           ))}
           <div
@@ -59,7 +62,7 @@ export function Navbar() {
               onClick={() => setDrop(d => !d)}
               onMouseEnter={() => setDrop(true)}
             >
-              What We Do <i className="bx bx-chevron-down"></i>
+              {T[lang].nav_services} <i className="bx bx-chevron-down"></i>
             </button>
             <div className="nav-dropdown-menu">
               {services.map(s => (

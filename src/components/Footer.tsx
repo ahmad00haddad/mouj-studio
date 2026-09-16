@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useCms, s as t } from "@/lib/useCms";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 export function Footer() {
   const { content } = useCms();
+  const { lang } = useI18n();
   const year = new Date().getFullYear();
   const copyright = t(content, "site_footer", "copyright", `© ${year} Mouje Studio. All rights reserved.`).replace("©", `© ${year}`);
   return (
@@ -13,7 +16,7 @@ export function Footer() {
             <img src={t(content, "site_brand", "logo", "/assets/img/wave.webp")} alt="" />
             Mouje<span className="accent">Studio</span>
           </Link>
-          <p>{t(content, "site_footer", "tagline", "A creative audio house crafting music, sound design and post-production for film, brands and games.")}</p>
+          <p>{T[lang].footer_tagline}</p>
           <div className="footer-social">
             <a href={t(content, "site_social", "instagram", "https://www.instagram.com/moujestudio/")} aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>
             <a href={t(content, "site_social", "linkedin", "https://www.linkedin.com/company/moujestudio/")} aria-label="LinkedIn"><i className="bx bxl-linkedin"></i></a>
@@ -22,17 +25,17 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-col">
-          <h4>Explore</h4>
+          <h4>{T[lang].footer_explore}</h4>
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/works">Works</Link></li>
-            <li><Link to="/services">Services</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/">{T[lang].nav_home}</Link></li>
+            <li><Link to="/works">{T[lang].nav_works}</Link></li>
+            <li><Link to="/services">{T[lang].nav_services}</Link></li>
+            <li><Link to="/about">{T[lang].nav_about}</Link></li>
+            <li><Link to="/contact">{T[lang].nav_contact}</Link></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Services</h4>
+          <h4>{T[lang].footer_services}</h4>
           <ul>
             <li><Link to="/services" hash="film-scoring">Film Scoring</Link></li>
             <li><Link to="/services" hash="recording">Recording</Link></li>
@@ -42,7 +45,7 @@ export function Footer() {
           </ul>
         </div>
         <div className="footer-col">
-          <h4>Contact</h4>
+          <h4>{T[lang].footer_contact}</h4>
           <ul>
             <li>{t(content, "contact_info", "address", "Amir Ben Malek St., Khalda 11953, Amman")}</li>
             <li><a href={`mailto:${t(content, "contact_info", "email", "moujemusic@gmail.com")}`}>{t(content, "contact_info", "email", "moujemusic@gmail.com")}</a></li>

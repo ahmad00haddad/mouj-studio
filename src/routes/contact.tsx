@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCms, s as t } from "@/lib/useCms";
 import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 
 export const Route = createFileRoute("/contact")({
@@ -17,6 +19,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const { lang } = useI18n();
   const { content } = useCms();
   const [warn, setWarn] = useState("");
   const [success, setSuccess] = useState(false);
@@ -49,9 +52,9 @@ function ContactPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">{t(content, "contact_intro", "eyebrow", "Contact")}</span>
-          <h1>{t(content, "contact_intro", "title", "Let's talk sound.")}</h1>
-          <p>{t(content, "contact_intro", "description", "Tell us about your project — we'll come back within 24 hours.")}</p>
+          <span className="eyebrow">{T[lang].contact_eyebrow}</span>
+          <h1>{T[lang].contact_title}</h1>
+          <p>{T[lang].contact_desc}</p>
         </div>
 
         <div className="contact-wrap">
@@ -105,7 +108,7 @@ function ContactPage() {
             </div>
             <div className="field">
               <label htmlFor="message">Message</label>
-              <textarea id="message" rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Tell us about your project, scope and timeline…" required />
+              <textarea id="message" rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder={T[lang].contact_message} required />
             </div>
             <button type="submit" className="btn" disabled={sending}>
               {sending ? "Sending…" : "Send message"} <i className="bx bx-right-arrow-alt"></i>

@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCms, s as t, list } from "@/lib/useCms";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 import TrackPlayer from "@/components/TrackPlayer";
 
 
@@ -89,6 +91,7 @@ function WorksPage() {
   const [active, setActive] = useState("*");
   const [showAllTestis, setShowAllTestis] = useState(false);
   const { content, works, testimonials: dbT, tracks } = useCms();
+  const { lang } = useI18n();
   
   // Create a merged list: start with fallback items
   const mergedItems = fallbackItems.map(fallback => {
@@ -143,9 +146,9 @@ function WorksPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">{t(content, "works_intro", "eyebrow", "Portfolio")}</span>
-          <h1>{t(content, "works_intro", "title", "Our works")}</h1>
-          <p>{t(content, "works_intro", "description", "A selection of recent projects across film, advertising, games and podcasts.")}</p>
+          <span className="eyebrow">{T[lang].works_eyebrow}</span>
+          <h1>{T[lang].works_title}</h1>
+          <p>{T[lang].works_desc}</p>
         </div>
 
         <div className="stats-grid" style={{ marginBottom: "3rem", maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
@@ -159,7 +162,7 @@ function WorksPage() {
           <div style={{ position: "absolute", top: "-10%", right: "-5%", opacity: 0.05, pointerEvents: "none" }}>
             <i className="bx bx-album" style={{ fontSize: "24rem" }}></i>
           </div>
-          <span className="eyebrow" style={{ display: "block", marginBottom: "1rem", color: "var(--primary-glow)" }}>Upcoming LP</span>
+          <span className="eyebrow" style={{ display: "block", marginBottom: "1rem", color: "var(--primary-glow)" }}>{T[lang].xetopia_eyebrow}</span>
           <h2 style={{ fontSize: "2.5rem", fontWeight: 700, marginBottom: "1.5rem" }}>Xetopia</h2>
           <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2rem", maxWidth: "800px", fontSize: "1.1rem" }}>
             <strong>Xetopia</strong> is Mouje's deeply personal upcoming Electronic Synthpop album. It's a sonic journey exploring profound themes: 
@@ -228,7 +231,7 @@ function WorksPage() {
       
       <section>
         <div className="section-head">
-          <span className="eyebrow">From The Vault</span>
+          <span className="eyebrow">{T[lang].vault_eyebrow}</span>
           <h2>Hidden <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Gems</span></h2>
           <p>A journey back in time. Early experiments, raw sessions, and the milestones that shaped Mouje's sound.</p>
         </div>

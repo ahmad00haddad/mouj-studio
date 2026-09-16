@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCms, s as t, list } from "@/lib/useCms";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -59,6 +61,7 @@ const clients = ["Netflix", "Mawdoo3", "Rush Production House", "Sowt", "Jawaker
 
 function AboutPage() {
   const { content } = useCms();
+  const { lang } = useI18n();
   const founderSkills = list<string>(content, "about_founder", "skills", fallbackFounderSkills);
   const founderExperience = list<{ role: string; company: string; years: string; description: string }>(
     content, "about_experience", "items",
@@ -71,15 +74,15 @@ function AboutPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">{t(content, "about_intro", "eyebrow", "About us")}</span>
+          <span className="eyebrow">{T[lang].about_eyebrow}</span>
         </div>
         <div className="about-hero">
           <div>
-            <h1>{t(content, "about_intro", "title", "Crafting sound that tells your story.")}</h1>
-            <p>{t(content, "about_intro", "description", "Mouje Studio is a creative audio house delivering scoring, recording, mixing, sound design and audio branding for film, brands and games — built on a decade of experience and a love for the craft.")}</p>
+            <h1>{T[lang].about_title}</h1>
+            <p>{T[lang].about_desc}</p>
             <div className="hero-actions" style={{ marginTop: "1.75rem" }}>
-              <Link to="/works" className="btn">See our works</Link>
-              <Link to="/contact" className="btn btn-ghost">Get in touch</Link>
+              <Link to="/works" className="btn">{T[lang].about_btn_works}</Link>
+              <Link to="/contact" className="btn btn-ghost">{T[lang].about_btn_contact}</Link>
             </div>
           </div>
           <div className="about-img">
@@ -90,8 +93,8 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Pillars</span>
-          <h2>What we <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>stand for</span></h2>
+          <span className="eyebrow">{T[lang].pillars_eyebrow}</span>
+          <h2>{T[lang].pillars_title}</h2>
         </div>
         <div className="pillars">
           {pillars.map(p => (
@@ -106,14 +109,14 @@ function AboutPage() {
 
       <section id="founder">
         <div className="section-head">
-          <span className="eyebrow">Founder</span>
-          <h2>Meet <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{founderName}</span></h2>
+          <span className="eyebrow">{T[lang].founder_eyebrow}</span>
+          <h2>{T[lang].founder_prefix} <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{founderName}</span></h2>
           <p>{founderTitle}</p>
         </div>
         <div className="pillars">
           <div className="pillar" style={{ gridColumn: "span 2" }}>
             <div className="n">01</div>
-            <h3>Bio</h3>
+            <h3>{T[lang].founder_bio_label}</h3>
             <p>{founderBio}</p>
             <a href="/assets/mouje_cv.pdf" download="Motaz_Dababseh_CV.pdf" className="btn btn-ghost" style={{marginTop: "1.5rem", display: "inline-flex", alignItems: "center", gap: ".5rem"}}>
               <i className="bx bx-download"></i> Download Full Resume
@@ -121,14 +124,14 @@ function AboutPage() {
           </div>
           <div className="pillar">
             <div className="n">02</div>
-            <h3>Skills</h3>
+            <h3>{T[lang].founder_skills_label}</h3>
             <ul className="svc-features">
               {founderSkills.map(s => <li key={s}><i className="bx bx-check"></i>{s}</li>)}
             </ul>
           </div>
           <div className="pillar">
             <div className="n">03</div>
-            <h3>Connect</h3>
+            <h3>{T[lang].founder_connect_label}</h3>
             <ul className="svc-features">
               <li><i className="bx bx-envelope"></i><a href={`mailto:${t(content, "contact_info", "email", "moujemusic@gmail.com")}`}>{t(content, "contact_info", "email", "moujemusic@gmail.com")}</a></li>
               <li><i className="bx bx-phone"></i><a href={`tel:${t(content, "contact_info", "phone", "+962 7 9656 8891").replace(/\s+/g, "")}`}>{t(content, "contact_info", "phone", "+962 7 9656 8891")}</a></li>
@@ -162,67 +165,19 @@ function AboutPage() {
           <div className="pillar">
             <div className="n"><i className="bx bxs-quote-right" style={{ fontSize: "1.5rem" }}></i></div>
             <h3 style={{ color: "var(--primary-glow)" }}>On Interactive Audio</h3>
-            <p style={{ fontSize: ".85rem", marginBottom: ".5rem" }}>Road to Animatex Podcast (2025)</p>
-            <p>"Sound design in games isn't just about making things sound good; it's about building a dynamic audio engine that reacts to the player. At Jawaker, we had to build the pipeline from the ground up, utilizing middleware to ensure that localization, voice-overs, and sound effects trigger naturally across different regions and gameplay states. Sound is 50% of the player's immersion."</p>
-          </div>
-          <div className="pillar">
-            <div className="n"><i className="bx bxs-quote-right" style={{ fontSize: "1.5rem" }}></i></div>
-            <h3 style={{ color: "var(--primary-glow)" }}>On Musical Identity</h3>
-            <p style={{ fontSize: ".85rem", marginBottom: ".5rem" }}>Radio 6 Live Session (2025)</p>
-            <p>"My solo project 'Mouje' is about bridging the gap between Western electronic synthpop and authentic Arabic expression. It's a space where I can take my technical background in mixing and mastering, and apply it to my own storytelling. Tracks like 'Saken' and 'Rah Telhaqni' are reflections of this journey—experimenting with synths while keeping the emotional core grounded in our language."</p>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2rem", maxWidth: "800px", fontSize: "1.1rem" }}>{T[lang].bts_project_desc}</p>
+            <a href="https://www.youtube.com/watch?v=ivWObD7kW_c" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem" }}>
+              <i className="bx bxl-youtube" style={{ fontSize: "1.25rem" }}></i> {T[lang].bts_watch_btn}
+            </a>
           </div>
         </div>
       </section>
 
-      
-      <section>
-        <div className="section-head">
-          <span className="eyebrow">Milestones</span>
-          <h2>A Brief <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Timeline</span></h2>
-        </div>
-        <div className="pillars">
-          <div className="pillar">
-            <div className="n">1996</div>
-            <h3>Origins</h3>
-            <p>Born October 26, 1996. The seed of musical curiosity was planted early.</p>
-          </div>
-          <div className="pillar">
-            <div className="n">2016</div>
-            <h3>First Releases</h3>
-            <p>Started the journey with Electronic Dance Music and Dubstep releases, including tracks like "Terror".</p>
-          </div>
-          <div className="pillar">
-            <div className="n">2020s</div>
-            <h3>Gaming & Media</h3>
-            <p>Lead Sound Designer & Audio Engineer for major regional projects including Jawaker's World Cup Radio and Sowt Podcasts.</p>
-          </div>
-        </div>
-      </section>
-      
-      <section>
-        <div className="section-head">
-          <span className="eyebrow">Behind The Scenes</span>
-          <h2>The <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Process</span></h2>
-          <p>Peek into the workflow and engineering behind the tracks.</p>
-        </div>
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "1.5rem", padding: "3rem", position: "relative", overflow: "hidden", maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
-          <div style={{ position: "absolute", top: "-20%", right: "-5%", opacity: 0.03, pointerEvents: "none" }}>
-            <i className="bx bx-slider" style={{ fontSize: "24rem" }}></i>
-          </div>
-          <h3 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "1.5rem" }}>Project Breakdown: Rah Telhaqni</h3>
-          <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2rem", maxWidth: "800px", fontSize: "1.1rem" }}>
-            Ever wondered how an Arabic Synthpop track is layered? In this deep-dive, I break down the exact FL Studio project file for "Rah Telhaqni", showcasing the vocal chains, synth processing, and arrangement techniques used to create the final mix.
-          </p>
-          <a href="https://www.youtube.com/watch?v=ivWObD7kW_c" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem" }}>
-            <i className="bx bxl-youtube" style={{ fontSize: "1.25rem" }}></i> Watch the Breakdown on YouTube
-          </a>
-        </div>
-      </section>
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Experience</span>
-          <h2>A decade of <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>sound work</span></h2>
+          <span className="eyebrow">{T[lang].experience_eyebrow}</span>
+          <h2>{T[lang].experience_title}</h2>
         </div>
         <div className="pillars">
           {founderExperience.map((e, i) => (
@@ -239,8 +194,8 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Highlighted projects</span>
-          <h2>Selected <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>case studies</span></h2>
+          <span className="eyebrow">{T[lang].projects_eyebrow}</span>
+          <h2>{T[lang].projects_title}</h2>
         </div>
         <div className="services-bento">
           {founderProjects.map(p => (
@@ -256,8 +211,8 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Toolbox</span>
-          <h2>Tools we <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>work with</span></h2>
+          <span className="eyebrow">{T[lang].toolbox_eyebrow}</span>
+          <h2>{T[lang].toolbox_title}</h2>
         </div>
         <div className="clients">
           {tools.map(t => <div className="client-pill" key={t}>{t}</div>)}
@@ -266,8 +221,8 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Worked with</span>
-          <h2>Trusted by <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>great teams</span></h2>
+          <span className="eyebrow">{T[lang].clients_eyebrow}</span>
+          <h2>{T[lang].clients_title}</h2>
         </div>
         <div className="clients">
           {clients.map(c => <div className="client-pill" key={c}>{c}</div>)}
@@ -276,8 +231,8 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Values</span>
-          <h2>How we <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>operate</span></h2>
+          <span className="eyebrow">{T[lang].values_eyebrow}</span>
+          <h2>{T[lang].values_title}</h2>
         </div>
         <div className="services-bento">
           {values.map(v => (
@@ -292,9 +247,9 @@ function AboutPage() {
 
       <section>
         <div className="cta-block">
-          <h2>Let's build something <span className="accent">unforgettable</span>.</h2>
-          <p>Whether you have a brief or just an idea, we'd love to hear it.</p>
-          <Link to="/contact" className="btn">Start the conversation <i className="bx bx-right-arrow-alt"></i></Link>
+          <h2>{T[lang].about_cta_title}</h2>
+          <p>{T[lang].about_cta_desc}</p>
+          <Link to="/contact" className="btn">{T[lang].about_cta_btn} <i className="bx bx-right-arrow-alt"></i></Link>
         </div>
       </section>
     </main>

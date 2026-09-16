@@ -25,10 +25,10 @@ const fallbackServices = [
 ];
 
 const fallbackStats = [
-  { n: "13+", l: "Years in audio" },
-  { n: "10k", l: "Peak live listeners" },
-  { n: "150k+", l: "World Cup Radio reach" },
-  { n: "80", l: "Episodes — Youm Jadeed" },
+  { n: "13+", l: "stat_years" },
+  { n: "10k", l: "stat_listeners" },
+  { n: "150k+", l: "stat_radio" },
+  { n: "80", l: "stat_episodes" },
 ];
 
 function Index() {
@@ -52,7 +52,7 @@ function Index() {
       <section className="hero">
         <div className="hero-grid">
           <div className="bento hero-main">
-            <span className="eyebrow">{t(content, "home_hero", "eyebrow", "Mouje Studio · Est. 2014")}</span>
+            <span className="eyebrow">{T[lang].hero_eyebrow}</span>
             <h1>{T[lang].hero_title}</h1>
             <p>{T[lang].hero_desc}</p>
             <div className="hero-actions">
@@ -74,8 +74,8 @@ function Index() {
           <div className="bento glow hero-pill">
             <i className="bx bxs-award"></i>
             <div>
-              <strong>{t(content, "home_hero", "pillTitle", "15+ awards")}</strong>
-              <span>{t(content, "home_hero", "pillSub", "Regional & international")}</span>
+              <strong>{T[lang].hero_pill_title}</strong>
+              <span>{T[lang].hero_pill_sub}</span>
             </div>
           </div>
 
@@ -86,8 +86,8 @@ function Index() {
 
           <div className="bento dark hero-cta">
             <div>
-              <strong style={{ fontFamily: "var(--font-display)", fontSize: "1.15rem" }}>{t(content, "home_hero", "rigTitle", "Hybrid analog rig")}</strong>
-              <p style={{ fontSize: ".85rem", margin: 0 }}>{t(content, "home_hero", "rigDescription", "Neve · API · Tube-Tech · Bricasti")}</p>
+              <strong style={{ fontFamily: "var(--font-display)", fontSize: "1.15rem" }}>{T[lang].hero_rig_title}</strong>
+              <p style={{ fontSize: ".85rem", margin: 0 }}>{T[lang].hero_rig_desc}</p>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ function Index() {
           {stats.map(s => (
             <div className="stat-card" key={s.l}>
               <h3>{s.n}</h3>
-              <p>{s.l}</p>
+              <p>{T[lang][s.l as keyof typeof T["en"]]}</p>
             </div>
           ))}
         </div>
@@ -106,9 +106,9 @@ function Index() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">{t(content, "home_services_intro", "eyebrow", "What we do")}</span>
-          <h2>{sp[0]}<span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{sAccent}</span>{sp[1] ?? ""}</h2>
-          <p>{t(content, "home_services_intro", "description", "From the first creative spark to a polished master ready for broadcast and streaming.")}</p>
+          <span className="eyebrow">{T[lang].home_svc_eyebrow}</span>
+          <h2>{T[lang].home_svc_title}</h2>
+          <p>{T[lang].home_svc_desc}</p>
         </div>
         <div className="services-bento">
           {services.map((s, i) => (
@@ -116,7 +116,7 @@ function Index() {
               <div className="svc-ico"><i className={`bx ${s.icon}`}></i></div>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-              <span className="svc-link">Learn more <i className="bx bx-right-arrow-alt"></i></span>
+              <span className="svc-link">{T[lang].svc_learn_more} <i className="bx bx-right-arrow-alt"></i></span>
             </Link>
           ))}
         </div>
@@ -124,9 +124,9 @@ function Index() {
 
       <section>
         <div className="cta-block">
-          <h2>{cp[0]}<span className="accent">{cAccent}</span>{cp[1] ?? ""}</h2>
-          <p>{t(content, "home_cta", "description", "Tell us about your brief — we'll come back within 24 hours with a creative plan and a quote.")}</p>
-          <Link to="/contact" className="btn">{t(content, "home_cta", "buttonLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
+          <h2>{T[lang].home_cta_title}</h2>
+          <p>{T[lang].home_cta_desc}</p>
+          <Link to="/contact" className="btn">{T[lang].home_cta_btn} <i className="bx bx-right-arrow-alt"></i></Link>
         </div>
       </section>
     </main>

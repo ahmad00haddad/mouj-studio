@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useCms, s as t } from "@/lib/useCms";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -26,12 +28,12 @@ const fallbackServices = [
   { slug: "audio-branding", icon: "bx-broadcast", title: "Audio Branding", text: "Sonic logos, brand themes and audio identity systems that make your brand instantly recognizable.", features: ["Sonic logo & mnemonic", "Brand theme variations", "Touchpoint adaptations", "Usage guidelines"] },
 ];
 
-const processSteps = [
-  { n: "01", title: "Discovery", text: "We listen first — brief, audience and the emotion you want to evoke." },
-  { n: "02", title: "Pre-production", text: "Mood boards, references and a clear creative direction." },
-  { n: "03", title: "Production", text: "Recording, scoring and design with award-winning engineers." },
-  { n: "04", title: "Mix & Master", text: "Hybrid analog/digital mixing, broadcast-spec mastered." },
-  { n: "05", title: "Delivery", text: "Every stem, format and spec you need — on time and on brief." },
+const getProcessSteps = (lang: "en" | "ar") => [
+  { n: "01", title: lang === "ar" ? "الاستكشاف" : "Discovery", text: lang === "ar" ? "نستمع أولاً — موجز المشروع، الجمهور، والمشاعر التي تريد إيصالها." : "We listen first — brief, audience and the emotion you want to evoke." },
+  { n: "02", title: lang === "ar" ? "ما قبل الإنتاج" : "Pre-production", text: lang === "ar" ? "لوحات مزاج ومراجع وتوجه إبداعي واضح." : "Mood boards, references and a clear creative direction." },
+  { n: "03", title: lang === "ar" ? "الإنتاج" : "Production", text: lang === "ar" ? "تسجيل وتلحين وتصميم بأيدي مهندسين حاصلين على جوائز." : "Recording, scoring and design with award-winning engineers." },
+  { n: "04", title: lang === "ar" ? "المكساج والماسترينج" : "Mix & Master", text: lang === "ar" ? "مكساج هجين أنالوج/رقمي، ماسترينج وفق مواصفات البث." : "Hybrid analog/digital mixing, broadcast-spec mastered." },
+  { n: "05", title: lang === "ar" ? "التسليم" : "Delivery", text: lang === "ar" ? "كل ستيم وصيغة ومواصفة تحتاجها — في الوقت المحدد وبالجودة المطلوبة." : "Every stem, format and spec you need — on time and on brief." },
 ];
 
 const gear = [
@@ -42,16 +44,18 @@ const gear = [
   { group: "Live & Routing", items: ["Ableton Live (launchpad)", "Voicemeeter Banana", "Mixx", "Azuracast", "Muse Sessions"] },
 ];
 
-const faqs = [
-  { q: "How long does a typical project take?", a: "A 30-second ad usually wraps in 3-5 days. A short film score takes 2-4 weeks. We always agree on a milestone schedule up front." },
-  { q: "Do you work remotely with clients abroad?", a: "Yes. We deliver via Source-Connect, Audiomovers and shared sessions, with daily review links and revision rounds built into every quote." },
-  { q: "Can you license existing music too?", a: "Absolutely — our music supervision team handles licensing, clearance and original commissions across local and international catalogs." },
-  { q: "What deliverables do we receive?", a: "Final mix, stems, M&E, broadcast-spec masters and a documented session archive — everything you need to re-version later." },
+const getFaqs = (lang: "en" | "ar") => [
+  { q: T[lang].faq_q1, a: T[lang].faq_a1 },
+  { q: T[lang].faq_q2, a: T[lang].faq_a2 },
+  { q: T[lang].faq_q3, a: T[lang].faq_a3 },
+  { q: T[lang].faq_q4, a: T[lang].faq_a4 },
 ];
 
 function ServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const { content, services: dbServices } = useCms();
+  const { lang } = useI18n();
+  const faqs = getFaqs(lang);
   const services = dbServices.length
     ? dbServices.map(sv => ({ slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "", features: sv.features ?? [], wide: sv.wide }))
     : fallbackServices;
@@ -64,9 +68,9 @@ function ServicesPage() {
     <main>
       <section>
         <div className="page-head">
-          <span className="eyebrow">{t(content, "services_intro", "eyebrow", "Services")}</span>
-          <h1>{t(content, "services_intro", "title", "What we do")}</h1>
-          <p>{t(content, "services_intro", "description", "From the first note to the final master — a complete sonic toolkit under one roof.")}</p>
+          <span className="eyebrow">{T[lang].services_page_eyebrow}</span>
+          <h1>{T[lang].services_page_title}</h1>
+          <p>{T[lang].services_page_desc}</p>
         </div>
         <div className="services-bento">
           {services.map(s => (
@@ -84,12 +88,12 @@ function ServicesPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Process</span>
-          <h2>How we <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>work</span></h2>
-          <p>A clear, collaborative path from idea to final master.</p>
+          <span className="eyebrow">{T[lang].process_eyebrow}</span>
+          <h2>{T[lang].process_title}</h2>
+          <p>{T[lang].process_desc}</p>
         </div>
         <div className="process">
-          {processSteps.map(p => (
+          {getProcessSteps(lang).map(p => (
             <div className="process-step" key={p.n}>
               <div className="n">{p.n}</div>
               <h3>{p.title}</h3>
@@ -101,9 +105,9 @@ function ServicesPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Studio</span>
-          <h2>Hand-picked <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>gear</span></h2>
-          <p>A curated locker of analog warmth and digital precision.</p>
+          <span className="eyebrow">{T[lang].gear_eyebrow}</span>
+          <h2>{T[lang].gear_title}</h2>
+          <p>{T[lang].gear_desc}</p>
         </div>
         <div className="gear">
           {gear.map(g => (
@@ -117,8 +121,8 @@ function ServicesPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">FAQ</span>
-          <h2>Frequently asked <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>questions</span></h2>
+          <span className="eyebrow">{T[lang].faq_eyebrow}</span>
+          <h2>{T[lang].faq_title}</h2>
         </div>
         <div className="faq">
           {faqs.map((f, i) => (
@@ -135,9 +139,9 @@ function ServicesPage() {
 
       <section>
         <div className="cta-block">
-          <h2>{t(content, "services_cta", "title", "Ready to make some noise?")}</h2>
-          <p>{t(content, "services_cta", "description", "Tell us about your project — we'll come back within 24 hours with a creative plan.")}</p>
-          <Link to="/contact" className="btn">{t(content, "services_cta", "buttonLabel", "Start a project")} <i className="bx bx-right-arrow-alt"></i></Link>
+          <h2>{T[lang].services_cta_title}</h2>
+          <p>{T[lang].services_cta_desc}</p>
+          <Link to="/contact" className="btn">{T[lang].services_cta_btn} <i className="bx bx-right-arrow-alt"></i></Link>
         </div>
       </section>
     </main>

@@ -29,11 +29,11 @@ const fallbackServices = [
 ];
 
 const getProcessSteps = (lang: "en" | "ar") => [
-  { n: "01", title: lang === "ar" ? "الاستكشاف" : "Discovery", text: lang === "ar" ? "نستمع أولاً — موجز المشروع، الجمهور، والمشاعر التي تريد إيصالها." : "We listen first — brief, audience and the emotion you want to evoke." },
-  { n: "02", title: lang === "ar" ? "ما قبل الإنتاج" : "Pre-production", text: lang === "ar" ? "لوحات مزاج ومراجع وتوجه إبداعي واضح." : "Mood boards, references and a clear creative direction." },
-  { n: "03", title: lang === "ar" ? "الإنتاج" : "Production", text: lang === "ar" ? "تسجيل وتلحين وتصميم بأيدي مهندسين حاصلين على جوائز." : "Recording, scoring and design with award-winning engineers." },
-  { n: "04", title: lang === "ar" ? "المكساج والماسترينج" : "Mix & Master", text: lang === "ar" ? "مكساج هجين أنالوج/رقمي، ماسترينج وفق مواصفات البث." : "Hybrid analog/digital mixing, broadcast-spec mastered." },
-  { n: "05", title: lang === "ar" ? "التسليم" : "Delivery", text: lang === "ar" ? "كل ستيم وصيغة ومواصفة تحتاجها — في الوقت المحدد وبالجودة المطلوبة." : "Every stem, format and spec you need — on time and on brief." },
+  { n: "01", title: T[lang].process_1_title, text: T[lang].process_1_text },
+  { n: "02", title: T[lang].process_2_title, text: T[lang].process_2_text },
+  { n: "03", title: T[lang].process_3_title, text: T[lang].process_3_text },
+  { n: "04", title: T[lang].process_4_title, text: T[lang].process_4_text },
+  { n: "05", title: T[lang].process_5_title, text: T[lang].process_5_text },
 ];
 
 const gear = [
@@ -58,7 +58,15 @@ function ServicesPage() {
   const faqs = getFaqs(lang);
   const services = dbServices.length
     ? dbServices.map(sv => ({ slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "", features: sv.features ?? [], wide: sv.wide }))
-    : fallbackServices;
+    : fallbackServices.map(s => {
+        const tKeyTitle = `svc_${s.slug.replace(/-/g, "_")}_title` as keyof typeof T["en"];
+        const tKeyText = `svc_${s.slug.replace(/-/g, "_")}_text` as keyof typeof T["en"];
+        return {
+          ...s,
+          title: (T as any)[lang][tKeyTitle] || s.title,
+          text: (T as any)[lang][tKeyText] || s.text
+        };
+      });
   useEffect(() => {
     const h = window.location.hash.slice(1);
     if (h) setTimeout(() => document.getElementById(h)?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);

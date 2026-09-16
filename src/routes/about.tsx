@@ -16,17 +16,17 @@ export const Route = createFileRoute("/about")({
 });
 
 const getPillars = (lang: "en" | "ar") => [
-  { n: "01", title: lang === "ar" ? "قصتنا" : "Our Story", text: lang === "ar" ? "ستوديو موج مركز إبداعي متخصص في الأعمال الصوتية — من الموسيقى إلى السينما — مبني على مرافق متطورة وفريق مهرة من مهندسي الصوت والمبدعين." : "Mouje Studio is a premier creative hub specializing in audio works — from music to film — built around state-of-the-art facilities and a team of skilled audio engineers and creatives." },
-  { n: "02", title: lang === "ar" ? "الفلسفة" : "Philosophy", text: lang === "ar" ? "نلتزم بأعلى معايير الصناعة ونظل مهووسين بالصوت — نستكشف باستمرار تقنيات جديدة لدفع الحرفة إلى الأمام." : "We hold ourselves to the highest industry standards and stay obsessed with sound — continually exploring new techniques and technologies to push the craft forward." },
-  { n: "03", title: lang === "ar" ? "لماذا نحن" : "Why Us", text: lang === "ar" ? "الخبرة والجودة والإبداع ونهج يمحور العميل. نعمل معك عن كثب لترجمة رؤيتك إلى صوت يتردد صداه." : "Expertise, quality, creativity and a client-centric approach. We work closely with you to translate vision into sound that resonates." },
-  { n: "04", title: lang === "ar" ? "أهدافنا" : "Our Goals", text: lang === "ar" ? "تقديم صوت يتجاوز التوقعات، والابتكار المستمر، وبناء علاقات طويلة الأمد مبنية على الثقة والتعاون." : "Deliver audio that exceeds expectations, innovate continuously, and build long-term relationships rooted in trust and collaboration." },
+  { n: "01", title: (T as any)[lang].about_pillars_story_title, text: (T as any)[lang].about_pillars_story_text },
+  { n: "02", title: (T as any)[lang].about_pillars_philosophy_title, text: (T as any)[lang].about_pillars_philosophy_text },
+  { n: "03", title: (T as any)[lang].about_pillars_why_title, text: (T as any)[lang].about_pillars_why_text },
+  { n: "04", title: (T as any)[lang].about_pillars_goals_title, text: (T as any)[lang].about_pillars_goals_text },
 ];
 
 const getValues = (lang: "en" | "ar") => [
-  { icon: "bx-target-lock", title: lang === "ar" ? "الحرفة فوق السرعة" : "Craft over speed", text: lang === "ar" ? "نُحسّن من أجل النتيجة لا الموعد النهائي — ومع ذلك نسلّم في الوقت المحدد." : "We optimize for the result, not the deadline — yet still ship on time." },
-  { icon: "bx-bulb", title: lang === "ar" ? "الإبداع أولاً" : "Creative first", text: lang === "ar" ? "الصوت يخدم القصة. كل قرار يبدأ من الموجز الإبداعي." : "Sound serves story. Every decision starts from the creative brief." },
-  { icon: "bx-shield-quarter", title: lang === "ar" ? "جودة مضمونة" : "Quality assured", text: lang === "ar" ? "سير عمل هجين أنالوج/رقمي، غرف معايَرة ومراقبة جودة صارمة." : "Hybrid analog/digital workflows, calibrated rooms and rigorous QC." },
-  { icon: "bx-group", title: lang === "ar" ? "شراكة حقيقية" : "True partnership", text: lang === "ar" ? "تواصل شفاف، تعديلات فعلية، لا مفاجآت." : "Transparent communication, real revisions, no surprises." },
+  { icon: "bx-target-lock", title: (T as any)[lang].value_craft_title, text: (T as any)[lang].value_craft_text },
+  { icon: "bx-bulb", title: (T as any)[lang].value_creative_title, text: (T as any)[lang].value_creative_text },
+  { icon: "bx-shield-quarter", title: (T as any)[lang].value_quality_title, text: (T as any)[lang].value_quality_text },
+  { icon: "bx-group", title: (T as any)[lang].value_partner_title, text: (T as any)[lang].value_partner_text },
 ];
 
 const fallbackFounderSkills = [
@@ -63,13 +63,18 @@ function AboutPage() {
   const { content } = useCms();
   const { lang } = useI18n();
   const founderSkills = list<string>(content, "about_founder", "skills", fallbackFounderSkills);
-  const founderExperience = list<{ role: string; company: string; years: string; description: string }>(
+  const founderExperience = lang === "ar" ? [
+  { role: "مؤسس / متخصص صوتيات", company: "ستوديو موج", years: "مايو 2021 — الآن", description: "إدارة الإنتاج وما بعد الإنتاج عبر المشاريع الداخلية والمكلفة، وتسجيل الجلسات المباشرة، وهندسة الصوت المباشرة، وتقديم الاستشارات وورش عمل الإنتاج الصوتي." },
+  { role: "مصمم صوت رئيسي / مدير قسم الصوت", company: "جواكر", years: "يونيو 2021 — يناير 2024", description: "بناء محرك الصوت وسير العمل من الصفر للعبة الورق الرائدة في الشرق الأوسط. قيادة الإنتاج الموسيقي وتسجيل التعليق الصوتي وتوطين اللغات والمحتوى المباشر." },
+  { role: "عازف كيبورد، منتج ومهندس صوت", company: "ارتداد", years: "2019 — 2022", description: "موسيقى روك عربية بمقامات شرقية وكلمات بهوية عربية. إنتاج ومكساج وماسترينج كامل للألبوم الأول للفرقة." },
+  { role: "موسيقي — MOUJE", company: "مشروع منفرد", years: "2015 — الآن", description: "سينث بوب إلكتروني باللغة العربية. حالياً في مرحلة إنتاج الألبوم الأول Xetopia. أغاني الكوڤر الخاص به حظيت بإشادة من فنانين مثل Madeon." }
+] : list<{ role: string; company: string; years: string; description: string }>( 
     content, "about_experience", "items",
     fallbackFounderExperience.map(e => ({ role: e.role, company: e.org, years: e.period, description: e.text })),
   );
   const founderName = t(content, "about_founder", "name", "Motaz Dababseh");
   const founderTitle = t(content, "about_founder", "title", "Senior Sound Designer & Audio Engineer · Founder of Mouje Studio");
-  const founderBio = t(content, "about_founder", "bio", "Passionately working with music and audio for 13+ years. As a Solo Artist (Mouje), exploring Electronic Synthpop, Pop and Rock, and currently producing the LP 'Xetopia'. Also leading Mouje Studio for world-class sound design, audio engineering, and music composition, including 3 years full-time in the gaming industry.");
+  const founderBio = lang === "ar" ? "شغف وعمل مستمر في الموسيقى والصوت لأكثر من 13 عاماً. كفنان منفرد (موج)، يستكشف موسيقى السينث بوب الإلكترونية والروك، ويُنتج حالياً ألبومه Xetopia. كما يقود ستوديو موج لتقديم تصميم صوتي وهندسة وتلحين على مستوى عالمي، بما في ذلك 3 سنوات بدوام كامل في صناعة الألعاب." : t(content, "about_founder", "bio", "Passionately working with music and audio for 13+ years. As a Solo Artist (Mouje), exploring Electronic Synthpop, Pop and Rock, and currently producing the LP 'Xetopia'. Also leading Mouje Studio for world-class sound design, audio engineering, and music composition, including 3 years full-time in the gaming industry.");
   return (
     <main>
       <section>
@@ -198,7 +203,13 @@ function AboutPage() {
           <h2>{T[lang].projects_title}</h2>
         </div>
         <div className="services-bento">
-          {founderProjects.map(p => (
+          {(lang === "ar" ? [
+  { title: "راديو كأس العالم في جواكر", meta: "بث مباشر داخل لعبة · 2023", text: "بناء نظام البث المباشر لبطولة كأس العالم في قطر داخل اللعبة — تكوين الخوادم وإعداد التحكم المباشر والميكروفونات للمعلقين ومؤثرات الجماهير الحية. تجاوز عدد المستمعين 150 ألفاً وحقق إيرادات تزيد عن 100 ألف دولار." },
+  { title: "يوم جديد", meta: "برنامج تفاعلي للأطفال · صوت وموج · 2025", text: "برنامج من 80 حلقة لتحسين مخرجات التعلم لأطفال فلسطين، نفذته بودكاست صوت بالتعاون مع ستوديو موج، بتمويل من مؤسسة التعليم فوق الجميع. إخراج صوتي، تحرير، تصميم صوتي، مكساج وماسترينج." },
+  { title: "مجموعة وتر (وتر الشرق · وتر بوب)", meta: "مدير صوت · 2025 — الآن", text: "الإدارة الصوتية لفرقة موسيقية أردنية تأسست عام 2021 — الصوت المباشر من اختيار الميكروفونات إلى المكساج، والتخطيط التقني لكل موقع، والتسجيل/المكساج متعدد المسارات للإصدارات الرقمية." },
+  { title: "راديو 6 — جلسات حية", meta: "مهندس تسجيل ومكساج رئيسي · 2025", text: "المهندس الرسمي للتسجيل والمكساج لراديو 6، تتبع ومزج العروض الحية لفنانين أردنيين بارزين بالإضافة إلى أداء جلسات منفردة أصلية." },
+  { title: "موج — Xetopia (ألبوم)", meta: "ألبوم منفرد · قيد الإنتاج", text: "ألبوم سينث بوب إلكتروني شخصي للغاية يضم أغاني مثل ساكن ورح تلحقني. تم إنتاجه ومكساجه وماسترينج بالكامل في الاستوديو." }
+] : founderProjects).map(p => (
             <article className="svc wide feat" key={p.title}>
               <div className="svc-ico"><i className="bx bx-award"></i></div>
               <h3>{p.title}</h3>

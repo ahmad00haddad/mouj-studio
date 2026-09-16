@@ -95,6 +95,19 @@ function WorksPage() {
   
   // Create a merged list: start with fallback items
   const mergedItems = fallbackItems.map(fallback => {
+    // Inject Arabic translations for known fallback items
+    if (lang === "ar") {
+        if (fallback.title === "Xetopia Spotlight") {
+            fallback = { ...fallback, title: "Xetopia", client: "موج", role: "ألبوم منفرد" };
+        } else if (fallback.title === "Youm Jadeed") {
+            fallback = { ...fallback, title: "يوم جديد", client: "صوت بودكاست", role: "تصميم صوتي ومكساج" };
+        } else if (fallback.title === "Jawaker World Cup") {
+            fallback = { ...fallback, title: "جواكر - كأس العالم", client: "جواكر", role: "بث صوتي مباشر داخل اللعبة" };
+        } else if (fallback.title === "Sound Design for Films") {
+            fallback = { ...fallback, title: "تصميم صوتي للأفلام", client: "أفلام مستقلة", role: "صوت" };
+        }
+    }
+
     // If there is a matching project in the Admin DB, use its image and data!
     const dbMatch = works.find(w => w.title.toLowerCase().trim() === fallback.title.toLowerCase().trim());
     if (dbMatch) {
@@ -138,7 +151,15 @@ function WorksPage() {
   // Let's just use fallback if DB is empty or just dummy data, but if DB has real ones we show DB + fallback.
   // Actually, fallbackTestimonials is so good, let's always show it and prepend any new DB ones.
   const dbTestimonials = dbT.filter(t => !t.name.includes("Director")).map(x => ({ quote: x.quote, name: x.name, role: x.role ?? "" }));
-  const combinedTestimonials = [...dbTestimonials, ...fallbackTestimonials.filter(f => !dbTestimonials.some(d => d.name === f.name))];
+  const arTestimonials = [
+  { quote: "استوديو مذهل! معتز عبقري في المكساج وتصميم الصوت. أنصح به بشدة لأي مشروع جاد.", name: "فنان محلي", role: "مراجعة خرائط جوجل" },
+  { quote: "من أفضل المرافق الصوتية في عمان. احترافية عالية، بيئة مريحة، ومعدات عالمية.", name: "عميل استوديو", role: "مراجعة خرائط جوجل" },
+  { quote: "تجربة رائعة في تسجيل أصواتنا هنا. المعالجة الصوتية ممتازة والمكساج النهائي كان نقياً جداً.", name: "عضو فرقة", role: "مراجعة خرائط جوجل" },
+  { quote: "قام موج ببناء خط الإنتاج الصوتي لدينا من الصفر، وقدم توطيناً وموسيقى وتعليقاً صوتياً عبر عدة مناطق.", name: "جواكر", role: "لعبة الورق الرائدة في الشرق الأوسط" },
+  { quote: "شريك حقيقي — إخراج صوتي وتصميم صوتي ومكساج عبر 80 حلقة. البرنامج يبدو بمستوى عالمي.", name: "صوت بودكاست", role: "يوم جديد" },
+  { quote: "مجنون جداً!!!!!! واووو", name: "Madeon", role: "منتج مرشح للجرامي" },
+];
+  const combinedTestimonials = lang === "ar" ? arTestimonials : [...dbTestimonials, ...fallbackTestimonials.filter(f => !dbTestimonials.some(d => d.name === f.name))];
 
   const visibleTestis = showAllTestis ? combinedTestimonials : combinedTestimonials.slice(0, 3);
 
@@ -165,11 +186,14 @@ function WorksPage() {
           <span className="eyebrow" style={{ display: "block", marginBottom: "1rem", color: "var(--primary-glow)" }}>{T[lang].xetopia_eyebrow}</span>
           <h2 style={{ fontSize: "2.5rem", fontWeight: 700, marginBottom: "1.5rem" }}>Xetopia</h2>
           <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2rem", maxWidth: "800px", fontSize: "1.1rem" }}>
-            <strong>Xetopia</strong> is Mouje's deeply personal upcoming Electronic Synthpop album. It's a sonic journey exploring profound themes: 
-            <em> 'Saken'</em> dives into the duality of character and inner conflict, while <em>'Rah Telhaqni'</em> (featuring Desana) serves as his first original Arabic electronic release, asking the haunting question: <em>"Will you catch me when I fall at the end of the world?"</em>
+            {lang === "ar" ? (
+              <><strong>Xetopia</strong> هو ألبوم موج القادم والعميق في موسيقى السينث بوب الإلكترونية. إنها رحلة صوتية تستكشف موضوعات عميقة: <em>'ساكن'</em> يغوص في ازدواجية الشخصية والصراع الداخلي، بينما <em>'رح تلحقني'</em> يعتبر أول إصدار إلكتروني عربي أصلي له، يطرح السؤال المخيف: <em>"هل ستمسك بي عندما أسقط في نهاية العالم؟"</em></>
+            ) : (
+              <><strong>Xetopia</strong> is Mouje's deeply personal upcoming Electronic Synthpop album. It's a sonic journey exploring profound themes: <em> 'Saken'</em> dives into the duality of character and inner conflict, while <em>'Rah Telhaqni'</em> serves as his first original Arabic electronic release, asking the haunting question: <em>"Will you catch me when I fall at the end of the world?"</em></>
+            )}
           </p>
           <a href="https://open.spotify.com/artist/6xRx0cxS6FrZYDccwPQvbz" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem" }}>
-            <i className="bx bxl-spotify" style={{ fontSize: "1.25rem" }}></i> Listen on Spotify
+            <i className="bx bxl-spotify" style={{ fontSize: "1.25rem" }}></i> {lang === "ar" ? "استمع على سبوتيفاي" : "Listen on Spotify"}
           </a>
         </div>
 
@@ -237,24 +261,24 @@ function WorksPage() {
           <div className="work">
             <img src="/assets/img/works/hero-producer.jpg" alt="Early Days" loading="lazy" style={{ filter: "grayscale(80%) sepia(20%)" }} />
             <div className="work-overlay">
-              <h3>2016 Dubstep Era</h3>
-              <p>The very beginnings. Heavy bass drops, aggressive synths, and the release of 'Terror' that started the electronic journey.</p>
+              <h3>{lang === "ar" ? "2016 عصر الدبستيب" : "2016 Dubstep Era"}</h3>
+              <p>{lang === "ar" ? "البدايات الحقيقية. قطرات بيس ثقيلة، سينثات عنيفة، وإصدار 'Terror' الذي بدأ الرحلة الإلكترونية." : "The very beginnings. Heavy bass drops, aggressive synths, and the release of 'Terror' that started the electronic journey."}</p>
             </div>
           </div>
 
           <div className="work">
             <img src="/assets/img/works/work-foley.jpg" alt="First Studio" loading="lazy" style={{ filter: "grayscale(50%)" }} />
             <div className="work-overlay">
-              <h3>The First Setup</h3>
-              <p>Before the HDX rigs and pristine acoustics. A testament to the fact that gear doesn't make the engineer; the ear does.</p>
+              <h3>{lang === "ar" ? "الاستوديو الأول" : "The First Setup"}</h3>
+              <p>{lang === "ar" ? "قبل منصات HDX والصوتيات النقية. شهادة على حقيقة أن المعدات لا تصنع المهندس؛ بل الأذن هي من تفعل." : "Before the HDX rigs and pristine acoustics. A testament to the fact that gear doesn't make the engineer; the ear does."}</p>
             </div>
           </div>
           
           <div className="work">
             <img src="/assets/img/works/work-mixing.jpg" alt="Local Gigs" loading="lazy" style={{ filter: "grayscale(30%)" }} />
             <div className="work-overlay">
-              <h3>Underground Sessions</h3>
-              <p>Mixing and recording local bands in Amman. The raw, unfiltered energy of the Jordanian music scene.</p>
+              <h3>{lang === "ar" ? "حفلات الأندرجراوند" : "Underground Sessions"}</h3>
+              <p>{lang === "ar" ? "مكساج وتسجيل للفرق المحلية في عمان. الطاقة الخام وغير المفلترة لمشهد الموسيقى الأردنية." : "Mixing and recording local bands in Amman. The raw, unfiltered energy of the Jordanian music scene."}</p>
             </div>
           </div>
 

@@ -35,9 +35,17 @@ function Index() {
   const { content, services: dbServices } = useCms();
   const { lang } = useI18n();
   const stats = list<{ n: string; l: string }>(content, "home_stats", "items", fallbackStats);
-  const services = (dbServices.length ? dbServices.map((sv) => ({
-    slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "",
-  })) : fallbackServices).slice(0, 6);
+  const services = (dbServices.length ? dbServices : fallbackServices).map(sv => {
+    const slugStr = sv.slug || "";
+    const tKeyTitle = `svc_${slugStr.replace(/-/g, "_")}_title` as keyof typeof T["en"];
+    const tKeyText = `svc_${slugStr.replace(/-/g, "_")}_text` as keyof typeof T["en"];
+    return {
+      slug: slugStr,
+      icon: sv.icon || "bx-pulse",
+      title: (T as any)[lang]?.[tKeyTitle] || sv.title || "",
+      text: (T as any)[lang]?.[tKeyText] || (sv as any).text || (sv as any).description || ""
+    };
+  }).slice(0, 6);
   const heroTitle = t(content, "home_hero", "title", "Sound that moves people.");
   const heroAccent = t(content, "home_hero", "accent", "moves");
   const hp = heroTitle.split(heroAccent);

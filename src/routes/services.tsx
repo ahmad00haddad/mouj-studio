@@ -56,17 +56,19 @@ function ServicesPage() {
   const { content, services: dbServices } = useCms();
   const { lang } = useI18n();
   const faqs = getFaqs(lang);
-  const services = dbServices.length
-    ? dbServices.map(sv => ({ slug: sv.slug, icon: sv.icon || "bx-pulse", title: sv.title, text: sv.description || "", features: sv.features ?? [], wide: sv.wide }))
-    : fallbackServices.map(s => {
-        const tKeyTitle = `svc_${s.slug.replace(/-/g, "_")}_title` as keyof typeof T["en"];
-        const tKeyText = `svc_${s.slug.replace(/-/g, "_")}_text` as keyof typeof T["en"];
-        return {
-          ...s,
-          title: (T as any)[lang][tKeyTitle] || s.title,
-          text: (T as any)[lang][tKeyText] || s.text
-        };
-      });
+  const services = (dbServices.length ? dbServices : fallbackServices).map(sv => {
+    const slugStr = sv.slug || "";
+    const tKeyTitle = `svc_${slugStr.replace(/-/g, "_")}_title` as keyof typeof T["en"];
+    const tKeyText = `svc_${slugStr.replace(/-/g, "_")}_text` as keyof typeof T["en"];
+    return {
+      slug: slugStr,
+      icon: sv.icon || "bx-pulse",
+      title: (T as any)[lang]?.[tKeyTitle] || sv.title || "",
+      text: (T as any)[lang]?.[tKeyText] || (sv as any).text || (sv as any).description || "",
+      features: sv.features ?? [],
+      wide: (sv as any).wide
+    };
+  });
   useEffect(() => {
     const h = window.location.hash.slice(1);
     if (h) setTimeout(() => document.getElementById(h)?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);

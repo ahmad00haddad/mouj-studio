@@ -191,7 +191,7 @@ function WorksPage() {
                 {it.link && (
                   <a href={it.link} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ marginTop: "1rem", padding: "0.5rem 1rem", fontSize: "0.85rem" }}>
                     <i className="bx bx-play-circle" style={{ marginRight: "0.25rem", fontSize: "1.1rem" }}></i>
-                    Watch / Listen
+                    {T[lang].works_watch_listen}
                   </a>
                 )}
               </div>
@@ -205,12 +205,9 @@ function WorksPage() {
       {tracks.length > 0 && (
         <section>
           <div className="section-head">
-            <span className="eyebrow">{t(content, "works_tracks", "eyebrow", "Listen")}</span>
-            <h2>
-              {t(content, "works_tracks", "title", "Selected ")}
-              <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>tracks</span>
-            </h2>
-            <p>{t(content, "works_tracks", "description", "Original music, covers and scores — press play or open the release.")}</p>
+            <span className="eyebrow">{T[lang].works_listen_eyebrow}</span>
+            <h2>{T[lang].works_listen_title}</h2>
+            <p>{T[lang].works_listen_desc}</p>
           </div>
           <TrackPlayer tracks={tracks} />
         </section>
@@ -220,8 +217,8 @@ function WorksPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Trusted by</span>
-          <h2>Teams across the <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>region</span></h2>
+          <span className="eyebrow">{T[lang].works_trusted_eyebrow}</span>
+          <h2>{T[lang].works_trusted_title}</h2>
         </div>
         <div className="clients">
           {clientItems.map((c, i) => <div className="client-pill" key={c.name || i}>{c.name}</div>)}
@@ -266,8 +263,8 @@ function WorksPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Testimonials</span>
-          <h2>What clients <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>say</span></h2>
+          <span className="eyebrow">{T[lang].testimonials_eyebrow}</span>
+          <h2>{T[lang].testimonials_title}</h2>
         </div>
         <div className="testis">
           {visibleTestis.map(t => (
@@ -285,7 +282,7 @@ function WorksPage() {
               className="btn btn-ghost" 
               onClick={() => setShowAllTestis(!showAllTestis)}
             >
-              {showAllTestis ? "Show Less" : "Load More Testimonials"}
+              {showAllTestis ? T[lang].works_testimonials_show_less : T[lang].works_testimonials_show_more}
             </button>
           </div>
         )}

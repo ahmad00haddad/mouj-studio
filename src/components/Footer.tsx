@@ -37,11 +37,11 @@ export function Footer() {
         <div className="footer-col">
           <h4>{T[lang].footer_services}</h4>
           <ul>
-            <li><Link to="/services" hash="film-scoring">Film Scoring</Link></li>
-            <li><Link to="/services" hash="recording">Recording</Link></li>
-            <li><Link to="/services" hash="mixing-and-mastering">Mixing & Mastering</Link></li>
-            <li><Link to="/services" hash="sound-design">Sound Design</Link></li>
-            <li><Link to="/services" hash="audio-branding">Audio Branding</Link></li>
+            <li><Link to="/services" hash="film-scoring">{T[lang].footer_svc_film}</Link></li>
+            <li><Link to="/services" hash="recording">{T[lang].footer_svc_recording}</Link></li>
+            <li><Link to="/services" hash="mixing-and-mastering">{T[lang].footer_svc_mixing}</Link></li>
+            <li><Link to="/services" hash="sound-design">{T[lang].footer_svc_sound}</Link></li>
+            <li><Link to="/services" hash="audio-branding">{T[lang].footer_svc_branding}</Link></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -54,9 +54,9 @@ export function Footer() {
         </div>
       </div>
             <div className="footer-bottom" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
-        <div>{copyright}</div>
+        <div>{T[lang].footer_rights}</div>
         <div style={{ fontSize: "0.85rem", opacity: 0.7 }}>
-          Developed by <a href="https://haddad-dev.lovable.app/" target="_blank" rel="noreferrer" style={{ color: "var(--primary-glow)", textDecoration: "none", fontWeight: "bold" }}>Ahmad Haddad</a>
+          {T[lang].footer_dev_credit} <a href="https://haddad-dev.lovable.app/" target="_blank" rel="noreferrer" style={{ color: "var(--primary-glow)", textDecoration: "none", fontWeight: "bold" }}>Ahmad Haddad</a>
         </div>
       </div>
     </footer>

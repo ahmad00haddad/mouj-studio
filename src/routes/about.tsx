@@ -15,18 +15,18 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const pillars = [
-  { n: "01", title: "Our Story", text: "Mouje Studio is a premier creative hub specializing in audio works — from music to film — built around state-of-the-art facilities and a team of skilled audio engineers and creatives." },
-  { n: "02", title: "Philosophy", text: "We hold ourselves to the highest industry standards and stay obsessed with sound — continually exploring new techniques and technologies to push the craft forward." },
-  { n: "03", title: "Why Us", text: "Expertise, quality, creativity and a client-centric approach. We work closely with you to translate vision into sound that resonates." },
-  { n: "04", title: "Our Goals", text: "Deliver audio that exceeds expectations, innovate continuously, and build long-term relationships rooted in trust and collaboration." },
+const getPillars = (lang: "en" | "ar") => [
+  { n: "01", title: lang === "ar" ? "قصتنا" : "Our Story", text: lang === "ar" ? "ستوديو موج مركز إبداعي متخصص في الأعمال الصوتية — من الموسيقى إلى السينما — مبني على مرافق متطورة وفريق مهرة من مهندسي الصوت والمبدعين." : "Mouje Studio is a premier creative hub specializing in audio works — from music to film — built around state-of-the-art facilities and a team of skilled audio engineers and creatives." },
+  { n: "02", title: lang === "ar" ? "الفلسفة" : "Philosophy", text: lang === "ar" ? "نلتزم بأعلى معايير الصناعة ونظل مهووسين بالصوت — نستكشف باستمرار تقنيات جديدة لدفع الحرفة إلى الأمام." : "We hold ourselves to the highest industry standards and stay obsessed with sound — continually exploring new techniques and technologies to push the craft forward." },
+  { n: "03", title: lang === "ar" ? "لماذا نحن" : "Why Us", text: lang === "ar" ? "الخبرة والجودة والإبداع ونهج يمحور العميل. نعمل معك عن كثب لترجمة رؤيتك إلى صوت يتردد صداه." : "Expertise, quality, creativity and a client-centric approach. We work closely with you to translate vision into sound that resonates." },
+  { n: "04", title: lang === "ar" ? "أهدافنا" : "Our Goals", text: lang === "ar" ? "تقديم صوت يتجاوز التوقعات، والابتكار المستمر، وبناء علاقات طويلة الأمد مبنية على الثقة والتعاون." : "Deliver audio that exceeds expectations, innovate continuously, and build long-term relationships rooted in trust and collaboration." },
 ];
 
-const values = [
-  { icon: "bx-target-lock", title: "Craft over speed", text: "We optimize for the result, not the deadline — yet still ship on time." },
-  { icon: "bx-bulb", title: "Creative first", text: "Sound serves story. Every decision starts from the creative brief." },
-  { icon: "bx-shield-quarter", title: "Quality assured", text: "Hybrid analog/digital workflows, calibrated rooms and rigorous QC." },
-  { icon: "bx-group", title: "True partnership", text: "Transparent communication, real revisions, no surprises." },
+const getValues = (lang: "en" | "ar") => [
+  { icon: "bx-target-lock", title: lang === "ar" ? "الحرفة فوق السرعة" : "Craft over speed", text: lang === "ar" ? "نُحسّن من أجل النتيجة لا الموعد النهائي — ومع ذلك نسلّم في الوقت المحدد." : "We optimize for the result, not the deadline — yet still ship on time." },
+  { icon: "bx-bulb", title: lang === "ar" ? "الإبداع أولاً" : "Creative first", text: lang === "ar" ? "الصوت يخدم القصة. كل قرار يبدأ من الموجز الإبداعي." : "Sound serves story. Every decision starts from the creative brief." },
+  { icon: "bx-shield-quarter", title: lang === "ar" ? "جودة مضمونة" : "Quality assured", text: lang === "ar" ? "سير عمل هجين أنالوج/رقمي، غرف معايَرة ومراقبة جودة صارمة." : "Hybrid analog/digital workflows, calibrated rooms and rigorous QC." },
+  { icon: "bx-group", title: lang === "ar" ? "شراكة حقيقية" : "True partnership", text: lang === "ar" ? "تواصل شفاف، تعديلات فعلية، لا مفاجآت." : "Transparent communication, real revisions, no surprises." },
 ];
 
 const fallbackFounderSkills = [
@@ -97,7 +97,7 @@ function AboutPage() {
           <h2>{T[lang].pillars_title}</h2>
         </div>
         <div className="pillars">
-          {pillars.map(p => (
+          {getPillars(lang).map(p => (
             <div className="pillar" key={p.n}>
               <div className="n">{p.n}</div>
               <h3>{p.title}</h3>
@@ -157,14 +157,14 @@ function AboutPage() {
 
       <section>
         <div className="section-head">
-          <span className="eyebrow">Insights</span>
-          <h2>Creative <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Philosophy</span></h2>
-          <p>Thoughts and insights extracted from recent interviews and podcasts.</p>
+          <span className="eyebrow">{T[lang].about_insights_eyebrow}</span>
+          <h2>{T[lang].about_insights_title}</h2>
+          <p>{T[lang].about_insights_desc}</p>
         </div>
         <div className="pillars">
           <div className="pillar">
             <div className="n"><i className="bx bxs-quote-right" style={{ fontSize: "1.5rem" }}></i></div>
-            <h3 style={{ color: "var(--primary-glow)" }}>On Interactive Audio</h3>
+            <h3 style={{ color: "var(--primary-glow)" }}>{T[lang].about_insights_bts_title}</h3>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2rem", maxWidth: "800px", fontSize: "1.1rem" }}>{T[lang].bts_project_desc}</p>
             <a href="https://www.youtube.com/watch?v=ivWObD7kW_c" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem" }}>
               <i className="bx bxl-youtube" style={{ fontSize: "1.25rem" }}></i> {T[lang].bts_watch_btn}
@@ -235,7 +235,7 @@ function AboutPage() {
           <h2>{T[lang].values_title}</h2>
         </div>
         <div className="services-bento">
-          {values.map(v => (
+          {getValues(lang).map(v => (
             <div className="svc" key={v.title}>
               <div className="svc-ico"><i className={`bx ${v.icon}`}></i></div>
               <h3>{v.title}</h3>

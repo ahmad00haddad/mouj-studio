@@ -36,12 +36,12 @@ const getProcessSteps = (lang: "en" | "ar") => [
   { n: "05", title: T[lang].process_5_title, text: T[lang].process_5_text },
 ];
 
-const gear = [
-  { group: "DAWs", items: ["FL Studio", "Reaper", "Bitwig", "Ableton Live", "Pro Tools"] },
-  { group: "Middleware", items: ["Wwise (Certified)", "FMOD", "Unity Audio", "Unreal Audio"] },
-  { group: "Plugins", items: ["iZotope RX 11", "FabFilter", "Waves", "Universal Audio", "Kilohearts", "MeldaProduction", "Valhalla", "Analog Obsession"] },
-  { group: "Softsynths", items: ["Serum 2", "Vital", "Phaseplant", "Native Instruments", "Analog Lab", "Harmor"] },
-  { group: "Live & Routing", items: ["Ableton Live (launchpad)", "Voicemeeter Banana", "Mixx", "Azuracast", "Muse Sessions"] },
+const getGear = (lang: "en" | "ar") => [
+  { group: T[lang].gear_daws, items: ["FL Studio", "Reaper", "Bitwig", "Ableton Live", "Pro Tools"] },
+  { group: T[lang].gear_middleware, items: ["Wwise (Certified)", "FMOD", "Unity Audio", "Unreal Audio"] },
+  { group: T[lang].gear_plugins, items: ["iZotope RX 11", "FabFilter", "Waves", "Universal Audio", "Kilohearts", "MeldaProduction", "Valhalla", "Analog Obsession"] },
+  { group: T[lang].gear_softsynths, items: ["Serum 2", "Vital", "Phaseplant", "Native Instruments", "Analog Lab", "Harmor"] },
+  { group: T[lang].gear_live, items: ["Ableton Live (launchpad)", "Voicemeeter Banana", "Mixx", "Azuracast", "Muse Sessions"] },
 ];
 
 const getFaqs = (lang: "en" | "ar") => [
@@ -65,7 +65,7 @@ function ServicesPage() {
       icon: sv.icon || "bx-pulse",
       title: (T as any)[lang]?.[tKeyTitle] || sv.title || "",
       text: (T as any)[lang]?.[tKeyText] || (sv as any).text || (sv as any).description || "",
-      features: sv.features ?? [],
+      features: (T[lang].svc_features[slugStr] ?? sv.features ?? []) as string[],
       wide: (sv as any).wide
     };
   });
@@ -120,7 +120,7 @@ function ServicesPage() {
           <p>{T[lang].gear_desc}</p>
         </div>
         <div className="gear">
-          {gear.map(g => (
+          {getGear(lang).map(g => (
             <div className="gear-card" key={g.group}>
               <h4>{g.group}</h4>
               <ul>{g.items.map(i => <li key={i}>{i}</li>)}</ul>

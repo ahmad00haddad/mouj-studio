@@ -1,6 +1,8 @@
 import type { Track } from "@/lib/cms";
 import { usePlayer, playQueue, toggleTrack, seek } from "@/lib/player";
 import WaveCanvas from "./WaveCanvas";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 function fmt(sec: number) {
   if (!isFinite(sec) || sec < 0) return "0:00";
@@ -11,6 +13,7 @@ function fmt(sec: number) {
 
 export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
   const p = usePlayer();
+  const { lang } = useI18n();
   if (!tracks.length) return null;
 
   const currentInList = p.queue.some((t) => tracks.find((x) => x.id === t.id));
@@ -55,7 +58,7 @@ export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
                 <button
                   type="button"
                   className="track-play"
-                  aria-label={isCurrent && p.playing ? `Pause ${t.title}` : `Play ${t.title}`}
+                  aria-label={`${isCurrent && p.playing ? T[lang].track_pause : T[lang].track_play} ${t.title}`}
                   onClick={() =>
                     currentInList ? toggleTrack(t) : playQueue(tracks, t.id)
                   }
@@ -64,10 +67,10 @@ export default function TrackPlayer({ tracks }: { tracks: Track[] }) {
                 </button>
               ) : t.external_url ? (
                 <a className="btn btn-ghost" href={t.external_url} target="_blank" rel="noopener noreferrer">
-                  Listen <i className="bx bx-link-external"></i>
+                  {T[lang].track_listen} <i className="bx bx-link-external"></i>
                 </a>
               ) : (
-                <span className="track-soon">Coming soon</span>
+                <span className="track-soon">{T[lang].track_soon}</span>
               )}
             </div>
           </article>

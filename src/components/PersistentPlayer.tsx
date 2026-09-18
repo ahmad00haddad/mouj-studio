@@ -15,6 +15,8 @@ import {
   bindShortcuts,
 } from "@/lib/player";
 import WaveCanvas from "./WaveCanvas";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
 function fmt(sec: number) {
   if (!isFinite(sec) || sec < 0) return "0:00";
@@ -26,6 +28,7 @@ function fmt(sec: number) {
 /** Sticky bottom player that keeps the music alive across page navigation. */
 export default function PersistentPlayer() {
   const p = usePlayer();
+  const { lang } = useI18n();
   const track = currentTrack();
   const [queueOpen, setQueueOpen] = useState(false);
   useEffect(() => bindShortcuts(), []);
@@ -35,7 +38,7 @@ export default function PersistentPlayer() {
 
   const share = async () => {
     const url = window.location.origin + "/works";
-    const data = { title: track.title, text: `Listening to ${track.title} — Mouje Studio`, url };
+    const data = { title: track.title, text: `${T[lang].player_share_text} ${track.title} — Mouje Studio`, url };
     try {
       if (navigator.share) await navigator.share(data);
       else await navigator.clipboard.writeText(`${data.text} ${url}`);
@@ -45,12 +48,12 @@ export default function PersistentPlayer() {
   };
 
   return (
-    <div className={`pplayer${p.mini ? " mini" : ""}`} role="region" aria-label="Audio player">
+    <div className={`pplayer${p.mini ? " mini" : ""}`} role="region" aria-label={T[lang].player_region}>
       {queueOpen && !p.mini && (
-        <div className="pp-queue" role="listbox" aria-label="Play queue">
+        <div className="pp-queue" role="listbox" aria-label={T[lang].player_queue}>
           <div className="pp-queue-head">
-            <strong>Up next</strong>
-            <span>{p.queue.length} tracks</span>
+            <strong>{T[lang].player_queue_title}</strong>
+            <span>{p.queue.length} {T[lang].player_queue_count}</span>
           </div>
           <ul>
             {p.queue.map((q, i) => (
@@ -88,18 +91,18 @@ export default function PersistentPlayer() {
         </div>
 
         <div className="pp-controls">
-          <button type="button" onClick={prev} aria-label="Previous track">
+          <button type="button" onClick={prev} aria-label={T[lang].player_prev}>
             <i className="bx bx-skip-previous"></i>
           </button>
           <button
             type="button"
             className="pp-play"
             onClick={togglePlay}
-            aria-label={p.playing ? "Pause" : "Play"}
+            aria-label={p.playing ? T[lang].player_pause : T[lang].player_play}
           >
             <i className={`bx ${p.playing ? "bx-pause" : "bx-play"}`}></i>
           </button>
-          <button type="button" onClick={next} aria-label="Next track">
+          <button type="button" onClick={next} aria-label={T[lang].player_next}>
             <i className="bx bx-skip-next"></i>
           </button>
         </div>
@@ -122,8 +125,8 @@ export default function PersistentPlayer() {
             type="button"
             className="pp-rate"
             onClick={cycleRate}
-            aria-label="Playback speed"
-            title="Playback speed (S)"
+            aria-label={T[lang].player_speed}
+            title={`${T[lang].player_speed} (S)`}
           >
             {p.rate}x
           </button>
@@ -131,8 +134,8 @@ export default function PersistentPlayer() {
             type="button"
             className={p.loop !== "off" ? "on" : ""}
             onClick={cycleLoop}
-            aria-label={`Repeat: ${p.loop}`}
-            title={`Repeat: ${p.loop}`}
+            aria-label={`${T[lang].player_repeat}: ${p.loop}`}
+            title={`${T[lang].player_repeat}: ${p.loop}`}
           >
             <i className={`bx ${p.loop === "one" ? "bx-repost" : "bx-repeat"}`}></i>
           </button>
@@ -140,36 +143,36 @@ export default function PersistentPlayer() {
             type="button"
             className={queueOpen ? "on" : ""}
             onClick={() => setQueueOpen((o) => !o)}
-            aria-label="Play queue"
-            title="Play queue"
+            aria-label={T[lang].player_queue}
+            title={T[lang].player_queue}
           >
             <i className="bx bx-list-ul"></i>
           </button>
           <button
             type="button"
             onClick={share}
-            aria-label="Share this track"
-            title="Share"
+            aria-label={T[lang].player_share}
+            title={T[lang].player_share}
           >
             <i className="bx bx-share-alt"></i>
           </button>
           <button
             type="button"
             onClick={toggleMute}
-            aria-label={p.muted ? "Unmute" : "Mute"}
-            title="Mute (M)"
+            aria-label={p.muted ? T[lang].player_unmute : T[lang].player_mute}
+            title={`${T[lang].player_mute} (M)`}
           >
             <i className={`bx ${p.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
           </button>
           <button
             type="button"
             onClick={() => { setQueueOpen(false); toggleMini(); }}
-            aria-label={p.mini ? "Expand player" : "Minimize player"}
-            title={p.mini ? "Expand" : "Minimize"}
+            aria-label={p.mini ? T[lang].player_expand : T[lang].player_minimize}
+            title={p.mini ? T[lang].player_expand : T[lang].player_minimize}
           >
             <i className={`bx ${p.mini ? "bx-chevron-up" : "bx-chevron-down"}`}></i>
           </button>
-          <button type="button" onClick={closePlayer} aria-label="Close player">
+          <button type="button" onClick={closePlayer} aria-label={T[lang].player_close}>
             <i className="bx bx-x"></i>
           </button>
         </div>

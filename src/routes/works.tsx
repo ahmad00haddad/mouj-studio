@@ -18,14 +18,14 @@ export const Route = createFileRoute("/works")({
   component: WorksPage,
 });
 
-const filters = [
-  { key: "*", label: "All" },
-  { key: "featured", label: "Featured" },
-  { key: "ads", label: "Advertising" },
-  { key: "film", label: "Film & TV" },
-  { key: "games", label: "Games" },
-  { key: "podcast", label: "Podcasts" },
-  { key: "post", label: "Sound & Mix" },
+const getFilters = (lang: "en" | "ar") => [
+  { key: "*", label: T[lang].works_filter_all },
+  { key: "featured", label: T[lang].works_filter_featured },
+  { key: "ads", label: T[lang].works_filter_advertising },
+  { key: "film", label: T[lang].works_filter_film },
+  { key: "games", label: T[lang].works_filter_games },
+  { key: "podcast", label: T[lang].works_filter_podcasts },
+  { key: "post", label: T[lang].works_filter_sound_mix },
 ];
 
 const fallbackItems = [
@@ -57,10 +57,10 @@ const fallbackItems = [
 ];
 
 const fallbackStats = [
-  { n: "13+", l: "Years in audio" },
-  { n: "10k", l: "Peak live listeners" },
-  { n: "150k+", l: "World Cup Radio reach" },
-  { n: "80", l: "Episodes — Youm Jadeed" },
+  { n: "13+", l: "stat_years" },
+  { n: "10k", l: "stat_listeners" },
+  { n: "150k+", l: "stat_radio" },
+  { n: "80", l: "stat_episodes" },
 ];
 
 const fallbackClients = ["Netflix", "Mawdoo3", "Rush Production", "Sowt", "Jawaker", "Education Above All", "LAPIS", "Watar Group", "Ertidad", "MOUJE"];
@@ -174,7 +174,7 @@ function WorksPage() {
 
         <div className="stats-grid" style={{ marginBottom: "3rem", maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
           {stats.map(s => (
-            <div className="stat-card" key={s.l}><h3>{s.n}</h3><p>{s.l}</p></div>
+            <div className="stat-card" key={s.l}><h3>{s.n}</h3><p>{(T[lang] as any)[s.l] ?? s.l}</p></div>
           ))}
         </div>
 
@@ -193,13 +193,13 @@ function WorksPage() {
             )}
           </p>
           <a href="https://open.spotify.com/artist/6xRx0cxS6FrZYDccwPQvbz" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem" }}>
-            <i className="bx bxl-spotify" style={{ fontSize: "1.25rem" }}></i> {lang === "ar" ? "استمع على سبوتيفاي" : "Listen on Spotify"}
+            <i className="bx bxl-spotify" style={{ fontSize: "1.25rem" }}></i> {T[lang].xetopia_listen}
           </a>
         </div>
 
 
         <div className="works-filters">
-          {filters.map(f => (
+          {getFilters(lang).map(f => (
             <button key={f.key} className={active === f.key ? "on" : ""} onClick={() => setActive(f.key)}>{f.label}</button>
           ))}
         </div>
@@ -253,8 +253,8 @@ function WorksPage() {
       <section>
         <div className="section-head">
           <span className="eyebrow">{T[lang].vault_eyebrow}</span>
-          <h2>Hidden <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Gems</span></h2>
-          <p>A journey back in time. Early experiments, raw sessions, and the milestones that shaped Mouje's sound.</p>
+          <h2>{T[lang].hidden_gems_pre} <span className="accent" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{T[lang].hidden_gems_accent}</span></h2>
+          <p>{T[lang].hidden_gems_desc}</p>
         </div>
         <div className="works-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
           

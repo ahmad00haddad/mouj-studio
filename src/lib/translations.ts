@@ -149,7 +149,6 @@
     footer_svc_sound: "Sound Design",
     footer_svc_branding: "Audio Branding",
     // Navbar / global UI
-    nav_works: "Works", nav_services: "Services", nav_about: "About", nav_contact: "Contact",
     nav_cta: "Start Project",
     nav_menu: "Menu",
     nav_sound_on: "Sound on", nav_sound_off: "Sound off",
@@ -370,7 +369,6 @@
     footer_svc_sound: "التصميم الصوتي",
     footer_svc_branding: "الهوية الصوتية",
     // Navbar / global UI
-    nav_works: "الأعمال", nav_services: "الخدمات", nav_about: "عن موج", nav_contact: "تواصل",
     nav_cta: "ابدأ مشروعك",
     nav_menu: "القائمة",
     nav_sound_on: "الصوت مفعّل", nav_sound_off: "الصوت مغلق",

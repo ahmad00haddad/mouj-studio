@@ -148,6 +148,68 @@
     footer_svc_mixing: "Mixing & Mastering",
     footer_svc_sound: "Sound Design",
     footer_svc_branding: "Audio Branding",
+    // Navbar / global UI
+    nav_works: "Works", nav_services: "Services", nav_about: "About", nav_contact: "Contact",
+    nav_cta: "Start Project",
+    nav_menu: "Menu",
+    nav_sound_on: "Sound on", nav_sound_off: "Sound off",
+    nav_mute: "Mute site sounds", nav_unmute: "Unmute site sounds",
+    // Works page — vault / spotlight
+    hidden_gems_pre: "Hidden", hidden_gems_accent: "Gems",
+    hidden_gems_desc: "A journey back in time. Early experiments, raw sessions, and the milestones that shaped Mouje's sound.",
+    xetopia_listen: "Listen on Spotify",
+    // Gear groups
+    gear_daws: "DAWs", gear_middleware: "Middleware", gear_plugins: "Plugins",
+    gear_softsynths: "Softsynths", gear_live: "Live & Routing",
+    // Founder
+    founder_title: "Senior Sound Designer & Audio Engineer · Founder of Mouje Studio",
+    founder_skills: [
+      "Sound Design (Games & Film)",
+      "Middleware Implementation (Wwise)",
+      "Music Production & Arrangement",
+      "Orchestration & Composition",
+      "Mixing & Mastering",
+      "Live Audio Engineering",
+      "Audio Branding",
+      "Onset Boom & Recording",
+    ] as string[],
+    // Contact info fallbacks
+    contact_address_value: "Amir Ben Malek St., Khalda 11953, Amman",
+    contact_hours_value: "Sun–Thu · 10:00 – 19:00 (GMT+3)",
+    // Audio player
+    player_region: "Audio player",
+    player_queue_title: "Up next", player_queue_count: "tracks",
+    player_prev: "Previous track", player_next: "Next track",
+    player_play: "Play", player_pause: "Pause",
+    player_speed: "Playback speed", player_repeat: "Repeat",
+    player_queue: "Play queue", player_share: "Share this track",
+    player_mute: "Mute", player_unmute: "Unmute",
+    player_minimize: "Minimize player", player_expand: "Expand player",
+    player_close: "Close player",
+    player_share_text: "Listening to",
+    // Sound hint
+    hint_text: "This site sounds better with audio on.",
+    hint_btn: "Turn sound on", hint_dismiss: "Dismiss",
+    // Keyboard shortcuts
+    kb_title: "Keyboard shortcuts", kb_open: "Keyboard shortcuts",
+    kb_play: "Play / Pause", kb_seek: "Seek 5 seconds",
+    kb_track: "Previous / Next track", kb_mute: "Mute / Unmute",
+    kb_speed: "Playback speed", kb_panel: "Show this panel", kb_close: "Close",
+    // Tracks
+    track_listen: "Listen", track_soon: "Coming soon",
+    track_play: "Play", track_pause: "Pause",
+    // Service feature lists
+    svc_features: {
+      "film-scoring": ["Orchestral & hybrid scoring", "Live string sessions", "Stems for re-recording", "Cue sheets included"],
+      "recording": ["Treated live room", "Vintage & modern mic locker", "Up to 32 tracks", "Pro Tools HDX"],
+      "audio-post-production": ["Dialogue edit & clean-up", "5.1 / 7.1 mixing", "M&E stems", "Broadcast delivery"],
+      "adr-and-dubbing": ["AR / EN / FR direction", "Lip-sync editing", "Voice casting", "Final M&E mix"],
+      "mixing-and-mastering": ["Hybrid analog summing", "Stem mastering", "Streaming-loudness ready", "Vinyl / CD masters"],
+      "foley-recording": ["Dedicated foley pit", "Hundreds of surfaces & props", "Sync-to-picture", "Stems delivered"],
+      "sound-design": ["Trailer & cinematic SFX", "Game UI & weapon SFX", "Custom field recording", "Wwise / FMOD-ready"],
+      "workshops-and-consultation": ["DAW Workflow (FL Studio/Reaper)", "Mixing & Mastering Secrets", "Game Audio (Wwise)", "1-on-1 Mentorship"],
+      "audio-branding": ["Sonic logo & mnemonic", "Brand theme variations", "Touchpoint adaptations", "Usage guidelines"],
+    } as Record<string, string[]>,
   },
   ar: {
     nav_home: "الرئيسية", nav_works: "الأعمال", nav_services: "الخدمات", nav_about: "عن موج", nav_contact: "تواصل",
@@ -307,5 +369,67 @@
     footer_svc_mixing: "المكساج والماسترينج",
     footer_svc_sound: "التصميم الصوتي",
     footer_svc_branding: "الهوية الصوتية",
+    // Navbar / global UI
+    nav_works: "الأعمال", nav_services: "الخدمات", nav_about: "عن موج", nav_contact: "تواصل",
+    nav_cta: "ابدأ مشروعك",
+    nav_menu: "القائمة",
+    nav_sound_on: "الصوت مفعّل", nav_sound_off: "الصوت مغلق",
+    nav_mute: "كتم أصوات الموقع", nav_unmute: "تشغيل أصوات الموقع",
+    // Works page — vault / spotlight
+    hidden_gems_pre: "جواهر", hidden_gems_accent: "مخفية",
+    hidden_gems_desc: "رحلة إلى الوراء في الزمن. تجارب مبكرة وجلسات خام والمحطات التي شكّلت صوت موج.",
+    xetopia_listen: "استمع على سبوتيفاي",
+    // Gear groups
+    gear_daws: "برامج الإنتاج", gear_middleware: "محركات الصوت", gear_plugins: "الإضافات",
+    gear_softsynths: "السينثات البرمجية", gear_live: "الأداء الحي والتوجيه",
+    // Founder
+    founder_title: "مصمم صوت أول ومهندس صوتيات · مؤسس ستوديو موج",
+    founder_skills: [
+      "تصميم الصوت (ألعاب وأفلام)",
+      "تنفيذ محركات الصوت (Wwise)",
+      "الإنتاج الموسيقي والتوزيع",
+      "الأوركسترا والتلحين",
+      "المكساج والماسترينج",
+      "هندسة الصوت المباشر",
+      "الهوية الصوتية",
+      "تسجيل الصوت في مواقع التصوير",
+    ] as string[],
+    // Contact info fallbacks
+    contact_address_value: "شارع أمير بن مالك، خلدا 11953، عمّان",
+    contact_hours_value: "الأحد–الخميس · 10:00 – 19:00 (غرينتش+3)",
+    // Audio player
+    player_region: "مشغّل الصوت",
+    player_queue_title: "التالي", player_queue_count: "مقطع",
+    player_prev: "المقطع السابق", player_next: "المقطع التالي",
+    player_play: "تشغيل", player_pause: "إيقاف مؤقت",
+    player_speed: "سرعة التشغيل", player_repeat: "التكرار",
+    player_queue: "قائمة التشغيل", player_share: "مشاركة المقطع",
+    player_mute: "كتم", player_unmute: "إلغاء الكتم",
+    player_minimize: "تصغير المشغّل", player_expand: "تكبير المشغّل",
+    player_close: "إغلاق المشغّل",
+    player_share_text: "أستمع الآن إلى",
+    // Sound hint
+    hint_text: "تجربة الموقع أجمل مع تشغيل الصوت.",
+    hint_btn: "شغّل الصوت", hint_dismiss: "إغلاق",
+    // Keyboard shortcuts
+    kb_title: "اختصارات لوحة المفاتيح", kb_open: "اختصارات لوحة المفاتيح",
+    kb_play: "تشغيل / إيقاف", kb_seek: "تقديم 5 ثوانٍ",
+    kb_track: "المقطع السابق / التالي", kb_mute: "كتم / إلغاء الكتم",
+    kb_speed: "سرعة التشغيل", kb_panel: "إظهار هذه اللوحة", kb_close: "إغلاق",
+    // Tracks
+    track_listen: "استمع", track_soon: "قريباً",
+    track_play: "تشغيل", track_pause: "إيقاف",
+    // Service feature lists
+    svc_features: {
+      "film-scoring": ["تلحين أوركسترالي وهجين", "جلسات وتريات حية", "ستيمات لإعادة التسجيل", "جداول الكيوهات مرفقة"],
+      "recording": ["غرفة معالجة صوتياً", "بنك ميكروفونات كلاسيكي وحديث", "حتى 32 مساراً", "Pro Tools HDX"],
+      "audio-post-production": ["تحرير وتنقية الحوار", "مكساج 5.1 / 7.1", "ستيمات M&E", "تسليم بمواصفات البث"],
+      "adr-and-dubbing": ["إخراج عربي / إنجليزي / فرنسي", "تحرير مزامنة الشفاه", "اختيار الأصوات", "مكساج M&E نهائي"],
+      "mixing-and-mastering": ["دمج أنالوج هجين", "ماسترينج بالستيمات", "جاهز لمعايير المنصات", "ماسترز فينيل / CD"],
+      "foley-recording": ["غرفة فولي مخصصة", "مئات الأسطح والمقتنيات", "مزامنة مع الصورة", "تسليم الستيمات"],
+      "sound-design": ["مؤثرات تريلر وسينمائية", "مؤثرات واجهات وأسلحة الألعاب", "تسجيل ميداني مخصص", "جاهز لـ Wwise / FMOD"],
+      "workshops-and-consultation": ["سير عمل البرامج (FL Studio/Reaper)", "أسرار المكساج والماسترينج", "صوتيات الألعاب (Wwise)", "إرشاد فردي"],
+      "audio-branding": ["شعار صوتي مميز", "تنويعات لحن العلامة", "تكييف لكل نقطة تواصل", "دليل الاستخدام"],
+    } as Record<string, string[]>,
   },
 };

@@ -29,9 +29,13 @@ export function Navbar() {
   const { content, services: dbServices } = useCms();
   const player = usePlayer();
   const { lang, toggle } = useI18n();
-  const services = dbServices.length
+  const services = (dbServices.length
     ? dbServices.map((sv) => ({ slug: sv.slug, label: sv.title }))
-    : fallbackServices;
+    : fallbackServices
+  ).map((sv) => ({
+    slug: sv.slug,
+    label: (T as any)[lang]?.[`svc_${(sv.slug || "").replace(/-/g, "_")}_title`] || sv.label,
+  }));
   useEffect(() => { setOpen(false); setDrop(false); }, [pathname]);
 
 
@@ -43,7 +47,7 @@ export function Navbar() {
           Mouje<span className="accent">Studio</span>
         </Link>
 
-        <button className="nav-burger" aria-label="Menu" onClick={() => setOpen(o => !o)}>
+        <button className="nav-burger" aria-label={T[lang].nav_menu} onClick={() => setOpen(o => !o)}>
           <i className={`bx ${open ? "bx-x" : "bx-menu"}`}></i>
         </button>
 
@@ -77,12 +81,12 @@ export function Navbar() {
             type="button"
             className={`nav-mute${player.muted ? " muted" : ""}`}
             onClick={toggleMute}
-            aria-label={player.muted ? "Unmute site sounds" : "Mute site sounds"}
-            title={player.muted ? "Sound off" : "Sound on"}
+            aria-label={player.muted ? T[lang].nav_unmute : T[lang].nav_mute}
+            title={player.muted ? T[lang].nav_sound_off : T[lang].nav_sound_on}
           >
             <i className={`bx ${player.muted ? "bx-volume-mute" : "bx-volume-full"}`}></i>
           </button>
-          <Link to="/contact" className="nav-cta">{t(content, "home_hero", "ctaPrimaryLabel", "Start Project")}</Link>
+          <Link to="/contact" className="nav-cta">{lang === "ar" ? T.ar.nav_cta : t(content, "home_hero", "ctaPrimaryLabel", T.en.nav_cta)}</Link>
         </nav>
       </div>
     </header>

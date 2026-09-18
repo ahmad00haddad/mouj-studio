@@ -65,7 +65,7 @@ function ContactPage() {
             </div>
             <div className="contact-row">
               <i className="bx bx-map"></i>
-              <div><strong>{T[lang].contact_studio_label}</strong><span>{t(content, "contact_info", "address", "Amir Ben Malek St., Khalda 11953, Amman")}</span></div>
+              <div><strong>{T[lang].contact_studio_label}</strong><span>{lang === "ar" ? T.ar.contact_address_value : t(content, "contact_info", "address", T.en.contact_address_value)}</span></div>
             </div>
             <div className="contact-row">
               <i className="bx bx-envelope"></i>
@@ -77,7 +77,7 @@ function ContactPage() {
             </div>
             <div className="contact-row">
               <i className="bx bx-time"></i>
-              <div><strong>{T[lang].contact_hours_label}</strong><span>{t(content, "contact_info", "hours", "Sun–Thu · 10:00 – 19:00 (GMT+3)")}</span></div>
+              <div><strong>{T[lang].contact_hours_label}</strong><span>{lang === "ar" ? T.ar.contact_hours_value : t(content, "contact_info", "hours", T.en.contact_hours_value)}</span></div>
             </div>
             <div className="footer-social" style={{ marginTop: "auto" }}>
               <a href={t(content, "site_social", "instagram", "https://www.instagram.com/moujestudio/")} aria-label="Instagram"><i className="bx bxl-instagram-alt"></i></a>

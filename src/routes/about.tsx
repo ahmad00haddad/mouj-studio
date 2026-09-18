@@ -62,7 +62,7 @@ const clients = ["Netflix", "Mawdoo3", "Rush Production House", "Sowt", "Jawaker
 function AboutPage() {
   const { content } = useCms();
   const { lang } = useI18n();
-  const founderSkills = list<string>(content, "about_founder", "skills", fallbackFounderSkills);
+  const founderSkills = lang === "ar" ? T.ar.founder_skills : list<string>(content, "about_founder", "skills", fallbackFounderSkills);
   const founderExperience = lang === "ar" ? [
   { role: "مؤسس / متخصص صوتيات", company: "ستوديو موج", years: "مايو 2021 — الآن", description: "إدارة الإنتاج وما بعد الإنتاج عبر المشاريع الداخلية والمكلفة، وتسجيل الجلسات المباشرة، وهندسة الصوت المباشرة، وتقديم الاستشارات وورش عمل الإنتاج الصوتي." },
   { role: "مصمم صوت رئيسي / مدير قسم الصوت", company: "جواكر", years: "يونيو 2021 — يناير 2024", description: "بناء محرك الصوت وسير العمل من الصفر للعبة الورق الرائدة في الشرق الأوسط. قيادة الإنتاج الموسيقي وتسجيل التعليق الصوتي وتوطين اللغات والمحتوى المباشر." },
@@ -73,7 +73,7 @@ function AboutPage() {
     fallbackFounderExperience.map(e => ({ role: e.role, company: e.org, years: e.period, description: e.text })),
   );
   const founderName = t(content, "about_founder", "name", "Motaz Dababseh");
-  const founderTitle = t(content, "about_founder", "title", "Senior Sound Designer & Audio Engineer · Founder of Mouje Studio");
+  const founderTitle = lang === "ar" ? T.ar.founder_title : t(content, "about_founder", "title", T.en.founder_title);
   const founderBio = lang === "ar" ? "شغف وعمل مستمر في الموسيقى والصوت لأكثر من 13 عاماً. كفنان منفرد (موج)، يستكشف موسيقى السينث بوب الإلكترونية والروك، ويُنتج حالياً ألبومه Xetopia. كما يقود ستوديو موج لتقديم تصميم صوتي وهندسة وتلحين على مستوى عالمي، بما في ذلك 3 سنوات بدوام كامل في صناعة الألعاب." : t(content, "about_founder", "bio", "Passionately working with music and audio for 13+ years. As a Solo Artist (Mouje), exploring Electronic Synthpop, Pop and Rock, and currently producing the LP 'Xetopia'. Also leading Mouje Studio for world-class sound design, audio engineering, and music composition, including 3 years full-time in the gaming industry.");
   return (
     <main>
@@ -124,7 +124,7 @@ function AboutPage() {
             <h3>{T[lang].founder_bio_label}</h3>
             <p>{founderBio}</p>
             <a href="/assets/mouje_cv.pdf" download="Motaz_Dababseh_CV.pdf" className="btn btn-ghost" style={{marginTop: "1.5rem", display: "inline-flex", alignItems: "center", gap: ".5rem"}}>
-              <i className="bx bx-download"></i> Download Full Resume
+              <i className="bx bx-download"></i> {T[lang].founder_cv_btn}
             </a>
           </div>
           <div className="pillar">

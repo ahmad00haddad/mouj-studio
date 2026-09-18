@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "@/lib/i18n";
+import { T } from "@/lib/translations";
 
-const ROWS: [string, string][] = [
-  ["Space", "Play / Pause"],
-  ["← / →", "Seek 5 seconds"],
-  ["↑ / ↓", "Previous / Next track"],
-  ["M", "Mute / Unmute"],
-  ["S", "Playback speed"],
-  ["?", "Show this panel"],
-  ["Esc", "Close"],
+const getRows = (lang: "en" | "ar"): [string, string][] => [
+  ["Space", T[lang].kb_play],
+  ["← / →", T[lang].kb_seek],
+  ["↑ / ↓", T[lang].kb_track],
+  ["M", T[lang].kb_mute],
+  ["S", T[lang].kb_speed],
+  ["?", T[lang].kb_panel],
+  ["Esc", T[lang].kb_close],
 ];
 
 /** Keyboard shortcuts cheat-sheet, opened with "?" or the floating button. */
 export default function ShortcutsHelp() {
+  const { lang } = useI18n();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -35,23 +38,23 @@ export default function ShortcutsHelp() {
         type="button"
         className="kb-fab"
         onClick={() => setOpen(true)}
-        aria-label="Keyboard shortcuts"
-        title="Keyboard shortcuts (?)"
+        aria-label={T[lang].kb_open}
+        title={`${T[lang].kb_open} (?)`}
       >
         <i className="bx bx-command" aria-hidden="true"></i>
       </button>
 
       {open && (
-        <div className="kb-overlay" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" onClick={() => setOpen(false)}>
+        <div className="kb-overlay" role="dialog" aria-modal="true" aria-label={T[lang].kb_title} onClick={() => setOpen(false)}>
           <div className="kb-card" onClick={(e) => e.stopPropagation()}>
             <header>
-              <strong>Keyboard shortcuts</strong>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close">
+              <strong>{T[lang].kb_title}</strong>
+              <button type="button" onClick={() => setOpen(false)} aria-label={T[lang].kb_close}>
                 <i className="bx bx-x"></i>
               </button>
             </header>
             <ul>
-              {ROWS.map(([k, label]) => (
+              {getRows(lang).map(([k, label]) => (
                 <li key={k}>
                   <kbd>{k}</kbd>
                   <span>{label}</span>

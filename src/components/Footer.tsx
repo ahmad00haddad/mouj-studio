@@ -47,7 +47,7 @@ export function Footer() {
         <div className="footer-col">
           <h4>{T[lang].footer_contact}</h4>
           <ul>
-            <li>{t(content, "contact_info", "address", "Amir Ben Malek St., Khalda 11953, Amman")}</li>
+            <li>{lang === "ar" ? T.ar.contact_address_value : t(content, "contact_info", "address", T.en.contact_address_value)}</li>
             <li><a href={`mailto:${t(content, "contact_info", "email", "moujemusic@gmail.com")}`}>{t(content, "contact_info", "email", "moujemusic@gmail.com")}</a></li>
             <li><a href={`tel:${t(content, "contact_info", "phone", "+962 7 9656 8891").replace(/\s+/g, "")}`}>{t(content, "contact_info", "phone", "+962 7 9656 8891")}</a></li>
           </ul>

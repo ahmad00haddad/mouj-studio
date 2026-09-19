@@ -29,31 +29,31 @@ const getFilters = (lang: "en" | "ar") => [
 ];
 
 const fallbackItems = [
-  { tags: ["featured","games"], img: "/assets/img/works/hero-producer.jpg", title: "Jawaker's World Cup Radio", client: "Jawaker", role: "Live Broadcast · Audio Direction", year: "2023" },
-  { tags: ["featured","podcast"], img: "/assets/img/works/work-podcast.jpg", title: "Youm Jadeed (يوم جديد)", client: "Sowt × Mouje · Education Above All", role: "Voice Direction · Sound Design · Mix", year: "2025" },
-  { tags: ["featured","post"], img: "/assets/img/works/work-mixing.jpg", title: "Watar Group — Live Audio", client: "Watar El Sharq · Watar Pop", role: "Audio Director · Live Mix", year: "2025" },
-  { tags: ["featured", "music", "post"], img: "/assets/img/works/work-recording.jpg", title: "Radio 6 — Episode 3 (Live Session)", client: "Radio 6", role: "Recording & Mix · Live Performance", year: "2025", link: "https://www.youtube.com/watch?v=1Rr1J74TVBE" },
-  { tags: ["post"], img: "/assets/img/works/work-mixing.jpg", title: "Radio 6 Sessions — Atef Malhas & Mieralle", client: "Radio 6", role: "Recording & Mix", year: "2025" },
-  { tags: ["podcast"], img: "/assets/img/works/work-podcast.jpg", title: "Road to Animatex (Podcast)", client: "Anas & Mouje", role: "Host · Audio Production", year: "2025", link: "https://www.youtube.com/watch?v=v3yjbKphjZo" },
-  { tags: ["featured","music"], img: "/assets/img/works/work-recording.jpg", title: "Xetopia (LP — in production)", client: "MOUJE", role: "Composition · Production · Mix", year: "2025" },
-  { tags: ["music"], img: "/assets/img/works/work-sounddesign.jpg", title: "Saken (ساكن)", client: "MOUJE", role: "Original · Electronic Synthpop", year: "2021", link: "https://www.youtube.com/watch?v=qGzOumAFimA" },
+  { tags: ["featured","games"], img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80", title: "Jawaker's World Cup Radio", client: "Jawaker", role: "Live Broadcast · Audio Direction", year: "2023" },
+  { tags: ["featured","podcast"], img: "https://images.unsplash.com/photo-1581368129680-e380fb147748?w=800&q=80", title: "Youm Jadeed (يوم جديد)", client: "Sowt × Mouje · Education Above All", role: "Voice Direction · Sound Design · Mix", year: "2025" },
+  { tags: ["featured","post"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Watar Group — Live Audio", client: "Watar El Sharq · Watar Pop", role: "Audio Director · Live Mix", year: "2025" },
+  { tags: ["featured", "music", "post"], img: "https://images.unsplash.com/photo-1516280440502-3c27ce052c92?w=800&q=80", title: "Radio 6 — Episode 3 (Live Session)", client: "Radio 6", role: "Recording & Mix · Live Performance", year: "2025", link: "https://www.youtube.com/watch?v=1Rr1J74TVBE" },
+  { tags: ["post"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Radio 6 Sessions — Atef Malhas & Mieralle", client: "Radio 6", role: "Recording & Mix", year: "2025" },
+  { tags: ["podcast"], img: "https://images.unsplash.com/photo-1581368129680-e380fb147748?w=800&q=80", title: "Road to Animatex (Podcast)", client: "Anas & Mouje", role: "Host · Audio Production", year: "2025", link: "https://www.youtube.com/watch?v=v3yjbKphjZo" },
+  { tags: ["featured","music"], img: "https://images.unsplash.com/photo-1516280440502-3c27ce052c92?w=800&q=80", title: "Xetopia (LP — in production)", client: "MOUJE", role: "Composition · Production · Mix", year: "2025" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1550204360-179374092b77?w=800&q=80", title: "Saken (ساكن)", client: "MOUJE", role: "Original · Electronic Synthpop", year: "2021", link: "https://www.youtube.com/watch?v=qGzOumAFimA" },
   { tags: ["music","featured"], img: "/assets/img/works/work-film.jpg", title: "Rah Telhaqni (راح تلحقني)", client: "MOUJE feat. Desana", role: "First Arabic Electronic Original", year: "2021", link: "https://www.youtube.com/watch?v=ivWObD7kW_c" },
-  { tags: ["music"], img: "/assets/img/works/work-foley.jpg", title: "Madeon — Dream Dream Dream", client: "Acapella Cover", role: "Endorsed by Madeon", year: "2020", link: "https://www.youtube.com/watch?v=Xo9oKRVmwdA" },
-  { tags: ["music","post"], img: "/assets/img/works/work-recording.jpg", title: "Ertidad — Debut Album", client: "Ertidad", role: "Production · Mix · Master · Keys", year: "2022" },
-  { tags: ["games"], img: "/assets/img/works/work-sounddesign.jpg", title: "Jawaker Card Game Audio", client: "Jawaker", role: "Audio Engine · SFX · Music · VO", year: "2024" },
-  { tags: ["games","post"], img: "/assets/img/works/hero-producer.jpg", title: "Jawaker LiveOps Audio", client: "Jawaker", role: "Localization (IQ · EG · KSA) · LiveOps", year: "2023" },
-  { tags: ["music"], img: "/assets/img/works/work-sounddesign.jpg", title: "Tajreeh", client: "MOUJE", role: "Original Track", year: "2023", link: "https://open.spotify.com/track/4jVnL8i1R3H1RzFqZ5aPjW" },
-  { tags: ["music"], img: "/assets/img/works/work-mixing.jpg", title: "Rah Telhaqni - Inxious Remix", client: "MOUJE x Inxious", role: "Remix", year: "2022", link: "https://open.spotify.com/track/1L1fR4q4P1QkP1QkP1QkP1" },
-  { tags: ["music"], img: "/assets/img/works/work-foley.jpg", title: "Amal (أمل)", client: "MOUJE", role: "Original Lyric Video", year: "2024", link: "https://www.youtube.com/watch?v=swc5waIw858" },
-  { tags: ["music","featured"], img: "/assets/img/works/work-recording.jpg", title: "Tashteet (تشتيت)", client: "MOUJE", role: "Original Synthpop", year: "2023", link: "https://www.youtube.com/watch?v=l5q2C3pMqlI" },
-  { tags: ["music"], img: "/assets/img/works/work-mixing.jpg", title: "Terror (Original Mix)", client: "MOUJE", role: "Dubstep", year: "2019", link: "https://www.youtube.com/watch?v=tbKstxPVIOc" },
-  { tags: ["music"], img: "/assets/img/works/work-mixing.jpg", title: "Psychosis", client: "MOUJE", role: "Electronic Soundtrack", year: "2017", link: "https://www.youtube.com/watch?v=aTRqlQaThd8" },
-  { tags: ["music"], img: "/assets/img/works/work-sounddesign.jpg", title: "The Chainsmokers — Closer", client: "MOUJE", role: "Remix", year: "2016", link: "https://www.youtube.com/watch?v=6n6vZse-rP0" },
-  { tags: ["music"], img: "/assets/img/works/work-foley.jpg", title: "Linkin' Park — One More Light", client: "MOUJE", role: "Tribute Music Video", year: "2017", link: "https://www.youtube.com/watch?v=sKHt91EeJ-o" },
-  { tags: ["music", "featured"], img: "/assets/img/works/work-recording.jpg", title: "Nude (Radiohead Cover)", client: "Radio 6 Live Session", role: "Live Performance", year: "2025", link: "https://www.youtube.com/watch?v=QEY3UdChBTo" },
-  { tags: ["post"], img: "/assets/img/works/work-foley.jpg", title: "Amr Aloury & 'Ya Waladi' — Audio Sessions", client: "Various Artists", role: "Recording · Edit · Mix", year: "2024" },
-  { tags: ["post"], img: "/assets/img/works/work-foley.jpg", title: "Mawdoo3 — Audio Sessions", client: "Mawdoo3.com", role: "Recording · Edit · Mix", year: "2024" },
-  { tags: ["ads","post"], img: "/assets/img/works/work-mixing.jpg", title: "Netflix · Rush Production Sessions", client: "Netflix / Rush Production House", role: "Recording · Audio Post", year: "2024" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80", title: "Madeon — Dream Dream Dream", client: "Acapella Cover", role: "Endorsed by Madeon", year: "2020", link: "https://www.youtube.com/watch?v=Xo9oKRVmwdA" },
+  { tags: ["music","post"], img: "https://images.unsplash.com/photo-1516280440502-3c27ce052c92?w=800&q=80", title: "Ertidad — Debut Album", client: "Ertidad", role: "Production · Mix · Master · Keys", year: "2022" },
+  { tags: ["games"], img: "https://images.unsplash.com/photo-1550204360-179374092b77?w=800&q=80", title: "Jawaker Card Game Audio", client: "Jawaker", role: "Audio Engine · SFX · Music · VO", year: "2024" },
+  { tags: ["games","post"], img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80", title: "Jawaker LiveOps Audio", client: "Jawaker", role: "Localization (IQ · EG · KSA) · LiveOps", year: "2023" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1550204360-179374092b77?w=800&q=80", title: "Tajreeh", client: "MOUJE", role: "Original Track", year: "2023", link: "https://open.spotify.com/track/4jVnL8i1R3H1RzFqZ5aPjW" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Rah Telhaqni - Inxious Remix", client: "MOUJE x Inxious", role: "Remix", year: "2022", link: "https://open.spotify.com/track/1L1fR4q4P1QkP1QkP1QkP1" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80", title: "Amal (أمل)", client: "MOUJE", role: "Original Lyric Video", year: "2024", link: "https://www.youtube.com/watch?v=swc5waIw858" },
+  { tags: ["music","featured"], img: "https://images.unsplash.com/photo-1516280440502-3c27ce052c92?w=800&q=80", title: "Tashteet (تشتيت)", client: "MOUJE", role: "Original Synthpop", year: "2023", link: "https://www.youtube.com/watch?v=l5q2C3pMqlI" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Terror (Original Mix)", client: "MOUJE", role: "Dubstep", year: "2019", link: "https://www.youtube.com/watch?v=tbKstxPVIOc" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Psychosis", client: "MOUJE", role: "Electronic Soundtrack", year: "2017", link: "https://www.youtube.com/watch?v=aTRqlQaThd8" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1550204360-179374092b77?w=800&q=80", title: "The Chainsmokers — Closer", client: "MOUJE", role: "Remix", year: "2016", link: "https://www.youtube.com/watch?v=6n6vZse-rP0" },
+  { tags: ["music"], img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80", title: "Linkin' Park — One More Light", client: "MOUJE", role: "Tribute Music Video", year: "2017", link: "https://www.youtube.com/watch?v=sKHt91EeJ-o" },
+  { tags: ["music", "featured"], img: "https://images.unsplash.com/photo-1516280440502-3c27ce052c92?w=800&q=80", title: "Nude (Radiohead Cover)", client: "Radio 6 Live Session", role: "Live Performance", year: "2025", link: "https://www.youtube.com/watch?v=QEY3UdChBTo" },
+  { tags: ["post"], img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80", title: "Amr Aloury & 'Ya Waladi' — Audio Sessions", client: "Various Artists", role: "Recording · Edit · Mix", year: "2024" },
+  { tags: ["post"], img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80", title: "Mawdoo3 — Audio Sessions", client: "Mawdoo3.com", role: "Recording · Edit · Mix", year: "2024" },
+  { tags: ["ads","post"], img: "https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80", title: "Netflix · Rush Production Sessions", client: "Netflix / Rush Production House", role: "Recording · Audio Post", year: "2024" },
 ];
 
 const fallbackStats = [
@@ -84,12 +84,13 @@ function getThumbnail(link?: string, fallback?: string) {
     const v = new URL(link).searchParams.get("v");
     if (v) return `https://img.youtube.com/vi/${v}/hqdefault.jpg`;
   }
-  return fallback || "/assets/img/works/hero-producer.jpg";
+  return fallback || "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80";
 }
 
 function WorksPage() {
   const [active, setActive] = useState("*");
   const [showAllTestis, setShowAllTestis] = useState(false);
+  const [selectedWork, setSelectedWork] = useState<any>(null);
   const { content, works, testimonials: dbT, tracks } = useCms();
   const { lang } = useI18n();
   
@@ -206,23 +207,27 @@ function WorksPage() {
 
         <div className="works-grid">
           {filtered.map((it: any, i) => (
-            <div className="work" key={i}>
-              <img src={it.img} alt={it.title} loading="lazy" />
-              <span className="year" style={{ position: "absolute", top: "1rem", right: "1rem", padding: ".25rem .65rem", borderRadius: 999, background: "rgba(255,255,255,.1)", backdropFilter: "blur(10px)", fontSize: ".75rem", fontWeight: 600, zIndex: 2 }}>{it.year}</span>
+              <div 
+                className="work" 
+                key={i} 
+                onClick={() => {
+                  if (it.link) window.open(it.link, "_blank");
+                  else setSelectedWork(it);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={it.img} alt={it.title} loading="lazy" style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                <div className="work-hover-indicator" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", background: "rgba(0,0,0,0.6)", color: "#fff", padding: "1rem", borderRadius: "50%", opacity: 0, transition: "opacity 0.3s", zIndex: 10 }}>
+                  <i className={it.link ? "bx bx-link-external" : "bx bx-expand-alt"} style={{ fontSize: "1.5rem" }}></i>
+                </div>
+                <span className="year" style={{ position: "absolute", top: "1rem", right: "1rem", padding: ".25rem .65rem", borderRadius: 999, background: "rgba(255,255,255,.1)", backdropFilter: "blur(10px)", fontSize: ".75rem", fontWeight: 600, zIndex: 2 }}>{it.year}</span>
               <div className="work-overlay">
                 <h3>{it.title}</h3>
                 <p>{it.client} · {it.role}</p>
-                {it.link && (
-                  <a href={it.link} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ marginTop: "1rem", padding: "0.5rem 1rem", fontSize: "0.85rem" }}>
-                    <i className="bx bx-play-circle" style={{ marginRight: "0.25rem", fontSize: "1.1rem" }}></i>
-                    {T[lang].works_watch_listen}
-                  </a>
-                )}
+                
               </div>
-            </div>
-
-
-          ))}
+              </div>
+            ))}
         </div>
       </section>
 
@@ -259,7 +264,7 @@ function WorksPage() {
         <div className="works-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
           
           <div className="work">
-            <img src="/assets/img/works/hero-producer.jpg" alt="Early Days" loading="lazy" style={{ filter: "grayscale(80%) sepia(20%)" }} />
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80" alt="Early Days" loading="lazy" style={{ filter: "grayscale(80%) sepia(20%)" }} />
             <div className="work-overlay">
               <h3>{lang === "ar" ? "2016 عصر الدبستيب" : "2016 Dubstep Era"}</h3>
               <p>{lang === "ar" ? "البدايات الحقيقية. قطرات بيس ثقيلة، سينثات عنيفة، وإصدار 'Terror' الذي بدأ الرحلة الإلكترونية." : "The very beginnings. Heavy bass drops, aggressive synths, and the release of 'Terror' that started the electronic journey."}</p>
@@ -267,7 +272,7 @@ function WorksPage() {
           </div>
 
           <div className="work">
-            <img src="/assets/img/works/work-foley.jpg" alt="First Studio" loading="lazy" style={{ filter: "grayscale(50%)" }} />
+            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80" alt="First Studio" loading="lazy" style={{ filter: "grayscale(50%)" }} />
             <div className="work-overlay">
               <h3>{lang === "ar" ? "الاستوديو الأول" : "The First Setup"}</h3>
               <p>{lang === "ar" ? "قبل منصات HDX والصوتيات النقية. شهادة على حقيقة أن المعدات لا تصنع المهندس؛ بل الأذن هي من تفعل." : "Before the HDX rigs and pristine acoustics. A testament to the fact that gear doesn't make the engineer; the ear does."}</p>
@@ -275,7 +280,7 @@ function WorksPage() {
           </div>
           
           <div className="work">
-            <img src="/assets/img/works/work-mixing.jpg" alt="Local Gigs" loading="lazy" style={{ filter: "grayscale(30%)" }} />
+            <img src="https://images.unsplash.com/photo-1621360841013-c76831f13b63?w=800&q=80" alt="Local Gigs" loading="lazy" style={{ filter: "grayscale(30%)" }} />
             <div className="work-overlay">
               <h3>{lang === "ar" ? "حفلات الأندرجراوند" : "Underground Sessions"}</h3>
               <p>{lang === "ar" ? "مكساج وتسجيل للفرق المحلية في عمان. الطاقة الخام وغير المفلترة لمشهد الموسيقى الأردنية." : "Mixing and recording local bands in Amman. The raw, unfiltered energy of the Jordanian music scene."}</p>
@@ -311,6 +316,24 @@ function WorksPage() {
           </div>
         )}
       </section>
+    
+      {selectedWork && (
+        <div className="modal-backdrop" style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.8)", backdropFilter: "blur(5px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }} onClick={() => setSelectedWork(null)}>
+          <div className="modal-content bento" style={{ background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "1rem", padding: "2rem", maxWidth: "500px", width: "100%", position: "relative" }} onClick={e => e.stopPropagation()}>
+            <button style={{ position: "absolute", top: "1rem", right: "1rem", background: "transparent", border: "none", color: "#fff", fontSize: "1.5rem", cursor: "pointer" }} onClick={() => setSelectedWork(null)}><i className="bx bx-x"></i></button>
+            <span className="eyebrow" style={{ color: "var(--primary-glow)", marginBottom: "0.5rem", display: "block" }}>{selectedWork.client}</span>
+            <h2 style={{ fontSize: "1.75rem", marginBottom: "0.5rem" }}>{selectedWork.title}</h2>
+            <p style={{ opacity: 0.7, marginBottom: "1.5rem" }}>{selectedWork.role} • {selectedWork.year}</p>
+            <div style={{ background: "rgba(255,255,255,0.03)", padding: "1.5rem", borderRadius: "0.5rem", border: "1px dashed rgba(255,255,255,0.1)", textAlign: "center" }}>
+              <i className="bx bx-time-five" style={{ fontSize: "2rem", color: "var(--primary-glow)", marginBottom: "0.5rem" }}></i>
+              <p style={{ margin: 0, fontSize: "0.9rem" }}>{lang === "ar" ? "تفاصيل المشروع والوسائط ستتوفر قريباً." : "Project details and media coming soon."}</p>
+            </div>
+            <button className="btn btn-ghost" style={{ width: "100%", marginTop: "1rem" }} onClick={() => setSelectedWork(null)}>
+              {lang === "ar" ? "إغلاق" : "Close"}
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

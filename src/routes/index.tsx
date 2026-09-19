@@ -106,7 +106,7 @@ function Index() {
           {stats.map(s => (
             <div className="stat-card" key={s.l}>
               <h3>{s.n}</h3>
-              <p>{T[lang][s.l as keyof typeof T["en"]]}</p>
+              <p>{String((T[lang] as any)[s.l] ?? s.l)}</p>
             </div>
           ))}
         </div>
